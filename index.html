@@ -4,52 +4,69 @@
   <meta charset="utf-8" />
   <title>Drone Sightings — European Airport Disruptions (Last 365 Days)</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <!-- Leaflet & MarkerCluster -->
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="" crossorigin="anonymous">
-  <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css" integrity="" crossorigin="anonymous">
-  <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css" integrity="" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css" crossorigin="anonymous">
   <style>
     :root {
-      --bg: #0f1115; --panel: #151823; --muted: #8a90a2; --text: #eef2ff; --accent: #6ea8fe; --accent-2:#22c55e;
-      --danger:#ef4444; --warn:#f59e0b; --ok:#10b981; --chip:#21263a; --chip-active:#2b3250;
-      --focus:#9db8ff; --border:#2a2f45;
+      --bg: #0f1115;
+      --panel: #151823;
+      --muted: #8a90a2;
+      --text: #eef2ff;
+      --accent: #6ea8fe;
+      --accent-2: #22c55e;
+      --danger: #ef4444;
+      --warn: #f59e0b;
+      --ok: #10b981;
+      --chip: #21263a;
+      --chip-active: #2b3250;
+      --focus: #9db8ff;
+      --border: #2a2f45;
+      --surface: #0f1322;
     }
-    * { box-sizing: border-box }
+    * { box-sizing: border-box; }
     html, body { height: 100%; margin: 0; background: var(--bg); color: var(--text); font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial; }
     #app { display: grid; grid-template-columns: 320px 1fr 360px; grid-template-rows: 56px 1fr; height: 100%; }
     header { grid-column: 1 / 4; display:flex; align-items:center; gap: 12px; padding: 10px 16px; background: #0c0f17; border-bottom: 1px solid var(--border); }
-    header h1 { font-size: 16px; margin: 0; letter-spacing: .4px; }
+    header h1 { font-size: 16px; margin: 0; letter-spacing: 0.4px; }
     header .badge { padding: 4px 8px; background: var(--chip); border: 1px solid var(--border); border-radius: 999px; color: var(--muted); font-size: 12px; }
     #left { border-right: 1px solid var(--border); background: var(--panel); padding: 12px; overflow:auto; }
     #map { width: 100%; height: 100%; }
     #right { border-left: 1px solid var(--border); background: var(--panel); padding: 12px; overflow:auto; }
     .section { margin-bottom: 16px; }
-    h2 { font-size: 13px; font-weight: 700; text-transform: uppercase; color: var(--muted); letter-spacing: .08em; margin: 8px 0 6px; }
+    h2 { font-size: 13px; font-weight: 700; text-transform: uppercase; color: var(--muted); letter-spacing: 0.08em; margin: 8px 0 6px; }
     .chips { display:flex; flex-wrap:wrap; gap:8px; }
-    .chip { padding:6px 10px; border:1px solid var(--border); border-radius:999px; background: var(--chip); color: var(--text); cursor:pointer; font-size: 12px; }
+    .chip { padding:6px 10px; border:1px solid var(--border); border-radius:999px; background: var(--chip); color: var(--text); cursor:pointer; font-size: 12px; transition: background 0.2s ease; }
     .chip.active { background: var(--chip-active); border-color:#3a4162; }
     label { font-size: 12px; color: var(--muted); display:block; margin-bottom:6px; }
     input[type="range"] { width:100%; }
     select, input[type="text"] {
-      width: 100%; padding: 8px 10px; background:#0f1322; color: var(--text);
+      width: 100%; padding: 8px 10px; background: var(--surface); color: var(--text);
       border:1px solid var(--border); border-radius: 8px; outline: none;
     }
     select:focus, input[type="text"]:focus { border-color: var(--focus); box-shadow: 0 0 0 3px rgba(157,184,255,.15); }
     .statbar { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
-    .stat { background:#0f1322; border:1px solid var(--border); border-radius:12px; padding:10px; text-align:center; }
+    .stat { background: var(--surface); border:1px solid var(--border); border-radius:12px; padding:10px; text-align:center; }
     .stat .k { font-size:18px; font-weight:700; }
-    .legend { display:flex; gap:10px; align-items:center; }
-    .dot { width:10px; height:10px; border-radius:50%; display:inline-block; }
+    .legend { display:flex; flex-wrap: wrap; gap:10px; align-items:center; font-size: 11px; }
+    .dot { width:10px; height:10px; border-radius:50%; display:inline-block; border:1px solid rgba(0,0,0,0.25); }
     .dot.red { background:#ef4444; }
     .dot.blue { background:#3b82f6; }
     .muted { color: var(--muted); font-size: 12px; }
-    .incident { border:1px solid var(--border); border-radius:12px; padding: 10px; margin-bottom: 10px; background:#0f1322; }
-    .btn { padding:6px 10px; border:1px solid var(--border); background:#0f1322; border-radius:8px; color:var(--text); cursor:pointer; }
+    .incident { border:1px solid var(--border); border-radius:12px; padding: 10px; margin-bottom: 10px; background: var(--surface); cursor:pointer; }
+    .incident:hover { border-color:#3a4162; }
+    .btn { padding:6px 10px; border:1px solid var(--border); background: var(--surface); border-radius:8px; color:var(--text); cursor:pointer; transition: border 0.2s ease; }
     .btn:hover { border-color:#3a4162; }
-    /* Leaflet container tweaks */
-    .leaflet-control-attribution { background: rgba(0,0,0,.45); color: #dfe4ff; border-radius: 8px; padding:2px 6px; }
-    .leaflet-popup-content-wrapper { background:#0f1322; color:var(--text); }
-    .leaflet-popup-tip { background:#0f1322; }
+    .histogram { display:flex; align-items:flex-end; gap:4px; min-height:60px; padding:8px 6px; background: var(--surface); border:1px solid var(--border); border-radius:12px; }
+    .histogram .bar { flex:1; background: linear-gradient(180deg, rgba(110,168,254,0.85), rgba(110,168,254,0.35)); border-radius:4px 4px 0 0; position:relative; }
+    .histogram .bar::after { content: attr(data-count); position:absolute; top:-18px; left:50%; transform:translateX(-50%); font-size:10px; color:var(--muted); }
+    .histogram .bar-label { font-size:10px; color:var(--muted); text-align:center; margin-top:4px; white-space:nowrap; }
+    .histogram-wrapper { display:flex; gap:4px; align-items:flex-end; }
+    .histogram-column { display:flex; flex-direction:column; align-items:center; flex:1; }
+    .error { background: rgba(239,68,68,0.1); color:#fca5a5; padding:8px 10px; border-radius:8px; border:1px solid rgba(239,68,68,0.3); font-size:12px; }
+    .loading { font-size:12px; color:var(--muted); }
+    .legend-note { font-size: 11px; color: var(--muted); margin-top: 6px; }
+    .marker-wrapper { display:flex; justify-content:center; align-items:center; }
     @media (max-width: 1120px) {
       #app { grid-template-columns: 1fr; grid-template-rows: 56px 280px 1fr 320px; }
       #left { grid-row: 2; }
@@ -65,7 +82,7 @@
       <h1>Drone Sightings — European Airport Disruptions</h1>
       <span class="badge">Satellite</span>
       <span class="badge">Last 365 days</span>
-      <span class="badge" id="build-info">Build: static</span>
+      <span class="badge" id="build-info">Build: loading…</span>
     </header>
 
     <aside id="left" aria-label="Filters panel">
@@ -78,8 +95,8 @@
           <button class="chip active" data-window="365">365d</button>
         </div>
         <label for="dateRange">Filter by date</label>
-        <input id="dateRange" type="range" min="0" max="365" value="365" step="1" aria-valuemin="0" aria-valuemax="365" aria-valuenow="365">
-        <div class="muted" id="dateRangeLabel"></div>
+        <input id="dateRange" type="range" min="1" max="365" value="365" step="1" aria-valuemin="1" aria-valuemax="365" aria-valuenow="365">
+        <div class="muted" id="dateRangeLabel">Loading…</div>
       </div>
 
       <div class="section">
@@ -103,21 +120,34 @@
           <option value="0">0 — Unconfirmed</option>
         </select>
 
+        <label style="margin-top:8px;">Severity</label>
+        <div class="chips" role="group" aria-label="Severity filter">
+          <button class="chip active" data-severity="high">High</button>
+          <button class="chip active" data-severity="medium">Medium</button>
+          <button class="chip active" data-severity="low">Low</button>
+        </div>
+
         <label style="margin-top:8px;" for="searchBox">Search (airport/city/IATA/ICAO)</label>
         <input id="searchBox" type="text" placeholder="e.g., CPH, Oslo, Riga">
+
         <div class="legend" style="margin-top:10px;">
-          <span class="dot red" title="closure/diversion/lockdown"></span> Closure/Diversion/Lockdown
-          <span class="dot blue" title="sighting" style="margin-left:12px;"></span> Sighting
+          <span class="dot red" title="Closure/diversion/lockdown"></span> Closure / diversion / lockdown
+          <span class="dot blue" title="Sighting" style="margin-left:12px;"></span> Sighting
         </div>
+        <div class="legend-note">Marker size scales with severity: high &gt; medium &gt; low.</div>
       </div>
+
+      <div id="filterError" class="section" style="display:none;"></div>
 
       <div class="section">
         <h2>Summary</h2>
         <div class="statbar">
           <div class="stat"><div class="k" id="stat-total">0</div><div class="muted">Incidents</div></div>
           <div class="stat"><div class="k" id="stat-closures">0</div><div class="muted">Closures</div></div>
-          <div class="stat"><div class="k" id="stat-countries">0</div><div class="muted">Countries</div></div>
+          <div class="stat"><div class="k" id="stat-high">0</div><div class="muted">High severity</div></div>
         </div>
+        <div class="muted" style="margin-top:10px;">Incidents by ISO week</div>
+        <div id="histogram" class="histogram" role="img" aria-label="Incidents by ISO week"></div>
       </div>
 
       <div class="section">
@@ -135,304 +165,373 @@
     <aside id="right" aria-label="Incident detail panel">
       <div id="details">
         <h2>Details</h2>
-        <p class="muted">Click a marker to see full incident details here: time, duration, evidence, and sources.</p>
+        <p class="muted" id="detailsIntro">Click a marker or choose an item below to see full incident details: timing, duration, severity, and verified sources.</p>
         <div id="incidentList"></div>
       </div>
     </aside>
   </div>
 
-  <!-- JS libs -->
-  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="" crossorigin="anonymous"></script>
-  <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js" integrity="" crossorigin="anonymous"></script>
-
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js" crossorigin="anonymous"></script>
   <script>
-  // ---------------------------
-  // Drone Sightings — App Logic
-  // ---------------------------
+    const DATA_URL = 'data/processed/incidents_last365.json';
+    const SUMMARY_URL = 'data/processed/incidents_summary.json';
 
-  // Seed data (extend/replace with your pipeline). Evidence & examples align with recent reporting.
-  // Sources: Reuters/AP for DK/NO/PL, LSM/BNN for LV (see source URLs inside).
-  const seedIncidents = [
-    // Denmark
-    { id:"dk-cph-2025-09-22", date_start_utc:"2025-09-22T19:00:00Z", date_end_utc:"2025-09-22T23:00:00Z", country:"Denmark",
-      airport_name:"Copenhagen Airport", iata:"CPH", icao:"EKCH", lat:55.6181, lon:12.6561,
-      incident_type:"closure", duration_min:240, uav_count:2,
-      source_primary_url:"https://www.reuters.com/business/aerospace-defense/denmarks-aalborg-airport-closed-due-drones-airspace-2025-09-24/",
-      source_secondary_url:"https://www.reuters.com/world/europe/denmark-reopens-airports-after-drone-disruption-2025-09-25/",
-      evidence_strength:2, attribution:"suspected", severity:4, notes:"Multiple large drones; similar tradecraft to later Aalborg."
-    },
-    { id:"dk-aal-2025-09-24", date_start_utc:"2025-09-24T19:44:00Z", date_end_utc:"2025-09-24T22:54:00Z", country:"Denmark",
-      airport_name:"Aalborg Airport", iata:"AAL", icao:"EKYT", lat:57.0928, lon:9.8492,
-      incident_type:"closure", duration_min:190, uav_count:2,
-      source_primary_url:"https://www.reuters.com/business/aerospace-defense/denmarks-aalborg-airport-closed-due-drones-airspace-2025-09-24/",
-      source_secondary_url:"https://apnews.com/article/4fa3431f7db92a5fc62263ce0e78518f",
-      evidence_strength:2, attribution:"suspected", severity:4, notes:"Drones with lights; loiter ~3h."
-    },
-    { id:"dk-bll-2025-09-25", date_start_utc:"2025-09-25T00:00:00Z", date_end_utc:"2025-09-25T01:00:00Z", country:"Denmark",
-      airport_name:"Billund Airport", iata:"BLL", icao:"EKBI", lat:55.7403, lon:9.1518,
-      incident_type:"closure", duration_min:60, uav_count:1,
-      source_primary_url:"https://www.reuters.com/world/europe/denmark-reopens-airports-after-drone-disruption-2025-09-25/",
-      source_secondary_url:"https://apnews.com/article/4fa3431f7db92a5fc62263ce0e78518f",
-      evidence_strength:2, attribution:"suspected", severity:3, notes:"Short closure; reopened quickly."
-    },
-    { id:"dk-ebj-2025-09-25", date_start_utc:"2025-09-25T00:30:00Z", date_end_utc:"2025-09-25T01:10:00Z", country:"Denmark",
-      airport_name:"Esbjerg Airport", iata:"EBJ", icao:"EKEB", lat:55.5259, lon:8.5534,
-      incident_type:"sighting", duration_min:40, uav_count:1,
-      source_primary_url:"https://apnews.com/article/4fa3431f7db92a5fc62263ce0e78518f",
-      source_secondary_url:"https://www.reuters.com/world/europe/denmark-reopens-airports-after-drone-disruption-2025-09-25/",
-      evidence_strength:1, attribution:"suspected", severity:2, notes:"Sighting; closure not verified."
-    },
-    { id:"dk-sgd-2025-09-25", date_start_utc:"2025-09-25T00:30:00Z", date_end_utc:"2025-09-25T01:10:00Z", country:"Denmark",
-      airport_name:"Sønderborg Airport", iata:"SGD", icao:"EKSB", lat:54.9644, lon:9.7917,
-      incident_type:"sighting", duration_min:40, uav_count:1,
-      source_primary_url:"https://apnews.com/article/4fa3431f7db92a5fc62263ce0e78518f",
-      source_secondary_url:"https://www.reuters.com/world/europe/denmark-reopens-airports-after-drone-disruption-2025-09-25/",
-      evidence_strength:1, attribution:"suspected", severity:2, notes:"Sighting; closure not verified."
-    },
-    // Norway
-    { id:"no-osl-2025-09-23", date_start_utc:"2025-09-22T23:22:00Z", date_end_utc:"2025-09-23T02:22:00Z", country:"Norway",
-      airport_name:"Oslo Gardermoen", iata:"OSL", icao:"ENGM", lat:60.1939, lon:11.1004,
-      incident_type:"closure", duration_min:180, uav_count:1,
-      source_primary_url:"https://www.reuters.com/business/aerospace-defense/denmarks-aalborg-airport-closed-due-drones-airspace-2025-09-24/",
-      source_secondary_url:"https://www.reuters.com/world/europe/denmark-reopens-airports-after-drone-disruption-2025-09-25/",
-      evidence_strength:2, attribution:"suspected", severity:3, notes:"Overnight closure; coordination with DK."
-    },
-    // Poland
-    { id:"pl-waw-2025-09-10", date_start_utc:"2025-09-09T21:00:00Z", date_end_utc:"2025-09-10T01:30:00Z", country:"Poland",
-      airport_name:"Warsaw Chopin", iata:"WAW", icao:"EPWA", lat:52.1658, lon:20.9671,
-      incident_type:"closure", duration_min:270, uav_count:1,
-      source_primary_url:"https://www.reuters.com/world/europe/denmark-reopens-airports-after-drone-disruption-2025-09-25/",
-      source_secondary_url:"https://www.reuters.com/business/aerospace-defense/denmarks-aalborg-airport-closed-due-drones-airspace-2025-09-24/",
-      evidence_strength:2, attribution:"claimed", severity:4, notes:"Part of larger incursion; NATO consultations."
-    },
-    { id:"pl-wmi-2025-09-10", date_start_utc:"2025-09-09T21:00:00Z", date_end_utc:"2025-09-10T01:30:00Z", country:"Poland",
-      airport_name:"Warsaw Modlin", iata:"WMI", icao:"EPMO", lat:52.4511, lon:20.6518,
-      incident_type:"closure", duration_min:210, uav_count:1,
-      source_primary_url:"https://www.reuters.com/world/europe/denmark-reopens-airports-after-drone-disruption-2025-09-25/",
-      source_secondary_url:"https://www.reuters.com/business/aerospace-defense/denmarks-aalborg-airport-closed-due-drones-airspace-2025-09-24/",
-      evidence_strength:2, attribution:"claimed", severity:4, notes:"Temporary closure."
-    },
-    { id:"pl-rze-2025-09-10", date_start_utc:"2025-09-09T21:00:00Z", date_end_utc:"2025-09-10T01:30:00Z", country:"Poland",
-      airport_name:"Rzeszów–Jasionka", iata:"RZE", icao:"EPRZ", lat:50.1100, lon:22.0190,
-      incident_type:"closure", duration_min:180, uav_count:1,
-      source_primary_url:"https://www.reuters.com/world/europe/denmark-reopens-airports-after-drone-disruption-2025-09-25/",
-      source_secondary_url:"https://www.reuters.com/business/aerospace-defense/denmarks-aalborg-airport-closed-due-drones-airspace-2025-09-24/",
-      evidence_strength:2, attribution:"claimed", severity:4, notes:"Logistics hub impact."
-    },
-    { id:"pl-luz-2025-09-10", date_start_utc:"2025-09-09T21:00:00Z", date_end_utc:"2025-09-10T01:30:00Z", country:"Poland",
-      airport_name:"Lublin", iata:"LUZ", icao:"EPLB", lat:51.2281, lon:22.7136,
-      incident_type:"closure", duration_min:150, uav_count:1,
-      source_primary_url:"https://www.reuters.com/world/europe/denmark-reopens-airports-after-drone-disruption-2025-09-25/",
-      source_secondary_url:"https://www.reuters.com/business/aerospace-defense/denmarks-aalborg-airport-closed-due-drones-airspace-2025-09-24/",
-      evidence_strength:2, attribution:"claimed", severity:3, notes:"Temporary closure."
-    },
-    // Latvia
-    { id:"lv-rix-2025-01-13", date_start_utc:"2025-01-13T19:20:00Z", date_end_utc:"2025-01-13T19:50:00Z", country:"Latvia",
-      airport_name:"Riga International", iata:"RIX", icao:"EVRA", lat:56.9236, lon:23.9718,
-      incident_type:"lockdown", duration_min:30, uav_count:1,
-      source_primary_url:"https://lsm.lv/",
-      source_secondary_url:"https://lsm.lv/", /* Replace with the specific LSM article URL when logged */
-      evidence_strength:2, attribution:"none", severity:3, notes:"Lockdown with three diversions; repeated short restrictions."
+    let allIncidents = [];
+    let map;
+    let clusterLayer;
+    let markerById = new Map();
+    let hasInitialFit = false;
+    let datasetAsOf = new Date();
+
+    const satelliteLayer = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+      attribution: 'Basemap © Esri — Sources: Esri, i-cubed, USDA, USGS, AeroGRID, IGN, IGP, and the GIS User Community'
+    });
+    const streetLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '© OpenStreetMap contributors'
+    });
+
+    map = L.map('map', {
+      center: [56.0, 12.0],
+      zoom: 4,
+      layers: [satelliteLayer],
+      minZoom: 3,
+      worldCopyJump: true
+    });
+    L.control.layers({'Satellite (Esri)': satelliteLayer, 'Streets (OSM)': streetLayer}, null, {collapsed: true}).addTo(map);
+    clusterLayer = L.markerClusterGroup();
+    map.addLayer(clusterLayer);
+
+    const dateRange = document.getElementById('dateRange');
+    const dateLabel = document.getElementById('dateRangeLabel');
+    const countrySelect = document.getElementById('countrySelect');
+    const statusSelect = document.getElementById('statusSelect');
+    const evidenceSelect = document.getElementById('evidenceSelect');
+    const severityButtons = document.querySelectorAll('.chip[data-severity]');
+    const searchBox = document.getElementById('searchBox');
+    const filterError = document.getElementById('filterError');
+    const histogramEl = document.getElementById('histogram');
+    const incidentList = document.getElementById('incidentList');
+    const detailsIntro = document.getElementById('detailsIntro');
+
+    function fmtDate(value) {
+      const d = new Date(value);
+      return d.toISOString().slice(0, 10);
     }
-  ];
 
-  // Utility: clamp to last N days
-  function withinDays(isoStart, days) {
-    const end = new Date(isoStart);
-    const now = new Date();
-    const diff = (now - end) / (1000*60*60*24);
-    return diff <= days;
-  }
+    function formatDuration(minutes) {
+      if (!minutes) return '—';
+      if (minutes < 60) return `${minutes} min`;
+      const hours = (minutes / 60).toFixed(1);
+      return `${hours} h`;
+    }
 
-  // Prepare map
-  const satellite = L.tileLayer(
-    'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
-    { attribution: 'Basemap © Esri — Sources: Esri, i-cubed, USDA, USGS, AeroGRID, IGN, IGP, and the GIS User Community' }
-  );
-  const streets = L.tileLayer(
-    'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-    { attribution: '© OpenStreetMap contributors' }
-  );
+    function isoWeekKey(date) {
+      const target = new Date(Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate()));
+      const dayNum = target.getUTCDay() || 7;
+      target.setUTCDate(target.getUTCDate() + 4 - dayNum);
+      const yearStart = new Date(Date.UTC(target.getUTCFullYear(), 0, 1));
+      const weekNo = Math.ceil((((target - yearStart) / 86400000) + 1) / 7);
+      return `${target.getUTCFullYear()}-W${String(weekNo).padStart(2, '0')}`;
+    }
 
-  const map = L.map('map', {
-    center: [56.0, 12.0], zoom: 4, layers: [satellite], minZoom: 3, worldCopyJump: true
-  });
-  L.control.layers({ 'Satellite (Esri)': satellite, 'Streets (OSM)': streets }, null, { collapsed:true }).addTo(map);
+    function enrichIncident(raw) {
+      return {
+        ...raw,
+        date_start: new Date(raw.date_start_utc),
+        date_end: new Date(raw.date_end_utc)
+      };
+    }
 
-  const cluster = L.markerClusterGroup();
-  let markers = [];
-  const listEl = document.getElementById('incidentList');
+    function populateCountrySelect() {
+      const countries = Array.from(new Set(allIncidents.map(i => i.country))).sort();
+      countrySelect.innerHTML = '';
+      countries.forEach(country => {
+        const opt = document.createElement('option');
+        opt.value = country;
+        opt.textContent = country;
+        countrySelect.appendChild(opt);
+      });
+    }
 
-  // Populate country select
-  const countrySelect = document.getElementById('countrySelect');
-  [...new Set(seedIncidents.map(i => i.country))].sort().forEach(c => {
-    const opt = document.createElement('option'); opt.value = c; opt.textContent = c; countrySelect.appendChild(opt);
-  });
+    function getSelectedValues(selectEl) {
+      const selected = Array.from(selectEl.selectedOptions).map(opt => opt.value);
+      return selected.length ? selected : Array.from(selectEl.options).map(opt => opt.value);
+    }
 
-  // Status & evidence selects
-  const statusSelect = document.getElementById('statusSelect');
-  const evidenceSelect = document.getElementById('evidenceSelect');
-
-  // Date slider
-  const dateRange = document.getElementById('dateRange');
-  const dateLabel = document.getElementById('dateRangeLabel');
-
-  function fmtDate(s) { const d = new Date(s); return d.toISOString().slice(0,10); }
-
-  function activeDays(){ return parseInt(dateRange.value,10); }
-  function activeStatuses(){
-    return [...statusSelect.selectedOptions].map(o=>o.value);
-  }
-  function activeEvidence(){
-    return new Set([...evidenceSelect.selectedOptions].map(o=>parseInt(o.value,10)));
-  }
-  function activeCountries(){
-    const set = new Set([...countrySelect.selectedOptions].map(o=>o.value));
-    return set.size ? set : null;
-  }
-  function searchTerm(){
-    return document.getElementById('searchBox').value.trim().toLowerCase();
-  }
-
-  function filterIncidents(){
-    const days = activeDays();
-    const st = new Set(activeStatuses());
-    const ev = activeEvidence();
-    const countries = activeCountries();
-    const term = searchTerm();
-
-    return seedIncidents.filter(i=>{
-      if(!withinDays(i.date_start_utc, days)) return false;
-      if(!st.has(i.incident_type)) return false;
-      if(!ev.has(i.evidence_strength)) return false;
-      if(countries && !countries.has(i.country)) return false;
-      if(term){
-        const hay = (i.airport_name+" "+i.iata+" "+i.icao+" "+i.country+" "+i.notes).toLowerCase();
-        if(!hay.includes(term)) return false;
+    function getActiveSeverities() {
+      const active = Array.from(severityButtons).filter(btn => btn.classList.contains('active')).map(btn => btn.dataset.severity);
+      if (active.length === 0) {
+        severityButtons.forEach(btn => btn.classList.add('active'));
+        return Array.from(severityButtons).map(btn => btn.dataset.severity);
       }
-      return true;
-    });
-  }
-
-  function updateStats(filtered){
-    document.getElementById('stat-total').textContent = filtered.length;
-    document.getElementById('stat-closures').textContent = filtered.filter(i=>i.incident_type!=='sighting').length;
-    document.getElementById('stat-countries').textContent = new Set(filtered.map(i=>i.country)).size;
-  }
-
-  function markerFor(i){
-    const color = (i.incident_type==='sighting') ? '#3b82f6' : '#ef4444';
-    const icon = L.divIcon({
-      html:`<div style="width:12px;height:12px;border-radius:50%;background:${color};border:2px solid #fff;box-shadow:0 0 0 1px rgba(0,0,0,.4)"></div>`,
-      className:'', iconSize:[12,12]
-    });
-    const popup = `
-      <strong>${i.airport_name} (${i.iata || ''}${i.iata?'/':''}${i.icao||''})</strong><br/>
-      ${i.country}<br/>
-      <b>From:</b> ${fmtDate(i.date_start_utc)} &nbsp; <b>To:</b> ${fmtDate(i.date_end_utc)}<br/>
-      <b>Type:</b> ${i.incident_type} &nbsp; <b>Duration:</b> ${i.duration_min||'—'} min<br/>
-      <b>Evidence:</b> ${i.evidence_strength} &nbsp; <b>Severity:</b> ${i.severity}<br/>
-      <b>Sources:</b> <a href="${i.source_primary_url}" target="_blank" rel="noopener">primary</a>${i.source_secondary_url?` · <a href="${i.source_secondary_url}" target="_blank" rel="noopener">secondary</a>`:''}
-    `;
-    const m = L.marker([i.lat, i.lon], {icon}).bindPopup(popup);
-    m.on('click',()=>renderDetails([i]));
-    return m;
-  }
-
-  function renderDetails(items){
-    listEl.innerHTML = '';
-    items.sort((a,b)=> new Date(b.date_start_utc)-new Date(a.date_start_utc)).forEach(i=>{
-      const div = document.createElement('div');
-      div.className = 'incident';
-      div.innerHTML = `
-        <div style="display:flex;justify-content:space-between;gap:10px;align-items:center;">
-          <strong>${i.airport_name}</strong>
-          <span class="muted">${i.country}</span>
-        </div>
-        <div class="muted" style="margin:6px 0">${i.iata||''}${i.iata?'/':''}${i.icao||''} • ${fmtDate(i.date_start_utc)} → ${fmtDate(i.date_end_utc)}</div>
-        <div>Type: <b>${i.incident_type}</b> • Duration: <b>${i.duration_min||'—'}m</b> • Evidence: <b>${i.evidence_strength}</b> • Severity: <b>${i.severity}</b></div>
-        <div class="muted" style="margin:6px 0">${i.notes||''}</div>
-        <div>Sources: <a href="${i.source_primary_url}" target="_blank" rel="noopener">primary</a>${i.source_secondary_url?` · <a href="${i.source_secondary_url}" target="_blank" rel="noopener">secondary</a>`:''}</div>
-      `;
-      listEl.appendChild(div);
-    });
-  }
-
-  function refresh(){
-    // Update range label
-    dateLabel.textContent = `Showing last ${activeDays()} days`;
-    // Clear map
-    cluster.clearLayers(); markers = [];
-    const filtered = filterIncidents();
-
-    // Add markers
-    filtered.forEach(i => {
-      const m = markerFor(i); markers.push(m); cluster.addLayer(m);
-    });
-    map.addLayer(cluster);
-
-    // Fit bounds
-    if (markers.length) {
-      const group = L.featureGroup(markers);
-      map.fitBounds(group.getBounds().pad(0.2));
+      return active;
     }
 
-    updateStats(filtered);
-    renderDetails(filtered.slice(0, 8));
-    console.info(`[DroneSightings] Rendered ${filtered.length} incidents.`);
-  }
+    function getActiveDays() {
+      return parseInt(dateRange.value, 10) || 365;
+    }
 
-  // Quick time chips
-  document.querySelectorAll('.chip[data-window]').forEach(btn=>{
-    btn.addEventListener('click', ()=>{
-      document.querySelectorAll('.chip[data-window]').forEach(b=>b.classList.remove('active'));
-      btn.classList.add('active');
-      dateRange.value = btn.dataset.window;
-      refresh();
-    });
-  });
+    function updateDateLabel(days) {
+      const from = new Date(datasetAsOf.getTime());
+      from.setUTCDate(from.getUTCDate() - (days - 1));
+      dateLabel.textContent = `Showing last ${days} days (since ${from.toISOString().slice(0, 10)})`;
+      dateRange.setAttribute('aria-valuenow', String(days));
+    }
 
-  // Inputs
-  [dateRange, statusSelect, evidenceSelect, countrySelect].forEach(el=>{
-    el.addEventListener('input', refresh);
-    el.addEventListener('change', refresh);
-  });
-  document.getElementById('searchBox').addEventListener('input', refresh);
+    function filterIncidents() {
+      const days = getActiveDays();
+      const statuses = new Set(getSelectedValues(statusSelect));
+      const evidence = new Set(getSelectedValues(evidenceSelect));
+      const severities = new Set(getActiveSeverities());
+      const countries = new Set(getSelectedValues(countrySelect));
+      const term = searchBox.value.trim().toLowerCase();
+      const cutoff = new Date(datasetAsOf.getTime());
+      cutoff.setUTCDate(cutoff.getUTCDate() - (days - 1));
 
-  // Export CSV
-  document.getElementById('exportCsvBtn').addEventListener('click', ()=>{
-    const items = filterIncidents();
-    if(items.length === 0) return;
-    const head = Object.keys(items[0]);
-    const rows = [head.join(',')].concat(items.map(i=>head.map(h=>JSON.stringify(i[h]??'')).join(',')));
-    const blob = new Blob([rows.join('\n')], {type:'text/csv;charset=utf-8;'});
-    const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
-    a.download = `drone_sightings_${new Date().toISOString().slice(0,10)}.csv`; a.click();
-  });
+      return allIncidents.filter(incident => {
+        if (incident.date_start < cutoff) return false;
+        if (!statuses.has(incident.incident_type)) return false;
+        if (!evidence.has(String(incident.evidence_strength))) return false;
+        if (!severities.has(incident.severity_label)) return false;
+        if (countries.size && !countries.has(incident.country)) return false;
+        if (term) {
+          const haystack = [incident.airport_name, incident.iata, incident.icao, incident.country, incident.notes || '']
+            .join(' ').toLowerCase();
+          if (!haystack.includes(term)) return false;
+        }
+        return true;
+      });
+    }
 
-  // Reset
-  document.getElementById('resetBtn').addEventListener('click', ()=>{
-    document.getElementById('searchBox').value='';
-    [...statusSelect.options].forEach(o=>o.selected=true);
-    [...evidenceSelect.options].forEach(o=>o.selected=(o.value!=='0'));
-    [...countrySelect.options].forEach(o=>o.selected=false);
-    dateRange.value = 365;
-    document.querySelectorAll('.chip[data-window]').forEach(b=>b.classList.remove('active'));
-    document.querySelector('.chip[data-window="365"]').classList.add('active');
-    refresh();
-  });
+    function markerFor(incident) {
+      const severitySizes = { high: 22, medium: 16, low: 12 };
+      const colors = {
+        closure: '#ef4444',
+        diversion: '#ef4444',
+        lockdown: '#ef4444',
+        sighting: '#3b82f6'
+      };
+      const color = colors[incident.incident_type] || '#6ea8fe';
+      const size = severitySizes[incident.severity_label] || 14;
+      const icon = L.divIcon({
+        html: `<div style="width:${size}px;height:${size}px;border-radius:50%;background:${color};border:2px solid rgba(15,17,25,0.85);box-shadow:0 0 0 1px rgba(5,5,5,0.4);"></div>`,
+        className: 'marker-wrapper',
+        iconSize: [size, size]
+      });
+      const popup = `
+        <strong>${incident.airport_name} (${incident.iata || ''}${incident.iata ? '/' : ''}${incident.icao || ''})</strong><br/>
+        ${incident.country}<br/>
+        <b>From:</b> ${fmtDate(incident.date_start_utc)} &nbsp; <b>To:</b> ${fmtDate(incident.date_end_utc)}<br/>
+        <b>Status:</b> ${incident.status_display || incident.incident_type}<br/>
+        <b>Duration:</b> ${formatDuration(incident.duration_min)}<br/>
+        <b>Severity:</b> ${incident.severity} (${incident.severity_label})<br/>
+        <b>Evidence:</b> ${incident.evidence_strength}<br/>
+        <b>Sources:</b> <a href="${incident.source_primary_url}" target="_blank" rel="noopener">primary</a>${incident.source_secondary_url ? ` · <a href="${incident.source_secondary_url}" target="_blank" rel="noopener">secondary</a>` : ''}
+      `;
+      const marker = L.marker([incident.lat, incident.lon], { icon }).bindPopup(popup);
+      marker.on('click', () => renderDetails([incident]));
+      return marker;
+    }
 
-  // Init
-  dateRange.value = 365;
-  dateLabel.textContent = 'Showing last 365 days';
-  refresh();
+    function updateStats(filtered) {
+      document.getElementById('stat-total').textContent = filtered.length;
+      const closureLike = filtered.filter(i => ['closure', 'diversion', 'lockdown'].includes(i.incident_type)).length;
+      document.getElementById('stat-closures').textContent = closureLike;
+      const highSeverity = filtered.filter(i => i.severity_label === 'high').length;
+      document.getElementById('stat-high').textContent = highSeverity;
+    }
 
-  // Keyboard: jump between panels
-  document.addEventListener('keydown', (e)=>{
-    if(e.key==='m') document.getElementById('map').focus();
-    if(e.key==='f') document.getElementById('left').focus();
-    if(e.key==='d') document.getElementById('right').focus();
-  });
+    function updateHistogram(filtered) {
+      histogramEl.innerHTML = '';
+      if (!filtered.length) {
+        histogramEl.innerHTML = '<span class="loading">No incidents for the current filters.</span>';
+        return;
+      }
+      const counts = new Map();
+      filtered.forEach(incident => {
+        const key = isoWeekKey(incident.date_start);
+        counts.set(key, (counts.get(key) || 0) + 1);
+      });
+      const sortedKeys = Array.from(counts.keys()).sort();
+      const keys = sortedKeys.slice(-10);
+      const max = Math.max(...keys.map(k => counts.get(k) || 0), 1);
+      const wrapper = document.createElement('div');
+      wrapper.className = 'histogram-wrapper';
+      keys.forEach(key => {
+        const count = counts.get(key) || 0;
+        const col = document.createElement('div');
+        col.className = 'histogram-column';
+        const bar = document.createElement('div');
+        bar.className = 'bar';
+        bar.style.height = `${Math.max(8, (count / max) * 100)}%`;
+        bar.dataset.count = count;
+        const label = document.createElement('div');
+        label.className = 'bar-label';
+        label.textContent = key.replace('-W', '\u2009W');
+        col.appendChild(bar);
+        col.appendChild(label);
+        wrapper.appendChild(col);
+      });
+      histogramEl.appendChild(wrapper);
+    }
+
+    function renderDetails(items) {
+      incidentList.innerHTML = '';
+      if (!items.length) {
+        detailsIntro.textContent = 'No incidents match the current filters.';
+        return;
+      }
+      detailsIntro.textContent = 'Showing most recent incidents (click to focus on map).';
+      const sorted = items.slice().sort((a, b) => b.date_start - a.date_start);
+      sorted.slice(0, 10).forEach(incident => {
+        const block = document.createElement('div');
+        block.className = 'incident';
+        block.dataset.id = incident.id;
+        block.innerHTML = `
+          <div style="display:flex;justify-content:space-between;gap:10px;align-items:center;">
+            <strong>${incident.airport_name}</strong>
+            <span class="muted">${incident.country}</span>
+          </div>
+          <div class="muted" style="margin:6px 0">${incident.iata || ''}${incident.iata ? '/' : ''}${incident.icao || ''} • ${fmtDate(incident.date_start_utc)} → ${fmtDate(incident.date_end_utc)}</div>
+          <div>Status: <b>${incident.status_display || incident.incident_type}</b> • Duration: <b>${formatDuration(incident.duration_min)}</b></div>
+          <div>Severity: <b>${incident.severity} (${incident.severity_label})</b> • Evidence: <b>${incident.evidence_strength}</b></div>
+          <div class="muted" style="margin:6px 0">${incident.notes || ''}</div>
+          <div>Sources: <a href="${incident.source_primary_url}" target="_blank" rel="noopener">primary</a>${incident.source_secondary_url ? ` · <a href="${incident.source_secondary_url}" target="_blank" rel="noopener">secondary</a>` : ''}</div>
+        `;
+        block.addEventListener('click', () => focusIncident(incident.id));
+        incidentList.appendChild(block);
+      });
+    }
+
+    function focusIncident(id) {
+      const marker = markerById.get(id);
+      if (marker) {
+        map.setView(marker.getLatLng(), Math.max(map.getZoom(), 6));
+        marker.openPopup();
+      }
+    }
+
+    function refresh(forceFit = false) {
+      if (!allIncidents.length) return;
+      const filtered = filterIncidents();
+      filterError.style.display = 'none';
+      if (!filtered.length) {
+        filterError.style.display = 'block';
+        filterError.className = 'section error';
+        filterError.textContent = 'No incidents match the current filters. Try expanding the time window or selecting more statuses.';
+      }
+      updateDateLabel(getActiveDays());
+      clusterLayer.clearLayers();
+      markerById.clear();
+
+      const markers = filtered.map(incident => {
+        const marker = markerFor(incident);
+        markerById.set(incident.id, marker);
+        return marker;
+      });
+      markers.forEach(marker => clusterLayer.addLayer(marker));
+
+      if (markers.length && (!hasInitialFit || forceFit)) {
+        const group = L.featureGroup(markers);
+        map.fitBounds(group.getBounds().pad(0.2));
+        hasInitialFit = true;
+      }
+
+      updateStats(filtered);
+      updateHistogram(filtered);
+      renderDetails(filtered);
+      console.info(`[DroneSightings] Rendered ${filtered.length} incidents.`);
+    }
+
+    function setupEventListeners() {
+      document.querySelectorAll('.chip[data-window]').forEach(btn => {
+        btn.addEventListener('click', () => {
+          document.querySelectorAll('.chip[data-window]').forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          dateRange.value = btn.dataset.window;
+          refresh(true);
+        });
+      });
+
+      [dateRange, statusSelect, evidenceSelect, countrySelect].forEach(el => {
+        el.addEventListener('input', () => refresh());
+        el.addEventListener('change', () => refresh());
+      });
+
+      severityButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+          btn.classList.toggle('active');
+          refresh();
+        });
+      });
+
+      searchBox.addEventListener('input', () => refresh());
+
+      document.getElementById('exportCsvBtn').addEventListener('click', () => {
+        const items = filterIncidents();
+        if (!items.length) return;
+        const headers = Object.keys(items[0]);
+        const rows = [headers.join(',')].concat(items.map(item => headers.map(h => JSON.stringify(item[h] ?? '')).join(',')));
+        const blob = new Blob([rows.join('\n')], { type: 'text/csv;charset=utf-8;' });
+        const a = document.createElement('a');
+        a.href = URL.createObjectURL(blob);
+        a.download = `drone_sightings_${new Date().toISOString().slice(0, 10)}.csv`;
+        a.click();
+      });
+
+      document.getElementById('resetBtn').addEventListener('click', () => {
+        searchBox.value = '';
+        Array.from(statusSelect.options).forEach(opt => opt.selected = true);
+        Array.from(evidenceSelect.options).forEach(opt => opt.selected = opt.value !== '0');
+        Array.from(countrySelect.options).forEach(opt => opt.selected = false);
+        severityButtons.forEach(btn => btn.classList.add('active'));
+        dateRange.value = 365;
+        document.querySelectorAll('.chip[data-window]').forEach(b => b.classList.remove('active'));
+        document.querySelector('.chip[data-window="365"]').classList.add('active');
+        refresh(true);
+      });
+
+      document.addEventListener('keydown', e => {
+        if (e.key === 'm') document.getElementById('map').focus();
+        if (e.key === 'f') document.getElementById('left').focus();
+        if (e.key === 'd') document.getElementById('right').focus();
+      });
+    }
+
+    async function bootstrap() {
+      try {
+        const [dataResp, summaryResp] = await Promise.all([
+          fetch(DATA_URL),
+          fetch(SUMMARY_URL)
+        ]);
+        if (!dataResp.ok) {
+          throw new Error(`Failed to load incidents dataset: ${dataResp.status}`);
+        }
+        const rawData = await dataResp.json();
+        allIncidents = rawData.map(enrichIncident);
+        if (summaryResp.ok) {
+          const summary = await summaryResp.json();
+          datasetAsOf = new Date(summary.generated_at);
+          document.getElementById('build-info').textContent = `Build: static • generated ${summary.generated_at.slice(0, 10)}`;
+        } else {
+          datasetAsOf = new Date();
+          document.getElementById('build-info').textContent = 'Build: static';
+        }
+        populateCountrySelect();
+        setupEventListeners();
+        updateDateLabel(getActiveDays());
+        refresh(true);
+      } catch (error) {
+        console.error(error);
+        filterError.style.display = 'block';
+        filterError.className = 'section error';
+        filterError.textContent = 'Error loading incidents dataset. Please refresh the page.';
+        document.getElementById('build-info').textContent = 'Build: failed to load data';
+      }
+    }
+
+    bootstrap();
   </script>
 </body>
 </html>
