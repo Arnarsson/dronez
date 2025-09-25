@@ -2077,8 +2077,31 @@
     function focusIncident(incident) {
       const marker = state.markers.get(incident.id);
       if (!marker) return;
-      map.setView(marker.getLatLng(), Math.max(map.getZoom(), 7));
-      marker.openPopup();
+
+      // Close mobile bottom sheet if open
+      const bottomSheet = document.getElementById('mobile-bottom-sheet');
+      if (bottomSheet && bottomSheet.classList.contains('open')) {
+        bottomSheet.classList.remove('open');
+      }
+
+      // Set mobile nav back to map tab
+      const mapTab = document.querySelector('.mobile-nav-item[data-tab="map"]');
+      const allTabs = document.querySelectorAll('.mobile-nav-item');
+      if (mapTab && allTabs) {
+        allTabs.forEach(tab => tab.classList.remove('active'));
+        mapTab.classList.add('active');
+      }
+
+      // Pan to incident location with animation
+      map.flyTo(marker.getLatLng(), Math.max(map.getZoom(), 8), {
+        duration: 1.5,
+        easeLinearity: 0.25
+      });
+
+      // Open popup after a short delay to ensure map has moved
+      setTimeout(() => {
+        marker.openPopup();
+      }, 1500);
     }
 
     function showProvenance(incident) {
@@ -3219,6 +3242,24 @@
           if (rightPanel) {
             bottomSheetContent.innerHTML = rightPanel.innerHTML;
             document.getElementById('mobile-bottom-sheet').classList.add('open');
+
+            // Re-attach click handlers for incident cards in bottom sheet
+            const incidentCards = bottomSheetContent.querySelectorAll('.incident');
+            incidentCards.forEach(card => {
+              card.addEventListener('click', (e) => {
+                // Find the corresponding incident by matching the text content
+                const incidentTitle = card.querySelector('h3')?.textContent;
+                if (incidentTitle) {
+                  // Find incident by asset name
+                  const incident = state.allIncidents.find(inc =>
+                    inc.asset.name === incidentTitle
+                  );
+                  if (incident) {
+                    focusIncident(incident);
+                  }
+                }
+              });
+            });
           }
           break;
         case 'filters':
