@@ -1706,47 +1706,48 @@
         console.log('Map size invalidated again');
       }, 500);
 
-    const satellite = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
-      attribution: 'Basemap © Esri — Sources: Esri, i-cubed, USDA, USGS, AeroGRID, IGN, IGP'
-    }).addTo(map);
-    const streets = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      attribution: '© OpenStreetMap contributors'
-    });
-    L.control.layers({ 'Satellite': satellite, 'Streets': streets }, null, { collapsed: true }).addTo(map);
+      const satellite = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+        attribution: 'Basemap © Esri — Sources: Esri, i-cubed, USDA, USGS, AeroGRID, IGN, IGP'
+      }).addTo(map);
+      const streets = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '© OpenStreetMap contributors'
+      });
+      L.control.layers({ 'Satellite': satellite, 'Streets': streets }, null, { collapsed: true }).addTo(map);
 
-    const clusterGroups = {
-      airport: L.markerClusterGroup({ disableClusteringAtZoom: 10 }),
-      harbour: L.markerClusterGroup({ disableClusteringAtZoom: 10 }),
-      energy: L.markerClusterGroup({ disableClusteringAtZoom: 8 }),
-      rail: L.markerClusterGroup({ disableClusteringAtZoom: 8 }),
-      border: L.markerClusterGroup({ disableClusteringAtZoom: 8 }),
-      military: L.markerClusterGroup({ disableClusteringAtZoom: 8 })
-    };
-    Object.values(clusterGroups).forEach(group => map.addLayer(group));
+      const clusterGroups = {
+        airport: L.markerClusterGroup({ disableClusteringAtZoom: 10 }),
+        harbour: L.markerClusterGroup({ disableClusteringAtZoom: 10 }),
+        energy: L.markerClusterGroup({ disableClusteringAtZoom: 8 }),
+        rail: L.markerClusterGroup({ disableClusteringAtZoom: 8 }),
+        border: L.markerClusterGroup({ disableClusteringAtZoom: 8 }),
+        military: L.markerClusterGroup({ disableClusteringAtZoom: 8 })
+      };
+      Object.values(clusterGroups).forEach(group => map.addLayer(group));
 
-    // Risk rings layer group
-    const riskRings = L.layerGroup().addTo(map);
+      // Risk rings layer group
+      const riskRings = L.layerGroup().addTo(map);
 
-    // Threat heatmap layer group
-    const threatHeatmap = L.layerGroup();
+      // Threat heatmap layer group
+      const threatHeatmap = L.layerGroup();
 
-    const state = {
-      data: { generated_utc: null, incidents: [] },
-      markers: new Map(),
-      showRiskRings: true,
-      showThreatHeatmap: false,
-      compareMode: false,
-      hasAutoFocused: false,
-      autoFocusEnabled: true,
-      liveIncidents: new Set(),
-      activityIndicatorVisible: false,
-      allIncidents: [] // Track all incidents for mobile access
-    };
+      const state = {
+        data: { generated_utc: null, incidents: [] },
+        markers: new Map(),
+        showRiskRings: true,
+        showThreatHeatmap: false,
+        compareMode: false,
+        hasAutoFocused: false,
+        autoFocusEnabled: true,
+        liveIncidents: new Set(),
+        activityIndicatorVisible: false,
+        allIncidents: [] // Track all incidents for mobile access
+      };
 
-    // Make state globally accessible for mobile handlers
-    window.state = state;
-    window.droneState = state;
-    console.log('State assigned to window:', !!window.state, !!window.droneState);
+      // Make state globally accessible for mobile handlers
+      window.state = state;
+      window.droneState = state;
+      console.log('State assigned to window:', !!window.state, !!window.droneState);
+    }
 
     // URL state management for shareable links
     function saveStateToURL() {
@@ -2085,7 +2086,7 @@
     }
 
     function focusIncident(incident) {
-      const marker = state.markers.get(incident.id);
+      const marker = window.state.markers.get(incident.id);
       if (!marker) return;
 
       // Close mobile bottom sheet if open
@@ -2103,7 +2104,7 @@
       }
 
       // Pan to incident location with animation
-      map.flyTo(marker.getLatLng(), Math.max(map.getZoom(), 8), {
+      window.map.flyTo(marker.getLatLng(), Math.max(window.map.getZoom(), 8), {
         duration: 1.5,
         easeLinearity: 0.25
       });
