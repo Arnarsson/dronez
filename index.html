@@ -67,6 +67,12 @@
     .leaflet-control-attribution { background: rgba(0,0,0,.45); color: #dfe4ff; border-radius: 8px; padding: 2px 6px; }
     .leaflet-popup-content-wrapper { background: var(--surface); color: var(--text); }
     .leaflet-popup-tip { background: var(--surface); }
+    .no-data-overlay {
+      background: var(--surface) !important;
+      color: var(--text) !important;
+      border: 1px solid var(--border) !important;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.3) !important;
+    }
     @media (max-width: 1120px) {
       #app { grid-template-columns: 1fr; grid-template-rows: 56px 260px 1fr 320px; }
       #left { grid-row: 2; }
@@ -166,6 +172,10 @@
       <div id="details">
         <h2>Incident feed</h2>
         <p class="muted" id="detailsIntro">Pins refresh every few minutes. Click a marker or list item for full provenance.</p>
+        <div id="noDataMessage" style="display: none; text-align: center; padding: 40px 20px; background: var(--surface); border: 1px solid var(--border); border-radius: 12px; margin: 20px 0;">
+          <div style="font-size: 24px; font-weight: 700; color: var(--muted); margin-bottom: 12px;">NO DATA</div>
+          <div class="muted" style="line-height: 1.4;">No incidents match the current filters.<br />Try expanding the time window or enabling more status options.</div>
+        </div>
         <div id="incidentList"></div>
       </div>
     </aside>
@@ -174,7 +184,7 @@
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin="anonymous"></script>
   <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js" crossorigin="anonymous"></script>
   <script>
-    const INCIDENTS_URL = 'public/incidents.json';
+    const INCIDENTS_URL = 'incidents.json';
     const REFRESH_MS = 5 * 60 * 1000;
 
     const assetColors = {
@@ -311,12 +321,20 @@
     function renderDetails(incidents) {
       const list = document.getElementById('incidentList');
       const intro = document.getElementById('detailsIntro');
+      const noDataMessage = document.getElementById('noDataMessage');
+
       list.innerHTML = '';
+
       if (!incidents.length) {
-        intro.textContent = 'No incidents match the current filters. Expand the window or enable more statuses.';
+        intro.style.display = 'none';
+        noDataMessage.style.display = 'block';
         return;
       }
+
+      intro.style.display = 'block';
+      noDataMessage.style.display = 'none';
       intro.textContent = 'Most recent incidents. Click to focus on the map.';
+
       incidents.sort((a, b) => Date.parse(b.first_seen_utc) - Date.parse(a.first_seen_utc));
       incidents.slice(0, 12).forEach(incident => {
         const card = document.createElement('div');
@@ -376,6 +394,23 @@
       if (mapMarkers.length) {
         const group = L.featureGroup(mapMarkers);
         map.fitBounds(group.getBounds().pad(0.2));
+        // Remove any existing no-data overlay
+        if (map._noDataOverlay) {
+          map.removeControl(map._noDataOverlay);
+          map._noDataOverlay = null;
+        }
+      } else {
+        // Show no data overlay on map if no markers to display
+        if (!map._noDataOverlay) {
+          map._noDataOverlay = L.control({ position: 'topright' });
+          map._noDataOverlay.onAdd = function() {
+            const div = L.DomUtil.create('div', 'no-data-overlay');
+            div.style.cssText = 'padding: 12px 16px; border-radius: 8px; font-size: 14px; font-weight: 700; text-align: center;';
+            div.innerHTML = 'NO DATA';
+            return div;
+          };
+          map.addControl(map._noDataOverlay);
+        }
       }
 
       renderDetails(filtered);
@@ -386,10 +421,13 @@
         const res = await fetch(`${INCIDENTS_URL}?_=${Date.now()}`, { cache: 'no-store' });
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
         const data = await res.json();
-        state.data = data;
-        document.getElementById('badge-generated').textContent = `Generated: ${data.generated_utc || '—'}`;
+        state.data = data || { generated_utc: null, incidents: [] };
+        document.getElementById('badge-generated').textContent = `Generated: ${state.data.generated_utc || '—'}`;
       } catch (err) {
         console.error('Failed to fetch incidents.json', err);
+        // Set empty state on error
+        state.data = { generated_utc: null, incidents: [] };
+        document.getElementById('badge-generated').textContent = 'Generated: Failed to load';
       }
     }
 
