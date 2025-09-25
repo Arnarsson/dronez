@@ -1,0 +1,45 @@
+name: ingest-hourly
+
+on:
+  schedule:
+    - cron: "0 * * * *"
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+jobs:
+  ingest:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: pip install requests pandas shapely rapidfuzz feedparser pytz
+      - name: Build assets (if missing or stale)
+        run: |
+          python - <<'PY'
+          import os, pathlib, time
+          root = pathlib.Path('.').resolve()
+          assets = root / 'data' / 'assets'
+          assets.mkdir(parents=True, exist_ok=True)
+          marker = assets / '_built_at'
+          needs_build = True
+          if marker.exists():
+            needs_build = (time.time() - marker.stat().st_mtime) > 86400
+          if needs_build:
+            exit_code = os.system('python tools/build_assets.py')
+            if exit_code != 0:
+              raise SystemExit(exit_code)
+            marker.touch()
+          PY
+      - name: Run ingestion
+        run: python tools/ingest.py
+      - name: Commit JSON
+        run: |
+          git config user.name "dronez-bot"
+          git config user.email "actions@github.com"
+          git add public/incidents.json
+          git commit -m "hourly: update incidents.json" || echo "no changes"
+          git push

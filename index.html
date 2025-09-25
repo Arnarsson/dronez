@@ -2,73 +2,72 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <title>Drone Sightings — European Airport Disruptions (Last 365 Days)</title>
+  <title>Drone Sightings — Europe (Air, Sea & Infrastructure)</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="anonymous">
-  <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css" crossorigin="anonymous">
-  <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="anonymous" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css" crossorigin="anonymous" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css" crossorigin="anonymous" />
   <style>
     :root {
       --bg: #0f1115;
       --panel: #151823;
+      --surface: #0f1322;
       --muted: #8a90a2;
       --text: #eef2ff;
-      --accent: #6ea8fe;
-      --accent-2: #22c55e;
-      --danger: #ef4444;
-      --warn: #f59e0b;
-      --ok: #10b981;
+      --border: #2a2f45;
       --chip: #21263a;
       --chip-active: #2b3250;
       --focus: #9db8ff;
-      --border: #2a2f45;
-      --surface: #0f1322;
+      --severity-1: #9ca3af;
+      --severity-2: #60a5fa;
+      --severity-3: #f59e0b;
+      --severity-4: #ef4444;
+      --severity-5: #7e22ce;
+      --air: #ef4444;
+      --harbour: #3b82f6;
+      --energy: #f97316;
+      --rail: #22c55e;
+      --border-crossing: #eab308;
+      --military: #c084fc;
     }
     * { box-sizing: border-box; }
-    html, body { height: 100%; margin: 0; background: var(--bg); color: var(--text); font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial; }
+    html, body { height: 100%; margin: 0; background: var(--bg); color: var(--text); font-family: "Inter", ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial; }
     #app { display: grid; grid-template-columns: 320px 1fr 360px; grid-template-rows: 56px 1fr; height: 100%; }
-    header { grid-column: 1 / 4; display:flex; align-items:center; gap: 12px; padding: 10px 16px; background: #0c0f17; border-bottom: 1px solid var(--border); }
-    header h1 { font-size: 16px; margin: 0; letter-spacing: 0.4px; }
+    header { grid-column: 1 / 4; display: flex; align-items: center; gap: 12px; padding: 10px 16px; background: #0c0f17; border-bottom: 1px solid var(--border); }
+    header h1 { font-size: 16px; margin: 0; letter-spacing: .4px; }
     header .badge { padding: 4px 8px; background: var(--chip); border: 1px solid var(--border); border-radius: 999px; color: var(--muted); font-size: 12px; }
-    #left { border-right: 1px solid var(--border); background: var(--panel); padding: 12px; overflow:auto; }
+    #left, #right { background: var(--panel); padding: 12px; overflow: auto; }
+    #left { border-right: 1px solid var(--border); }
+    #right { border-left: 1px solid var(--border); }
     #map { width: 100%; height: 100%; }
-    #right { border-left: 1px solid var(--border); background: var(--panel); padding: 12px; overflow:auto; }
+    h2 { font-size: 13px; font-weight: 700; text-transform: uppercase; color: var(--muted); letter-spacing: .08em; margin: 8px 0 6px; }
     .section { margin-bottom: 16px; }
-    h2 { font-size: 13px; font-weight: 700; text-transform: uppercase; color: var(--muted); letter-spacing: 0.08em; margin: 8px 0 6px; }
-    .chips { display:flex; flex-wrap:wrap; gap:8px; }
-    .chip { padding:6px 10px; border:1px solid var(--border); border-radius:999px; background: var(--chip); color: var(--text); cursor:pointer; font-size: 12px; transition: background 0.2s ease; }
-    .chip.active { background: var(--chip-active); border-color:#3a4162; }
-    label { font-size: 12px; color: var(--muted); display:block; margin-bottom:6px; }
-    input[type="range"] { width:100%; }
-    select, input[type="text"] {
-      width: 100%; padding: 8px 10px; background: var(--surface); color: var(--text);
-      border:1px solid var(--border); border-radius: 8px; outline: none;
-    }
+    .chips { display: flex; flex-wrap: wrap; gap: 8px; }
+    .chip { padding: 6px 10px; border: 1px solid var(--border); border-radius: 999px; background: var(--chip); color: var(--text); cursor: pointer; font-size: 12px; transition: background .2s ease; }
+    .chip.active { background: var(--chip-active); border-color: #3a4162; }
+    label { font-size: 12px; color: var(--muted); display: block; margin-bottom: 6px; }
+    input[type="range"] { width: 100%; }
+    select, input[type="text"] { width: 100%; padding: 8px 10px; background: var(--surface); color: var(--text); border: 1px solid var(--border); border-radius: 8px; outline: none; }
     select:focus, input[type="text"]:focus { border-color: var(--focus); box-shadow: 0 0 0 3px rgba(157,184,255,.15); }
+    .legend { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; font-size: 12px; }
+    .dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; border: 1px solid rgba(0,0,0,.4); }
+    .sev { display: inline-block; width: 10px; height: 10px; border-radius: 2px; margin-right: 4px; }
+    .sev.s1 { background: var(--severity-1); }
+    .sev.s2 { background: var(--severity-2); }
+    .sev.s3 { background: var(--severity-3); }
+    .sev.s4 { background: var(--severity-4); }
+    .sev.s5 { background: var(--severity-5); }
     .statbar { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
-    .stat { background: var(--surface); border:1px solid var(--border); border-radius:12px; padding:10px; text-align:center; }
-    .stat .k { font-size:18px; font-weight:700; }
-    .legend { display:flex; flex-wrap: wrap; gap:10px; align-items:center; font-size: 11px; }
-    .dot { width:10px; height:10px; border-radius:50%; display:inline-block; border:1px solid rgba(0,0,0,0.25); }
-    .dot.red { background:#ef4444; }
-    .dot.blue { background:#3b82f6; }
+    .stat { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 10px; text-align: center; }
+    .stat .k { font-size: 18px; font-weight: 700; }
+    .incident { border: 1px solid var(--border); border-radius: 12px; padding: 10px; margin-bottom: 10px; background: var(--surface); cursor: pointer; transition: border .2s ease; }
+    .incident:hover { border-color: #3a4162; }
     .muted { color: var(--muted); font-size: 12px; }
-    .incident { border:1px solid var(--border); border-radius:12px; padding: 10px; margin-bottom: 10px; background: var(--surface); cursor:pointer; }
-    .incident:hover { border-color:#3a4162; }
-    .btn { padding:6px 10px; border:1px solid var(--border); background: var(--surface); border-radius:8px; color:var(--text); cursor:pointer; transition: border 0.2s ease; }
-    .btn:hover { border-color:#3a4162; }
-    .histogram { display:flex; align-items:flex-end; gap:4px; min-height:60px; padding:8px 6px; background: var(--surface); border:1px solid var(--border); border-radius:12px; }
-    .histogram .bar { flex:1; background: linear-gradient(180deg, rgba(110,168,254,0.85), rgba(110,168,254,0.35)); border-radius:4px 4px 0 0; position:relative; }
-    .histogram .bar::after { content: attr(data-count); position:absolute; top:-18px; left:50%; transform:translateX(-50%); font-size:10px; color:var(--muted); }
-    .histogram .bar-label { font-size:10px; color:var(--muted); text-align:center; margin-top:4px; white-space:nowrap; }
-    .histogram-wrapper { display:flex; gap:4px; align-items:flex-end; }
-    .histogram-column { display:flex; flex-direction:column; align-items:center; flex:1; }
-    .error { background: rgba(239,68,68,0.1); color:#fca5a5; padding:8px 10px; border-radius:8px; border:1px solid rgba(239,68,68,0.3); font-size:12px; }
-    .loading { font-size:12px; color:var(--muted); }
-    .legend-note { font-size: 11px; color: var(--muted); margin-top: 6px; }
-    .marker-wrapper { display:flex; justify-content:center; align-items:center; }
+    .leaflet-control-attribution { background: rgba(0,0,0,.45); color: #dfe4ff; border-radius: 8px; padding: 2px 6px; }
+    .leaflet-popup-content-wrapper { background: var(--surface); color: var(--text); }
+    .leaflet-popup-tip { background: var(--surface); }
     @media (max-width: 1120px) {
-      #app { grid-template-columns: 1fr; grid-template-rows: 56px 280px 1fr 320px; }
+      #app { grid-template-columns: 1fr; grid-template-rows: 56px 260px 1fr 320px; }
       #left { grid-row: 2; }
       #map { grid-row: 3; }
       #right { grid-row: 4; }
@@ -77,95 +76,95 @@
   </style>
 </head>
 <body>
-  <div id="app" role="application" aria-label="Drone Sightings map application">
+  <div id="app" role="application" aria-label="Drone Sightings interactive map">
     <header>
-      <h1>Drone Sightings — European Airport Disruptions</h1>
+      <h1>Drone Sightings — Europe (Air, Sea & Critical Nodes)</h1>
       <span class="badge">Satellite</span>
-      <span class="badge">Last 365 days</span>
-      <span class="badge" id="build-info">Build: loading…</span>
+      <span class="badge" id="badge-refresh">Auto refresh</span>
+      <span class="badge" id="badge-generated">Generated: —</span>
     </header>
 
-    <aside id="left" aria-label="Filters panel">
+    <aside id="left" aria-label="Filters">
       <div class="section">
-        <h2>Time window</h2>
-        <div class="chips" role="group" aria-label="Quick time filters">
+        <h2>Time Window</h2>
+        <div class="chips" role="group" aria-label="Quick time windows">
           <button class="chip" data-window="7">7d</button>
           <button class="chip" data-window="30">30d</button>
           <button class="chip" data-window="90">90d</button>
           <button class="chip active" data-window="365">365d</button>
         </div>
-        <label for="dateRange">Filter by date</label>
-        <input id="dateRange" type="range" min="1" max="365" value="365" step="1" aria-valuemin="1" aria-valuemax="365" aria-valuenow="365">
-        <div class="muted" id="dateRangeLabel">Loading…</div>
+        <label for="dateRange">Filter by days</label>
+        <input id="dateRange" type="range" min="1" max="365" value="365" step="1" aria-valuemin="1" aria-valuemax="365" aria-valuenow="365" />
+        <div class="muted" id="dateRangeLabel">Showing last 365 days</div>
       </div>
 
       <div class="section">
-        <h2>Filters</h2>
-        <label for="countrySelect">Country</label>
-        <select id="countrySelect" multiple size="6" aria-multiselectable="true"></select>
+        <h2>Asset Layers</h2>
+        <div class="legend" role="group" aria-label="Asset toggles">
+          <label><input type="checkbox" id="layer-airport" checked /> <span class="dot" style="background:var(--air);"></span> Airports</label>
+          <label><input type="checkbox" id="layer-harbour" checked /> <span class="dot" style="background:var(--harbour);"></span> Harbours</label>
+          <label><input type="checkbox" id="layer-energy" /> <span class="dot" style="background:var(--energy);"></span> Energy</label>
+          <label><input type="checkbox" id="layer-rail" /> <span class="dot" style="background:var(--rail);"></span> Rail hubs</label>
+          <label><input type="checkbox" id="layer-border" /> <span class="dot" style="background:var(--border-crossing);"></span> Border crossings</label>
+          <label><input type="checkbox" id="layer-military" /> <span class="dot" style="background:var(--military);"></span> Military</label>
+        </div>
+      </div>
 
-        <label style="margin-top:8px;" for="statusSelect">Status</label>
-        <select id="statusSelect" multiple size="4">
-          <option value="closure" selected>Closure</option>
-          <option value="diversion" selected>Diversion</option>
-          <option value="lockdown" selected>Lockdown</option>
-          <option value="sighting" selected>Sighting</option>
+      <div class="section">
+        <h2>Status & Evidence</h2>
+        <label for="statusSelect">Status</label>
+        <select id="statusSelect" multiple size="3">
+          <option value="active" selected>Active</option>
+          <option value="resolved" selected>Resolved</option>
+          <option value="unconfirmed">Unconfirmed</option>
         </select>
 
         <label style="margin-top:8px;" for="evidenceSelect">Evidence strength</label>
         <select id="evidenceSelect" multiple size="4">
-          <option value="3" selected>3 — Official/NOTAM</option>
+          <option value="3" selected>3 — Official/NOTAM/NAVTEX</option>
           <option value="2" selected>2 — Multi tier-1 reports</option>
           <option value="1" selected>1 — Single credible</option>
           <option value="0">0 — Unconfirmed</option>
         </select>
-
-        <label style="margin-top:8px;">Severity</label>
-        <div class="chips" role="group" aria-label="Severity filter">
-          <button class="chip active" data-severity="high">High</button>
-          <button class="chip active" data-severity="medium">Medium</button>
-          <button class="chip active" data-severity="low">Low</button>
-        </div>
-
-        <label style="margin-top:8px;" for="searchBox">Search (airport/city/IATA/ICAO)</label>
-        <input id="searchBox" type="text" placeholder="e.g., CPH, Oslo, Riga">
-
-        <div class="legend" style="margin-top:10px;">
-          <span class="dot red" title="Closure/diversion/lockdown"></span> Closure / diversion / lockdown
-          <span class="dot blue" title="Sighting" style="margin-left:12px;"></span> Sighting
-        </div>
-        <div class="legend-note">Marker size scales with severity: high &gt; medium &gt; low.</div>
       </div>
 
-      <div id="filterError" class="section" style="display:none;"></div>
+      <div class="section">
+        <h2>Find</h2>
+        <label for="searchBox">Search assets, sources, narratives</label>
+        <input id="searchBox" type="text" placeholder="e.g., CPH, Nordhavn, Reuters" />
+      </div>
+
+      <div class="section">
+        <h2>Severity legend</h2>
+        <div class="legend">
+          <span><span class="sev s1"></span>1</span>
+          <span><span class="sev s2"></span>2</span>
+          <span><span class="sev s3"></span>3</span>
+          <span><span class="sev s4"></span>4</span>
+          <span><span class="sev s5"></span>5</span>
+        </div>
+      </div>
 
       <div class="section">
         <h2>Summary</h2>
         <div class="statbar">
           <div class="stat"><div class="k" id="stat-total">0</div><div class="muted">Incidents</div></div>
-          <div class="stat"><div class="k" id="stat-closures">0</div><div class="muted">Closures</div></div>
-          <div class="stat"><div class="k" id="stat-high">0</div><div class="muted">High severity</div></div>
+          <div class="stat"><div class="k" id="stat-air">0</div><div class="muted">Airports</div></div>
+          <div class="stat"><div class="k" id="stat-har">0</div><div class="muted">Harbours</div></div>
         </div>
-        <div class="muted" style="margin-top:10px;">Incidents by ISO week</div>
-        <div id="histogram" class="histogram" role="img" aria-label="Incidents by ISO week"></div>
-      </div>
-
-      <div class="section">
-        <button class="btn" id="exportCsvBtn">Export CSV</button>
-        <button class="btn" id="resetBtn">Reset filters</button>
       </div>
 
       <div class="section muted" style="font-size:11px;">
-        Basemaps © Esri, OSM contributors. Libraries: Leaflet + MarkerCluster.
+        Basemap © Esri; OSM contributors. Data refreshes hourly; UI reloads automatically every 5 minutes.
       </div>
     </aside>
 
-    <main id="map" role="region" aria-label="Map showing incidents"></main>
+    <main id="map" role="region" aria-label="Incident map"></main>
 
-    <aside id="right" aria-label="Incident detail panel">
+    <aside id="right" aria-label="Incident details">
       <div id="details">
-        <h2>Details</h2>
-        <p class="muted" id="detailsIntro">Click a marker or choose an item below to see full incident details: timing, duration, severity, and verified sources.</p>
+        <h2>Incident feed</h2>
+        <p class="muted" id="detailsIntro">Pins refresh every few minutes. Click a marker or list item for full provenance.</p>
         <div id="incidentList"></div>
       </div>
     </aside>
@@ -174,379 +173,263 @@
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin="anonymous"></script>
   <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js" crossorigin="anonymous"></script>
   <script>
-    const DATA_ENDPOINTS = ['/api/incidents', 'data/processed/incidents_last365.json'];
-    const SUMMARY_ENDPOINTS = ['/api/summary', 'data/processed/incidents_summary.json'];
+    const INCIDENTS_URL = 'public/incidents.json';
+    const REFRESH_MS = 5 * 60 * 1000;
 
-    let allIncidents = [];
-    let map;
-    let clusterLayer;
-    let markerById = new Map();
-    let hasInitialFit = false;
-    let datasetAsOf = new Date();
+    const assetColors = {
+      airport: getComputedStyle(document.documentElement).getPropertyValue('--air') || '#ef4444',
+      harbour: getComputedStyle(document.documentElement).getPropertyValue('--harbour') || '#3b82f6',
+      energy: getComputedStyle(document.documentElement).getPropertyValue('--energy') || '#f97316',
+      rail: getComputedStyle(document.documentElement).getPropertyValue('--rail') || '#22c55e',
+      border: getComputedStyle(document.documentElement).getPropertyValue('--border-crossing') || '#eab308',
+      military: getComputedStyle(document.documentElement).getPropertyValue('--military') || '#c084fc'
+    };
 
-    const satelliteLayer = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
-      attribution: 'Basemap © Esri — Sources: Esri, i-cubed, USDA, USGS, AeroGRID, IGN, IGP, and the GIS User Community'
-    });
-    const streetLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      attribution: '© OpenStreetMap contributors'
-    });
-
-    map = L.map('map', {
-      center: [56.0, 12.0],
+    const map = L.map('map', {
+      center: [56, 12],
       zoom: 4,
-      layers: [satelliteLayer],
       minZoom: 3,
       worldCopyJump: true
     });
-    L.control.layers({'Satellite (Esri)': satelliteLayer, 'Streets (OSM)': streetLayer}, null, {collapsed: true}).addTo(map);
-    clusterLayer = L.markerClusterGroup();
-    map.addLayer(clusterLayer);
 
-    const dateRange = document.getElementById('dateRange');
-    const dateLabel = document.getElementById('dateRangeLabel');
-    const countrySelect = document.getElementById('countrySelect');
-    const statusSelect = document.getElementById('statusSelect');
-    const evidenceSelect = document.getElementById('evidenceSelect');
-    const severityButtons = document.querySelectorAll('.chip[data-severity]');
-    const searchBox = document.getElementById('searchBox');
-    const filterError = document.getElementById('filterError');
-    const histogramEl = document.getElementById('histogram');
-    const incidentList = document.getElementById('incidentList');
-    const detailsIntro = document.getElementById('detailsIntro');
+    const satellite = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+      attribution: 'Basemap © Esri — Sources: Esri, i-cubed, USDA, USGS, AeroGRID, IGN, IGP'
+    }).addTo(map);
+    const streets = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '© OpenStreetMap contributors'
+    });
+    L.control.layers({ 'Satellite': satellite, 'Streets': streets }, null, { collapsed: true }).addTo(map);
 
-    function fmtDate(value) {
-      const d = new Date(value);
-      return d.toISOString().slice(0, 10);
+    const clusterGroups = {
+      airport: L.markerClusterGroup({ disableClusteringAtZoom: 10 }),
+      harbour: L.markerClusterGroup({ disableClusteringAtZoom: 10 }),
+      energy: L.markerClusterGroup({ disableClusteringAtZoom: 8 }),
+      rail: L.markerClusterGroup({ disableClusteringAtZoom: 8 }),
+      border: L.markerClusterGroup({ disableClusteringAtZoom: 8 }),
+      military: L.markerClusterGroup({ disableClusteringAtZoom: 8 })
+    };
+    Object.values(clusterGroups).forEach(group => map.addLayer(group));
+
+    const state = {
+      data: { generated_utc: null, incidents: [] },
+      markers: new Map()
+    };
+
+    function sevBox(score) {
+      const level = Math.min(5, Math.max(1, Number(score) || 1));
+      return `<span class="sev s${level}"></span>`;
     }
 
-    function formatDuration(minutes) {
-      if (!minutes) return '—';
-      if (minutes < 60) return `${minutes} min`;
-      const hours = (minutes / 60).toFixed(1);
-      return `${hours} h`;
-    }
-
-    function isoWeekKey(date) {
-      const target = new Date(Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate()));
-      const dayNum = target.getUTCDay() || 7;
-      target.setUTCDate(target.getUTCDate() + 4 - dayNum);
-      const yearStart = new Date(Date.UTC(target.getUTCFullYear(), 0, 1));
-      const weekNo = Math.ceil((((target - yearStart) / 86400000) + 1) / 7);
-      return `${target.getUTCFullYear()}-W${String(weekNo).padStart(2, '0')}`;
-    }
-
-    function enrichIncident(raw) {
-      return {
-        ...raw,
-        date_start: new Date(raw.date_start_utc),
-        date_end: new Date(raw.date_end_utc)
-      };
-    }
-
-    function populateCountrySelect() {
-      const countries = Array.from(new Set(allIncidents.map(i => i.country))).sort();
-      countrySelect.innerHTML = '';
-      countries.forEach(country => {
-        const opt = document.createElement('option');
-        opt.value = country;
-        opt.textContent = country;
-        countrySelect.appendChild(opt);
+    function markerIcon(color, severity) {
+      const size = 10 + (Number(severity) || 1) * 2;
+      return L.divIcon({
+        html: `<div style="width:${size}px;height:${size}px;border-radius:50%;background:${color.trim()};border:2px solid rgba(15,17,25,0.85);box-shadow:0 0 0 1px rgba(0,0,0,.35);"></div>`,
+        className: '',
+        iconSize: [size, size]
       });
     }
 
-    function getSelectedValues(selectEl) {
-      const selected = Array.from(selectEl.selectedOptions).map(opt => opt.value);
-      return selected.length ? selected : Array.from(selectEl.options).map(opt => opt.value);
-    }
-
-    function getActiveSeverities() {
-      const active = Array.from(severityButtons).filter(btn => btn.classList.contains('active')).map(btn => btn.dataset.severity);
-      if (active.length === 0) {
-        severityButtons.forEach(btn => btn.classList.add('active'));
-        return Array.from(severityButtons).map(btn => btn.dataset.severity);
+    function fmtDate(value) {
+      if (!value) return '—';
+      try {
+        return new Date(value).toISOString().slice(0, 16).replace('T', ' ');
+      } catch (err) {
+        return value;
       }
-      return active;
     }
 
-    function getActiveDays() {
-      return parseInt(dateRange.value, 10) || 365;
+    function fmtDuration(minutes) {
+      if (minutes == null) return '—';
+      if (minutes < 60) return `${minutes} min`;
+      return `${(minutes / 60).toFixed(1)} h`;
     }
 
-    function updateDateLabel(days) {
-      const from = new Date(datasetAsOf.getTime());
-      from.setUTCDate(from.getUTCDate() - (days - 1));
-      dateLabel.textContent = `Showing last ${days} days (since ${from.toISOString().slice(0, 10)})`;
-      dateRange.setAttribute('aria-valuenow', String(days));
+    function activeDays() {
+      return parseInt(document.getElementById('dateRange').value, 10) || 365;
+    }
+
+    function selectedValues(select) {
+      const opts = Array.from(select.selectedOptions).map(opt => opt.value);
+      return opts.length ? opts : Array.from(select.options).map(opt => opt.value);
+    }
+
+    function assetToggles() {
+      return {
+        airport: document.getElementById('layer-airport').checked,
+        harbour: document.getElementById('layer-harbour').checked,
+        energy: document.getElementById('layer-energy').checked,
+        rail: document.getElementById('layer-rail').checked,
+        border: document.getElementById('layer-border').checked,
+        military: document.getElementById('layer-military').checked
+      };
+    }
+
+    function searchTerm() {
+      return document.getElementById('searchBox').value.trim().toLowerCase();
     }
 
     function filterIncidents() {
-      const days = getActiveDays();
-      const statuses = new Set(getSelectedValues(statusSelect));
-      const evidence = new Set(getSelectedValues(evidenceSelect));
-      const severities = new Set(getActiveSeverities());
-      const countries = new Set(getSelectedValues(countrySelect));
-      const term = searchBox.value.trim().toLowerCase();
-      const cutoff = new Date(datasetAsOf.getTime());
-      cutoff.setUTCDate(cutoff.getUTCDate() - (days - 1));
+      const cutoff = Date.now() - activeDays() * 24 * 3600 * 1000;
+      const statuses = new Set(selectedValues(document.getElementById('statusSelect')));
+      const evidences = new Set(selectedValues(document.getElementById('evidenceSelect')));
+      const query = searchTerm();
 
-      return allIncidents.filter(incident => {
-        if (incident.date_start < cutoff) return false;
-        if (!statuses.has(incident.incident_type)) return false;
-        if (!evidence.has(String(incident.evidence_strength))) return false;
-        if (!severities.has(incident.severity_label)) return false;
-        if (countries.size && !countries.has(incident.country)) return false;
-        if (term) {
-          const haystack = [incident.airport_name, incident.iata, incident.icao, incident.country, incident.notes || '']
-            .join(' ').toLowerCase();
-          if (!haystack.includes(term)) return false;
+      return state.data.incidents.filter(item => {
+        const seenTs = Date.parse(item.first_seen_utc || item.last_update_utc || state.data.generated_utc || Date.now());
+        if (Number.isFinite(cutoff) && seenTs < cutoff) return false;
+        if (!statuses.has(item.incident.status)) return false;
+        if (!evidences.has(String(item.evidence.strength))) return false;
+        if (query) {
+          const haystack = [
+            item.asset.name,
+            item.asset.iata,
+            item.asset.icao,
+            item.incident.narrative,
+            ...(item.evidence.sources || []).map(src => src.publisher)
+          ].join(' ').toLowerCase();
+          if (!haystack.includes(query)) return false;
         }
         return true;
       });
     }
 
-    function markerFor(incident) {
-      const severitySizes = { high: 22, medium: 16, low: 12 };
-      const colors = {
-        closure: '#ef4444',
-        diversion: '#ef4444',
-        lockdown: '#ef4444',
-        sighting: '#3b82f6'
-      };
-      const color = colors[incident.incident_type] || '#6ea8fe';
-      const size = severitySizes[incident.severity_label] || 14;
-      const icon = L.divIcon({
-        html: `<div style="width:${size}px;height:${size}px;border-radius:50%;background:${color};border:2px solid rgba(15,17,25,0.85);box-shadow:0 0 0 1px rgba(5,5,5,0.4);"></div>`,
-        className: 'marker-wrapper',
-        iconSize: [size, size]
-      });
-      const popup = `
-        <strong>${incident.airport_name} (${incident.iata || ''}${incident.iata ? '/' : ''}${incident.icao || ''})</strong><br/>
-        ${incident.country}<br/>
-        <b>From:</b> ${fmtDate(incident.date_start_utc)} &nbsp; <b>To:</b> ${fmtDate(incident.date_end_utc)}<br/>
-        <b>Status:</b> ${incident.status_display || incident.incident_type}<br/>
-        <b>Duration:</b> ${formatDuration(incident.duration_min)}<br/>
-        <b>Severity:</b> ${incident.severity} (${incident.severity_label})<br/>
-        <b>Evidence:</b> ${incident.evidence_strength}<br/>
-        <b>Sources:</b> <a href="${incident.source_primary_url}" target="_blank" rel="noopener">primary</a>${incident.source_secondary_url ? ` · <a href="${incident.source_secondary_url}" target="_blank" rel="noopener">secondary</a>` : ''}
+    function popupHtml(incident) {
+      const srcLinks = (incident.evidence.sources || []).slice(0, 2).map(src => {
+        const label = src.publisher || 'source';
+        return `<a href="${src.url}" target="_blank" rel="noopener">${label}</a>`;
+      }).join(' · ');
+      return `
+        <strong>${incident.asset.name}${incident.asset.iata ? ` (${incident.asset.iata})` : ''}</strong><br />
+        <b>Asset:</b> ${incident.asset.type} · ${sevBox(incident.scores.severity)} <b>Severity:</b> ${incident.scores.severity}<br />
+        <b>Status:</b> ${incident.incident.status} · <b>Category:</b> ${incident.incident.category}<br />
+        <b>Window:</b> ${fmtDate(incident.first_seen_utc)} → ${fmtDate(incident.last_update_utc)}<br />
+        <b>Evidence:</b> ${incident.evidence.strength} · ${srcLinks || '<span class="muted">no link</span>'}
       `;
-      const marker = L.marker([incident.lat, incident.lon], { icon }).bindPopup(popup);
-      marker.on('click', () => renderDetails([incident]));
-      return marker;
     }
 
-    function updateStats(filtered) {
-      document.getElementById('stat-total').textContent = filtered.length;
-      const closureLike = filtered.filter(i => ['closure', 'diversion', 'lockdown'].includes(i.incident_type)).length;
-      document.getElementById('stat-closures').textContent = closureLike;
-      const highSeverity = filtered.filter(i => i.severity_label === 'high').length;
-      document.getElementById('stat-high').textContent = highSeverity;
-    }
-
-    function updateHistogram(filtered) {
-      histogramEl.innerHTML = '';
-      if (!filtered.length) {
-        histogramEl.innerHTML = '<span class="loading">No incidents for the current filters.</span>';
+    function renderDetails(incidents) {
+      const list = document.getElementById('incidentList');
+      const intro = document.getElementById('detailsIntro');
+      list.innerHTML = '';
+      if (!incidents.length) {
+        intro.textContent = 'No incidents match the current filters. Expand the window or enable more statuses.';
         return;
       }
-      const counts = new Map();
-      filtered.forEach(incident => {
-        const key = isoWeekKey(incident.date_start);
-        counts.set(key, (counts.get(key) || 0) + 1);
-      });
-      const sortedKeys = Array.from(counts.keys()).sort();
-      const keys = sortedKeys.slice(-10);
-      const max = Math.max(...keys.map(k => counts.get(k) || 0), 1);
-      const wrapper = document.createElement('div');
-      wrapper.className = 'histogram-wrapper';
-      keys.forEach(key => {
-        const count = counts.get(key) || 0;
-        const col = document.createElement('div');
-        col.className = 'histogram-column';
-        const bar = document.createElement('div');
-        bar.className = 'bar';
-        bar.style.height = `${Math.max(8, (count / max) * 100)}%`;
-        bar.dataset.count = count;
-        const label = document.createElement('div');
-        label.className = 'bar-label';
-        label.textContent = key.replace('-W', '\u2009W');
-        col.appendChild(bar);
-        col.appendChild(label);
-        wrapper.appendChild(col);
-      });
-      histogramEl.appendChild(wrapper);
-    }
-
-    function renderDetails(items) {
-      incidentList.innerHTML = '';
-      if (!items.length) {
-        detailsIntro.textContent = 'No incidents match the current filters.';
-        return;
-      }
-      detailsIntro.textContent = 'Showing most recent incidents (click to focus on map).';
-      const sorted = items.slice().sort((a, b) => b.date_start - a.date_start);
-      sorted.slice(0, 10).forEach(incident => {
-        const block = document.createElement('div');
-        block.className = 'incident';
-        block.dataset.id = incident.id;
-        block.innerHTML = `
+      intro.textContent = 'Most recent incidents. Click to focus on the map.';
+      incidents.sort((a, b) => Date.parse(b.first_seen_utc) - Date.parse(a.first_seen_utc));
+      incidents.slice(0, 12).forEach(incident => {
+        const card = document.createElement('div');
+        card.className = 'incident';
+        card.innerHTML = `
           <div style="display:flex;justify-content:space-between;gap:10px;align-items:center;">
-            <strong>${incident.airport_name}</strong>
-            <span class="muted">${incident.country}</span>
+            <strong>${incident.asset.name}</strong>
+            <span class="muted">${incident.asset.type}</span>
           </div>
-          <div class="muted" style="margin:6px 0">${incident.iata || ''}${incident.iata ? '/' : ''}${incident.icao || ''} • ${fmtDate(incident.date_start_utc)} → ${fmtDate(incident.date_end_utc)}</div>
-          <div>Status: <b>${incident.status_display || incident.incident_type}</b> • Duration: <b>${formatDuration(incident.duration_min)}</b></div>
-          <div>Severity: <b>${incident.severity} (${incident.severity_label})</b> • Evidence: <b>${incident.evidence_strength}</b></div>
-          <div class="muted" style="margin:6px 0">${incident.notes || ''}</div>
-          <div>Sources: <a href="${incident.source_primary_url}" target="_blank" rel="noopener">primary</a>${incident.source_secondary_url ? ` · <a href="${incident.source_secondary_url}" target="_blank" rel="noopener">secondary</a>` : ''}</div>
+          <div class="muted" style="margin:6px 0">${fmtDate(incident.first_seen_utc)} → ${fmtDate(incident.last_update_utc)}</div>
+          <div>Category: <b>${incident.incident.category}</b> • Status: <b>${incident.incident.status}</b> • Evidence: <b>${incident.evidence.strength}</b> • Severity: <b>${incident.scores.severity}</b></div>
+          <div class="muted" style="margin:6px 0">${incident.incident.narrative || ''}</div>
+          <div>Sources: ${(incident.evidence.sources || []).map(src => `<a href="${src.url}" target="_blank" rel="noopener">${src.publisher || 'source'}</a>`).join(' · ') || '<span class="muted">—</span>'}</div>
         `;
-        block.addEventListener('click', () => focusIncident(incident.id));
-        incidentList.appendChild(block);
+        card.addEventListener('click', () => focusIncident(incident));
+        list.appendChild(card);
       });
     }
 
-    function focusIncident(id) {
-      const marker = markerById.get(id);
-      if (marker) {
-        map.setView(marker.getLatLng(), Math.max(map.getZoom(), 6));
-        marker.openPopup();
-      }
+    function focusIncident(incident) {
+      const marker = state.markers.get(incident.id);
+      if (!marker) return;
+      map.setView(marker.getLatLng(), Math.max(map.getZoom(), 7));
+      marker.openPopup();
     }
 
-    function refresh(forceFit = false) {
-      if (!allIncidents.length) return;
+    function render() {
+      Object.values(clusterGroups).forEach(group => group.clearLayers());
+      state.markers.clear();
       const filtered = filterIncidents();
-      filterError.style.display = 'none';
-      if (!filtered.length) {
-        filterError.style.display = 'block';
-        filterError.className = 'section error';
-        filterError.textContent = 'No incidents match the current filters. Try expanding the time window or selecting more statuses.';
-      }
-      updateDateLabel(getActiveDays());
-      clusterLayer.clearLayers();
-      markerById.clear();
+      const toggles = assetToggles();
+      const mapMarkers = [];
+      let countAir = 0;
+      let countHar = 0;
 
-      const markers = filtered.map(incident => {
-        const marker = markerFor(incident);
-        markerById.set(incident.id, marker);
-        return marker;
+      filtered.forEach(incident => {
+        const assetType = incident.asset.type;
+        if (!toggles[assetType]) return;
+        const color = assetColors[assetType] || '#6ea8fe';
+        const marker = L.marker([incident.asset.lat, incident.asset.lon], {
+          icon: markerIcon(color, incident.scores.severity)
+        }).bindPopup(popupHtml(incident));
+        marker.on('click', () => renderDetails([incident]));
+        state.markers.set(incident.id, marker);
+        if (clusterGroups[assetType]) {
+          clusterGroups[assetType].addLayer(marker);
+        }
+        mapMarkers.push(marker);
+        if (assetType === 'airport') countAir += 1;
+        if (assetType === 'harbour') countHar += 1;
       });
-      markers.forEach(marker => clusterLayer.addLayer(marker));
 
-      if (markers.length && (!hasInitialFit || forceFit)) {
-        const group = L.featureGroup(markers);
+      document.getElementById('stat-total').textContent = filtered.length;
+      document.getElementById('stat-air').textContent = countAir;
+      document.getElementById('stat-har').textContent = countHar;
+
+      if (mapMarkers.length) {
+        const group = L.featureGroup(mapMarkers);
         map.fitBounds(group.getBounds().pad(0.2));
-        hasInitialFit = true;
       }
 
-      updateStats(filtered);
-      updateHistogram(filtered);
       renderDetails(filtered);
-      console.info(`[DroneSightings] Rendered ${filtered.length} incidents.`);
     }
 
-    function setupEventListeners() {
+    async function fetchIncidents() {
+      try {
+        const res = await fetch(`${INCIDENTS_URL}?_=${Date.now()}`, { cache: 'no-store' });
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        const data = await res.json();
+        state.data = data;
+        document.getElementById('badge-generated').textContent = `Generated: ${data.generated_utc || '—'}`;
+      } catch (err) {
+        console.error('Failed to fetch incidents.json', err);
+      }
+    }
+
+    async function refreshAll() {
+      await fetchIncidents();
+      render();
+    }
+
+    function setupUI() {
+      const dateRange = document.getElementById('dateRange');
+      const dateLabel = document.getElementById('dateRangeLabel');
       document.querySelectorAll('.chip[data-window]').forEach(btn => {
         btn.addEventListener('click', () => {
           document.querySelectorAll('.chip[data-window]').forEach(b => b.classList.remove('active'));
           btn.classList.add('active');
           dateRange.value = btn.dataset.window;
-          refresh(true);
+          dateLabel.textContent = `Showing last ${dateRange.value} days`;
+          render();
         });
       });
-
-      [dateRange, statusSelect, evidenceSelect, countrySelect].forEach(el => {
-        el.addEventListener('input', () => refresh());
-        el.addEventListener('change', () => refresh());
+      [
+        dateRange,
+        document.getElementById('statusSelect'),
+        document.getElementById('evidenceSelect'),
+        document.getElementById('layer-airport'),
+        document.getElementById('layer-harbour'),
+        document.getElementById('layer-energy'),
+        document.getElementById('layer-rail'),
+        document.getElementById('layer-border'),
+        document.getElementById('layer-military')
+      ].forEach(control => {
+        control.addEventListener('input', render);
+        control.addEventListener('change', render);
       });
-
-      severityButtons.forEach(btn => {
-        btn.addEventListener('click', () => {
-          btn.classList.toggle('active');
-          refresh();
-        });
-      });
-
-      searchBox.addEventListener('input', () => refresh());
-
-      document.getElementById('exportCsvBtn').addEventListener('click', () => {
-        const items = filterIncidents();
-        if (!items.length) return;
-        const headers = Object.keys(items[0]);
-        const rows = [headers.join(',')].concat(items.map(item => headers.map(h => JSON.stringify(item[h] ?? '')).join(',')));
-        const blob = new Blob([rows.join('\n')], { type: 'text/csv;charset=utf-8;' });
-        const a = document.createElement('a');
-        a.href = URL.createObjectURL(blob);
-        a.download = `drone_sightings_${new Date().toISOString().slice(0, 10)}.csv`;
-        a.click();
-      });
-
-      document.getElementById('resetBtn').addEventListener('click', () => {
-        searchBox.value = '';
-        Array.from(statusSelect.options).forEach(opt => opt.selected = true);
-        Array.from(evidenceSelect.options).forEach(opt => opt.selected = opt.value !== '0');
-        Array.from(countrySelect.options).forEach(opt => opt.selected = false);
-        severityButtons.forEach(btn => btn.classList.add('active'));
-        dateRange.value = 365;
-        document.querySelectorAll('.chip[data-window]').forEach(b => b.classList.remove('active'));
-        document.querySelector('.chip[data-window="365"]').classList.add('active');
-        refresh(true);
-      });
-
-      document.addEventListener('keydown', e => {
-        if (e.key === 'm') document.getElementById('map').focus();
-        if (e.key === 'f') document.getElementById('left').focus();
-        if (e.key === 'd') document.getElementById('right').focus();
-      });
+      document.getElementById('searchBox').addEventListener('input', render);
+      dateLabel.textContent = `Showing last ${dateRange.value} days`;
     }
 
-    async function fetchWithFallback(urls) {
-      for (const url of urls) {
-        try {
-          const response = await fetch(url);
-          if (response.ok) {
-            return response;
-          }
-        } catch (error) {
-          console.warn(`[DroneSightings] fetch failed for ${url}`, error);
-        }
-      }
-      throw new Error(`All endpoints failed: ${urls.join(', ')}`);
-    }
-
-    async function bootstrap() {
-      try {
-        const dataResp = await fetchWithFallback(DATA_ENDPOINTS);
-        const rawData = await dataResp.json();
-        allIncidents = rawData.map(enrichIncident);
-        let summary;
-        try {
-          const summaryResp = await fetchWithFallback(SUMMARY_ENDPOINTS);
-          summary = await summaryResp.json();
-        } catch (summaryError) {
-          console.warn('[DroneSightings] falling back to build timestamp because summary fetch failed', summaryError);
-          summary = null;
-        }
-        if (summary && summary.generated_at) {
-          datasetAsOf = new Date(summary.generated_at);
-          document.getElementById('build-info').textContent = `Build: static • generated ${summary.generated_at.slice(0, 10)}`;
-        } else {
-          datasetAsOf = new Date();
-          document.getElementById('build-info').textContent = 'Build: static';
-        }
-        populateCountrySelect();
-        setupEventListeners();
-        updateDateLabel(getActiveDays());
-        refresh(true);
-      } catch (error) {
-        console.error(error);
-        filterError.style.display = 'block';
-        filterError.className = 'section error';
-        filterError.textContent = 'Error loading incidents dataset. Please refresh the page.';
-        document.getElementById('build-info').textContent = 'Build: failed to load data';
-      }
-    }
-
-    bootstrap();
+    setupUI();
+    refreshAll();
+    setInterval(refreshAll, REFRESH_MS);
   </script>
 </body>
 </html>
