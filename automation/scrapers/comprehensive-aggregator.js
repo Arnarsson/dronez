@@ -1,18 +1,13 @@
-import { NewsAPIScraper } from './news-scraper.js';
-import { NOTAMScraper } from './notam-scraper.js';
-import { WebSearchScraper } from './websearch-scraper.js';
-import { SocialMediaScraper } from './social-media-scraper.js';
-import { AviationAuthorityScraper } from './aviation-authority-scraper.js';
-import { CONFIG } from '../config.js';
+import { RSSNewsScraper } from './rss-news-scraper.js';
+import { RedditScraper } from './reddit-scraper.js';
+// REAL DATA ONLY - NO SIMULATIONS
 
 export class ComprehensiveAggregator {
   constructor() {
     this.scrapers = {
-      news: new NewsAPIScraper(),
-      notam: new NOTAMScraper(),
-      websearch: new WebSearchScraper(),
-      social: new SocialMediaScraper(),
-      aviation: new AviationAuthorityScraper()
+      rss_news: new RSSNewsScraper(),  // REAL RSS news scraping
+      reddit: new RedditScraper()      // REAL Reddit API scraping
+      // NO SIMULATION SCRAPERS - REAL DATA ONLY
     };
 
     this.minIncidentsPerRun = 10;
