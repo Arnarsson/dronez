@@ -1628,21 +1628,36 @@
     const INCIDENTS_URL = 'incidents.json';
     const REFRESH_MS = 5 * 60 * 1000;
 
-    const assetColors = {
-      airport: getComputedStyle(document.documentElement).getPropertyValue('--air') || '#ef4444',
-      harbour: getComputedStyle(document.documentElement).getPropertyValue('--harbour') || '#3b82f6',
-      energy: getComputedStyle(document.documentElement).getPropertyValue('--energy') || '#f97316',
-      rail: getComputedStyle(document.documentElement).getPropertyValue('--rail') || '#22c55e',
-      border: getComputedStyle(document.documentElement).getPropertyValue('--border-crossing') || '#eab308',
-      military: getComputedStyle(document.documentElement).getPropertyValue('--military') || '#c084fc'
-    };
+    // Wait for DOM to be ready before initializing map
+    function initializeMap() {
+      // Check if map element exists
+      const mapElement = document.getElementById('map');
+      if (!mapElement) {
+        console.error('Map element not found!');
+        setTimeout(initializeMap, 100); // Retry after 100ms
+        return;
+      }
 
-    const map = L.map('map', {
-      center: [56, 12],
-      zoom: 4,
-      minZoom: 3,
-      worldCopyJump: true
-    });
+      console.log('Initializing map...');
+
+      const assetColors = {
+        airport: getComputedStyle(document.documentElement).getPropertyValue('--air') || '#ef4444',
+        harbour: getComputedStyle(document.documentElement).getPropertyValue('--harbour') || '#3b82f6',
+        energy: getComputedStyle(document.documentElement).getPropertyValue('--energy') || '#f97316',
+        rail: getComputedStyle(document.documentElement).getPropertyValue('--rail') || '#22c55e',
+        border: getComputedStyle(document.documentElement).getPropertyValue('--border-crossing') || '#eab308',
+        military: getComputedStyle(document.documentElement).getPropertyValue('--military') || '#c084fc'
+      };
+
+      // Make map global for debugging
+      window.map = L.map('map', {
+        center: [56, 12],
+        zoom: 4,
+        minZoom: 3,
+        worldCopyJump: true
+      });
+
+      const map = window.map; // Keep local reference
 
     const satellite = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
       attribution: 'Basemap © Esri — Sources: Esri, i-cubed, USDA, USGS, AeroGRID, IGN, IGP'
@@ -3045,10 +3060,18 @@
       dateLabel.textContent = `Showing last ${dateRange.value} days`;
     }
 
-    setupUI();
-    refreshAll();
-    setInterval(refreshAll, REFRESH_MS);
-    // setupMobileUX will be called after it's defined
+      setupUI();
+      refreshAll();
+      setInterval(refreshAll, REFRESH_MS);
+    } // End of initializeMap function
+
+    // Initialize map when DOM is ready
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initializeMap);
+    } else {
+      // DOM is already ready
+      initializeMap();
+    }
   </script>
 
   <!-- Modern Mobile Navigation (2025) -->
