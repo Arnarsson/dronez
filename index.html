@@ -420,6 +420,10 @@
 
     /* Mobile panel overlay */
     @media (max-width: 767px) {
+      .panels-container {
+        display: none;
+      }
+
       .panels-container.mobile-open {
         display: flex;
         position: fixed;
@@ -434,6 +438,10 @@
 
       .panels-container .panel:first-child {
         border-bottom: 1px solid var(--border);
+      }
+
+      #right {
+        height: 280px;
       }
     }
 
@@ -733,11 +741,38 @@
       to { transform: translateX(100%); opacity: 0; }
     }
     @media (max-width: 1120px) {
-      #app { grid-template-columns: 1fr; grid-template-rows: 56px 260px 1fr 320px; }
-      #left { grid-row: 2; }
-      #map { grid-row: 3; }
-      #right { grid-row: 4; }
-      header { grid-column: 1; }
+      #app {
+        display: flex;
+        flex-direction: column;
+        height: 100vh;
+        height: 100dvh;
+      }
+
+      .main-container {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+      }
+
+      .panels-container {
+        flex-shrink: 0;
+        height: 260px;
+        display: flex;
+        flex-direction: column;
+        overflow-y: auto;
+      }
+
+      #map-container {
+        flex: 1;
+        min-height: 0;
+      }
+
+      #right {
+        flex-shrink: 0;
+        height: 320px;
+        overflow-y: auto;
+      }
     }
   </style>
 </head>
@@ -896,12 +931,15 @@
       </div>
     </aside>
 
-    <main id="map" role="region" aria-label="Incident map">
-      <div id="mapOverlay" style="display: none; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 1000; background: var(--surface); border: 3px solid var(--severity-4); border-radius: 16px; padding: 40px 60px; text-align: center; box-shadow: 0 8px 32px rgba(0,0,0,0.8);">
-        <div style="font-size: 48px; font-weight: 900; color: var(--severity-4); margin-bottom: 16px; letter-spacing: 3px;">NO DATA</div>
-        <div style="color: var(--muted); font-size: 16px; line-height: 1.4;">Europe-wide incident monitoring system<br/>No current incidents detected</div>
-      </div>
-    </main>
+    <!-- Map Container -->
+    <div id="map-container">
+      <main id="map" role="region" aria-label="Incident map">
+        <div id="mapOverlay" style="display: none; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 1000; background: var(--surface); border: 3px solid var(--severity-4); border-radius: 16px; padding: 40px 60px; text-align: center; box-shadow: 0 8px 32px rgba(0,0,0,0.8);">
+          <div style="font-size: 48px; font-weight: 900; color: var(--severity-4); margin-bottom: 16px; letter-spacing: 3px;">NO DATA</div>
+          <div style="color: var(--muted); font-size: 16px; line-height: 1.4;">Europe-wide incident monitoring system<br/>No current incidents detected</div>
+        </div>
+      </main>
+    </div>
 
     <aside id="right" aria-label="Incident details">
       <div id="details">
