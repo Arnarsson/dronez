@@ -1,0 +1,83 @@
+{
+  "generated_utc": "2025-09-25T21:00:00Z",
+  "incidents": [
+    {
+      "id": "dk-ekch-2025-09-22",
+      "first_seen_utc": "2025-09-22T19:00:00Z",
+      "last_update_utc": "2025-09-22T23:00:00Z",
+      "asset": {
+        "type": "airport",
+        "name": "Copenhagen Airport",
+        "iata": "CPH",
+        "icao": "EKCH",
+        "lat": 55.6181,
+        "lon": 12.6561
+      },
+      "incident": {
+        "category": "closure",
+        "status": "resolved",
+        "duration_min": 240,
+        "uav_count": 2,
+        "uav_characteristics": "lights toggled",
+        "response": ["ATC", "police"],
+        "narrative": "Runway ops paused; drones observed on approach."
+      },
+      "evidence": {
+        "strength": 2,
+        "attribution": "suspected",
+        "sources": [
+          {
+            "url": "https://reuters.com/",
+            "publisher": "Reuters",
+            "lang": "en",
+            "first_seen": "2025-09-22T20:10:00Z"
+          }
+        ],
+        "notam_navtex_ids": []
+      },
+      "scores": {
+        "severity": 4,
+        "risk_radius_m": 5000
+      },
+      "tags": ["night", "approach-path"]
+    },
+    {
+      "id": "dk-cph-hbr-test-2025-09-25",
+      "first_seen_utc": "2025-09-25T19:50:00Z",
+      "last_update_utc": "2025-09-25T20:10:00Z",
+      "asset": {
+        "type": "harbour",
+        "name": "Port of Copenhagen (Nordhavn)",
+        "lat": 55.706,
+        "lon": 12.607,
+        "osm_id": 12345678
+      },
+      "incident": {
+        "category": "sighting",
+        "status": "unconfirmed",
+        "duration_min": null,
+        "uav_count": 1,
+        "uav_characteristics": "small quad",
+        "response": ["police"],
+        "narrative": "Sighted near cruise quay; VTS informed."
+      },
+      "evidence": {
+        "strength": 1,
+        "attribution": "none",
+        "sources": [
+          {
+            "url": "https://localnews.example/",
+            "publisher": "Local News",
+            "lang": "da"
+          }
+        ],
+        "notam_navtex_ids": ["NAVTEX TEST"]
+      },
+      "scores": {
+        "severity": 2,
+        "risk_radius_m": 1000
+      },
+      "tags": ["harbour", "vts"]
+    }
+  ]
+}
