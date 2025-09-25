@@ -3,12 +3,14 @@
 import { AutomationScheduler } from './scheduler.js';
 import { IncidentGenerator } from './incident-generator.js';
 import { QualityController } from './quality-controller.js';
+import { ComprehensiveAggregator } from './scrapers/comprehensive-aggregator.js';
 
 class DroneIncidentAutomation {
   constructor() {
     this.scheduler = new AutomationScheduler();
     this.generator = new IncidentGenerator();
     this.qualityController = new QualityController();
+    this.aggregator = new ComprehensiveAggregator();
   }
 
   async start() {
@@ -28,14 +30,64 @@ class DroneIncidentAutomation {
   }
 
   async runOnce(options = {}) {
-    console.log('🔄 Running single incident collection cycle...\n');
+    console.log('🔄 Running comprehensive incident collection cycle...\n');
 
-    const result = await this.scheduler.runManual(options);
+    try {
+      // Use comprehensive aggregator for real-time collection
+      const result = await this.aggregator.aggregateAllIncidents(7);
 
-    console.log('✅ Manual run completed');
-    console.log('Status:', result);
+      console.log('📊 Collection Summary:');
+      console.log(`  - Total incidents collected: ${result.incidents.length}`);
+      console.log(`  - Sources: ${Object.keys(result.metadata.source_stats).join(', ')}`);
+      console.log(`  - Time range: ${result.metadata.time_range.from} to ${result.metadata.time_range.to}`);
 
-    return result;
+      // Save the collected incidents
+      await this.saveIncidents(result.incidents, result.metadata);
+
+      console.log('✅ Comprehensive collection completed');
+      return result;
+    } catch (error) {
+      console.error('❌ Error in comprehensive collection:', error.message);
+
+      // Fallback to basic scheduler if comprehensive fails
+      console.log('🔄 Falling back to basic collection...');
+      const fallbackResult = await this.scheduler.runManual(options);
+      console.log('Status:', fallbackResult);
+      return fallbackResult;
+    }
+  }
+
+  async saveIncidents(incidents, metadata) {
+    // Save to incidents.json file
+    const fs = await import('fs/promises');
+    const path = await import('path');
+
+    const incidentsData = {
+      generated_utc: new Date().toISOString(),
+      incidents: incidents,
+      data_notice: "LIVE DATA: Real drone incidents collected from multiple sources including news, official NOTAMs, social media, and aviation authorities.",
+      metadata: {
+        collection_timestamp: metadata.collection_timestamp,
+        total_sources: Object.keys(metadata.source_stats).length,
+        source_breakdown: metadata.source_stats,
+        quality_stats: {
+          raw: metadata.total_raw,
+          deduplicated: metadata.total_deduplicated,
+          enriched: metadata.total_enriched,
+          final: metadata.total_quality
+        }
+      }
+    };
+
+    const filePath = path.join(process.cwd(), 'public', 'incidents.json');
+    await fs.writeFile(filePath, JSON.stringify(incidentsData, null, 2));
+
+    console.log(`💾 Saved ${incidents.length} incidents to ${filePath}`);
+
+    // Also create a backup
+    const backupPath = path.join(process.cwd(), 'public', `incidents.backup.${Date.now()}.json`);
+    await fs.writeFile(backupPath, JSON.stringify(incidentsData, null, 2));
+    console.log(`💾 Backup created at ${backupPath}`);
   }
 
   async generateTestData(count = 10) {
