@@ -1735,8 +1735,12 @@
       hasAutoFocused: false,
       autoFocusEnabled: true,
       liveIncidents: new Set(),
-      activityIndicatorVisible: false
+      activityIndicatorVisible: false,
+      allIncidents: [] // Track all incidents for mobile access
     };
+
+    // Make state globally accessible for mobile handlers
+    window.state = state;
 
     // URL state management for shareable links
     function saveStateToURL() {
@@ -2381,6 +2385,9 @@
 
       const currentFiltered = filterIncidents('current');
       const previousFiltered = state.compareMode ? filterIncidents('previous') : [];
+
+      // Store all current incidents for mobile access
+      state.allIncidents = currentFiltered;
 
       console.log('current period incidents:', currentFiltered.length);
       if (state.compareMode) console.log('previous period incidents:', previousFiltered.length);
@@ -3247,12 +3254,17 @@
             const incidentCards = bottomSheetContent.querySelectorAll('.incident');
             incidentCards.forEach(card => {
               card.addEventListener('click', (e) => {
-                // Find the corresponding incident by matching the text content
-                const incidentTitle = card.querySelector('h3')?.textContent;
-                if (incidentTitle) {
+                // Skip if clicking on the provenance button
+                if (e.target.classList.contains('provenance-btn')) {
+                  return;
+                }
+
+                // Find the corresponding incident by matching the asset name
+                const incidentName = card.querySelector('strong')?.textContent;
+                if (incidentName && window.state && window.state.allIncidents) {
                   // Find incident by asset name
-                  const incident = state.allIncidents.find(inc =>
-                    inc.asset.name === incidentTitle
+                  const incident = window.state.allIncidents.find(inc =>
+                    inc.asset.name === incidentName
                   );
                   if (incident) {
                     focusIncident(incident);
