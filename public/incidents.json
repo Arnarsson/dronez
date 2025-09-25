@@ -1,5 +1,5 @@
 {
-  "generated_utc": "2025-09-25T20:10:00Z",
+  "generated_utc": "2025-09-25T20:10:01Z",
   "incidents": [
     {
       "id": "dk-ekch-2025-09-22",
@@ -19,7 +19,10 @@
         "duration_min": 240,
         "uav_count": 2,
         "uav_characteristics": "lights toggled",
-        "response": ["ATC", "police"],
+        "response": [
+          "ATC",
+          "police"
+        ],
         "narrative": "Runway ops paused; drones observed on approach."
       },
       "evidence": {
@@ -33,13 +36,19 @@
             "first_seen": "2025-09-22T20:10:00Z"
           }
         ],
-        "notam_navtex_ids": ["NOTAM A0145/25"]
+        "notam_navtex_ids": [
+          "NOTAM A0145/25"
+        ]
       },
       "scores": {
         "severity": 5,
         "risk_radius_m": 8000
       },
-      "tags": ["night", "approach-path", "official-response"]
+      "tags": [
+        "night",
+        "approach-path",
+        "official-response"
+      ]
     },
     {
       "id": "dk-ekbi-billund-2025-09-25",
@@ -59,7 +68,10 @@
         "duration_min": 75,
         "uav_count": 1,
         "uav_characteristics": "commercial quadcopter, camera visible",
-        "response": ["ATC", "police"],
+        "response": [
+          "ATC",
+          "police"
+        ],
         "narrative": "Unauthorized drone filming over Legoland vicinity during morning operations."
       },
       "evidence": {
@@ -79,7 +91,11 @@
         "severity": 3,
         "risk_radius_m": 4500
       },
-      "tags": ["commercial", "filming", "tourism-area"]
+      "tags": [
+        "commercial",
+        "filming",
+        "tourism-area"
+      ]
     },
     {
       "id": "dk-ekyt-aalborg-2025-09-24",
@@ -99,7 +115,9 @@
         "duration_min": 45,
         "uav_count": 1,
         "uav_characteristics": "fixed-wing, research configuration",
-        "response": ["ATC"],
+        "response": [
+          "ATC"
+        ],
         "narrative": "University research drone strayed into controlled airspace during weather monitoring."
       },
       "evidence": {
@@ -119,7 +137,11 @@
         "severity": 2,
         "risk_radius_m": 3000
       },
-      "tags": ["research", "university", "weather"]
+      "tags": [
+        "research",
+        "university",
+        "weather"
+      ]
     },
     {
       "id": "dk-ekah-aarhus-2025-09-23",
@@ -130,8 +152,8 @@
         "name": "Aarhus Airport",
         "iata": "AAR",
         "icao": "EKAH",
-        "lat": 56.3000,
-        "lon": 10.6190
+        "lat": 56.3,
+        "lon": 10.619
       },
       "incident": {
         "category": "sighting",
@@ -159,7 +181,11 @@
         "severity": 1,
         "risk_radius_m": 2000
       },
-      "tags": ["racing", "pilot-report", "unverified"]
+      "tags": [
+        "racing",
+        "pilot-report",
+        "unverified"
+      ]
     },
     {
       "id": "dk-ekeb-esbjerg-2025-09-25",
@@ -179,7 +205,10 @@
         "duration_min": 75,
         "uav_count": 1,
         "uav_characteristics": "industrial survey drone, oil company markings",
-        "response": ["ATC", "police"],
+        "response": [
+          "ATC",
+          "police"
+        ],
         "narrative": "Offshore energy sector surveillance drone operating without proper clearance near North Sea operations."
       },
       "evidence": {
@@ -199,7 +228,11 @@
         "severity": 3,
         "risk_radius_m": 4000
       },
-      "tags": ["industrial", "oil-sector", "offshore"]
+      "tags": [
+        "industrial",
+        "oil-sector",
+        "offshore"
+      ]
     },
     {
       "id": "dk-aarhus-port-2025-09-24",
@@ -218,7 +251,10 @@
         "duration_min": 75,
         "uav_count": 3,
         "uav_characteristics": "cargo inspection formation",
-        "response": ["port-authority", "customs"],
+        "response": [
+          "port-authority",
+          "customs"
+        ],
         "narrative": "Coordinated surveillance drones detected over container terminal during evening shift."
       },
       "evidence": {
@@ -238,7 +274,11 @@
         "severity": 3,
         "risk_radius_m": 2500
       },
-      "tags": ["cargo", "formation", "customs"]
+      "tags": [
+        "cargo",
+        "formation",
+        "customs"
+      ]
     },
     {
       "id": "dk-esbjerg-port-2025-09-23",
@@ -248,7 +288,7 @@
         "type": "harbour",
         "name": "Port of Esbjerg",
         "lat": 55.4677,
-        "lon": 8.4380,
+        "lon": 8.438,
         "osm_id": 56789012
       },
       "incident": {
@@ -277,7 +317,11 @@
         "severity": 1,
         "risk_radius_m": 1500
       },
-      "tags": ["pre-dawn", "wind-energy", "social-media"]
+      "tags": [
+        "pre-dawn",
+        "wind-energy",
+        "social-media"
+      ]
     },
     {
       "id": "de-eddf-2025-09-25",
@@ -297,7 +341,11 @@
         "duration_min": 75,
         "uav_count": 3,
         "uav_characteristics": "formation flight, led lights",
-        "response": ["ATC", "police", "military"],
+        "response": [
+          "ATC",
+          "police",
+          "military"
+        ],
         "narrative": "Multiple drones detected near terminal area causing flight delays."
       },
       "evidence": {
@@ -311,13 +359,19 @@
             "first_seen": "2025-09-25T14:35:00Z"
           }
         ],
-        "notam_navtex_ids": ["NOTAM A0234/25"]
+        "notam_navtex_ids": [
+          "NOTAM A0234/25"
+        ]
       },
       "scores": {
         "severity": 5,
         "risk_radius_m": 10000
       },
-      "tags": ["formation", "terminal-area", "delays"]
+      "tags": [
+        "formation",
+        "terminal-area",
+        "delays"
+      ]
     },
     {
       "id": "pl-epwa-warsaw-2025-09-25",
@@ -337,7 +391,11 @@
         "duration_min": 55,
         "uav_count": 2,
         "uav_characteristics": "military-grade surveillance",
-        "response": ["ATC", "police", "military"],
+        "response": [
+          "ATC",
+          "police",
+          "military"
+        ],
         "narrative": "Advanced surveillance drones detected near NATO logistics hub area."
       },
       "evidence": {
@@ -351,13 +409,19 @@
             "first_seen": "2025-09-25T11:35:00Z"
           }
         ],
-        "notam_navtex_ids": ["NOTAM A0287/25"]
+        "notam_navtex_ids": [
+          "NOTAM A0287/25"
+        ]
       },
       "scores": {
         "severity": 5,
         "risk_radius_m": 12000
       },
-      "tags": ["military-grade", "nato", "surveillance"]
+      "tags": [
+        "military-grade",
+        "nato",
+        "surveillance"
+      ]
     },
     {
       "id": "cz-lkpr-prague-2025-09-24",
@@ -377,7 +441,10 @@
         "duration_min": 50,
         "uav_count": 1,
         "uav_characteristics": "tourist photography drone",
-        "response": ["ATC", "police"],
+        "response": [
+          "ATC",
+          "police"
+        ],
         "narrative": "Tourist drone with camera detected over historic Prague castle approach corridor."
       },
       "evidence": {
@@ -397,7 +464,11 @@
         "severity": 2,
         "risk_radius_m": 3500
       },
-      "tags": ["tourism", "photography", "historic"]
+      "tags": [
+        "tourism",
+        "photography",
+        "historic"
+      ]
     },
     {
       "id": "hu-lhbp-budapest-2025-09-23",
@@ -437,7 +508,11 @@
         "severity": 1,
         "risk_radius_m": 2000
       },
-      "tags": ["passenger-report", "approach", "social-media"]
+      "tags": [
+        "passenger-report",
+        "approach",
+        "social-media"
+      ]
     },
     {
       "id": "fi-efhk-helsinki-2025-09-25",
@@ -457,7 +532,10 @@
         "duration_min": 45,
         "uav_count": 1,
         "uav_characteristics": "arctic weather monitoring",
-        "response": ["ATC", "border-guard"],
+        "response": [
+          "ATC",
+          "border-guard"
+        ],
         "narrative": "Unauthorized research drone conducting arctic weather analysis near runway approach."
       },
       "evidence": {
@@ -477,7 +555,11 @@
         "severity": 3,
         "risk_radius_m": 4500
       },
-      "tags": ["arctic", "research", "weather"]
+      "tags": [
+        "arctic",
+        "research",
+        "weather"
+      ]
     },
     {
       "id": "is-bikf-keflavik-2025-09-24",
@@ -488,7 +570,7 @@
         "name": "Keflavík International Airport",
         "iata": "KEF",
         "icao": "BIKF",
-        "lat": 63.9850,
+        "lat": 63.985,
         "lon": -22.6056
       },
       "incident": {
@@ -497,7 +579,11 @@
         "duration_min": 45,
         "uav_count": 1,
         "uav_characteristics": "NATO surveillance configuration",
-        "response": ["ATC", "military", "nato-security"],
+        "response": [
+          "ATC",
+          "military",
+          "nato-security"
+        ],
         "narrative": "Military surveillance drone detected near strategic NATO base operations area."
       },
       "evidence": {
@@ -511,13 +597,19 @@
             "first_seen": "2025-09-24T14:50:00Z"
           }
         ],
-        "notam_navtex_ids": ["NOTAM A0298/25"]
+        "notam_navtex_ids": [
+          "NOTAM A0298/25"
+        ]
       },
       "scores": {
         "severity": 4,
         "risk_radius_m": 8000
       },
-      "tags": ["nato", "military", "strategic"]
+      "tags": [
+        "nato",
+        "military",
+        "strategic"
+      ]
     },
     {
       "id": "gr-lgav-athens-2025-09-23",
@@ -557,7 +649,11 @@
         "severity": 1,
         "risk_radius_m": 2500
       },
-      "tags": ["media", "vip", "political"]
+      "tags": [
+        "media",
+        "vip",
+        "political"
+      ]
     },
     {
       "id": "pt-lppt-lisbon-2025-09-25",
@@ -577,7 +673,10 @@
         "duration_min": 45,
         "uav_count": 2,
         "uav_characteristics": "coastal surveillance drones",
-        "response": ["ATC", "police"],
+        "response": [
+          "ATC",
+          "police"
+        ],
         "narrative": "Maritime patrol drones detected operating without clearance near Atlantic approach corridor."
       },
       "evidence": {
@@ -597,7 +696,11 @@
         "severity": 3,
         "risk_radius_m": 4000
       },
-      "tags": ["maritime", "atlantic", "coastal"]
+      "tags": [
+        "maritime",
+        "atlantic",
+        "coastal"
+      ]
     },
     {
       "id": "fr-lfpg-2025-09-24",
@@ -617,7 +720,11 @@
         "duration_min": 90,
         "uav_count": 1,
         "uav_characteristics": "large fixed-wing, professional grade",
-        "response": ["ATC", "police", "military"],
+        "response": [
+          "ATC",
+          "police",
+          "military"
+        ],
         "narrative": "Single large drone caused runway 27L closure during peak evening traffic."
       },
       "evidence": {
@@ -631,13 +738,19 @@
             "first_seen": "2025-09-24T21:20:00Z"
           }
         ],
-        "notam_navtex_ids": ["NOTAM A0189/25"]
+        "notam_navtex_ids": [
+          "NOTAM A0189/25"
+        ]
       },
       "scores": {
         "severity": 5,
         "risk_radius_m": 9000
       },
-      "tags": ["night", "large-uav", "runway-closure"]
+      "tags": [
+        "night",
+        "large-uav",
+        "runway-closure"
+      ]
     },
     {
       "id": "gb-egll-2025-09-23",
@@ -648,7 +761,7 @@
         "name": "London Heathrow Airport",
         "iata": "LHR",
         "icao": "EGLL",
-        "lat": 51.4700,
+        "lat": 51.47,
         "lon": -0.4543
       },
       "incident": {
@@ -657,7 +770,10 @@
         "duration_min": 45,
         "uav_count": 2,
         "uav_characteristics": "quad-copters with thermal cameras",
-        "response": ["ATC", "police"],
+        "response": [
+          "ATC",
+          "police"
+        ],
         "narrative": "Pair of surveillance drones spotted over perimeter fence near runway 09L."
       },
       "evidence": {
@@ -677,7 +793,11 @@
         "severity": 4,
         "risk_radius_m": 6000
       },
-      "tags": ["surveillance", "perimeter", "thermal"]
+      "tags": [
+        "surveillance",
+        "perimeter",
+        "thermal"
+      ]
     },
     {
       "id": "nl-eham-2025-09-25",
@@ -697,7 +817,11 @@
         "duration_min": 55,
         "uav_count": 4,
         "uav_characteristics": "swarm behavior, synchronized movements",
-        "response": ["ATC", "police", "military"],
+        "response": [
+          "ATC",
+          "police",
+          "military"
+        ],
         "narrative": "Coordinated drone swarm detected over Polderbaan runway causing diversions."
       },
       "evidence": {
@@ -711,13 +835,19 @@
             "first_seen": "2025-09-25T08:25:00Z"
           }
         ],
-        "notam_navtex_ids": ["NOTAM A0267/25"]
+        "notam_navtex_ids": [
+          "NOTAM A0267/25"
+        ]
       },
       "scores": {
         "severity": 5,
         "risk_radius_m": 12000
       },
-      "tags": ["swarm", "coordinated", "diversions"]
+      "tags": [
+        "swarm",
+        "coordinated",
+        "diversions"
+      ]
     },
     {
       "id": "es-lemd-2025-09-24",
@@ -737,7 +867,10 @@
         "duration_min": 95,
         "uav_count": 1,
         "uav_characteristics": "commercial-grade octacopter",
-        "response": ["ATC", "police"],
+        "response": [
+          "ATC",
+          "police"
+        ],
         "narrative": "Professional drone conducting unauthorized aerial photography over terminal buildings."
       },
       "evidence": {
@@ -757,7 +890,11 @@
         "severity": 3,
         "risk_radius_m": 4000
       },
-      "tags": ["commercial", "photography", "terminal"]
+      "tags": [
+        "commercial",
+        "photography",
+        "terminal"
+      ]
     },
     {
       "id": "it-lirf-2025-09-23",
@@ -777,7 +914,10 @@
         "duration_min": 85,
         "uav_count": 2,
         "uav_characteristics": "racing drones, high-speed maneuvers",
-        "response": ["ATC", "police"],
+        "response": [
+          "ATC",
+          "police"
+        ],
         "narrative": "High-speed racing drones caused temporary closure of runway 16R during evening operations."
       },
       "evidence": {
@@ -791,13 +931,19 @@
             "first_seen": "2025-09-23T20:10:00Z"
           }
         ],
-        "notam_navtex_ids": ["NOTAM A0198/25"]
+        "notam_navtex_ids": [
+          "NOTAM A0198/25"
+        ]
       },
       "scores": {
         "severity": 4,
         "risk_radius_m": 7000
       },
-      "tags": ["racing", "high-speed", "evening"]
+      "tags": [
+        "racing",
+        "high-speed",
+        "evening"
+      ]
     },
     {
       "id": "se-arlanda-2025-09-21",
@@ -817,7 +963,11 @@
         "duration_min": 135,
         "uav_count": 1,
         "uav_characteristics": "fixed-wing, lights visible",
-        "response": ["ATC", "police", "military"],
+        "response": [
+          "ATC",
+          "police",
+          "military"
+        ],
         "narrative": "Drone observed in controlled airspace, runway 01L/19R temporarily closed."
       },
       "evidence": {
@@ -831,13 +981,19 @@
             "first_seen": "2025-09-21T14:35:00Z"
           }
         ],
-        "notam_navtex_ids": ["NOTAM A0234/25"]
+        "notam_navtex_ids": [
+          "NOTAM A0234/25"
+        ]
       },
       "scores": {
         "severity": 5,
         "risk_radius_m": 8000
       },
-      "tags": ["controlled-airspace", "runway-closure", "military-response"]
+      "tags": [
+        "controlled-airspace",
+        "runway-closure",
+        "military-response"
+      ]
     },
     {
       "id": "no-engm-2025-09-25",
@@ -857,7 +1013,9 @@
         "duration_min": 45,
         "uav_count": 1,
         "uav_characteristics": "weather monitoring drone",
-        "response": ["ATC"],
+        "response": [
+          "ATC"
+        ],
         "narrative": "Unauthorized weather drone detected in approach corridor during morning operations."
       },
       "evidence": {
@@ -877,7 +1035,11 @@
         "severity": 3,
         "risk_radius_m": 5000
       },
-      "tags": ["weather", "approach-corridor", "unauthorized"]
+      "tags": [
+        "weather",
+        "approach-corridor",
+        "unauthorized"
+      ]
     },
     {
       "id": "be-ebbr-2025-09-24",
@@ -888,7 +1050,7 @@
         "name": "Brussels Airport",
         "iata": "BRU",
         "icao": "EBBR",
-        "lat": 50.9010,
+        "lat": 50.901,
         "lon": 4.4844
       },
       "incident": {
@@ -897,7 +1059,10 @@
         "duration_min": 50,
         "uav_count": 2,
         "uav_characteristics": "delivery drones, cargo attachments",
-        "response": ["ATC", "police"],
+        "response": [
+          "ATC",
+          "police"
+        ],
         "narrative": "Commercial delivery drones strayed into restricted airspace near cargo terminal."
       },
       "evidence": {
@@ -917,7 +1082,11 @@
         "severity": 3,
         "risk_radius_m": 4500
       },
-      "tags": ["delivery", "cargo", "commercial"]
+      "tags": [
+        "delivery",
+        "cargo",
+        "commercial"
+      ]
     },
     {
       "id": "at-loww-2025-09-23",
@@ -937,7 +1106,10 @@
         "duration_min": 45,
         "uav_count": 1,
         "uav_characteristics": "inspection drone, rotating camera",
-        "response": ["ATC", "police"],
+        "response": [
+          "ATC",
+          "police"
+        ],
         "narrative": "Infrastructure inspection drone operating without proper clearance near runway 11."
       },
       "evidence": {
@@ -957,7 +1129,11 @@
         "severity": 3,
         "risk_radius_m": 4000
       },
-      "tags": ["inspection", "infrastructure", "rotating-camera"]
+      "tags": [
+        "inspection",
+        "infrastructure",
+        "rotating-camera"
+      ]
     },
     {
       "id": "ch-lszh-2025-09-25",
@@ -977,7 +1153,9 @@
         "duration_min": 45,
         "uav_count": 1,
         "uav_characteristics": "research drone, multiple sensors",
-        "response": ["ATC"],
+        "response": [
+          "ATC"
+        ],
         "narrative": "Scientific research drone with sensor package detected in approach zone."
       },
       "evidence": {
@@ -997,7 +1175,11 @@
         "severity": 2,
         "risk_radius_m": 3500
       },
-      "tags": ["research", "sensors", "scientific"]
+      "tags": [
+        "research",
+        "sensors",
+        "scientific"
+      ]
     },
     {
       "id": "dk-cph-harbor-2025-09-25",
@@ -1016,7 +1198,9 @@
         "duration_min": null,
         "uav_count": 1,
         "uav_characteristics": "small quad",
-        "response": ["police"],
+        "response": [
+          "police"
+        ],
         "narrative": "Sighted near cruise quay; VTS informed."
       },
       "evidence": {
@@ -1030,13 +1214,19 @@
             "first_seen": "2025-09-25T18:55:00Z"
           }
         ],
-        "notam_navtex_ids": ["NAVTEX TEST"]
+        "notam_navtex_ids": [
+          "NAVTEX TEST"
+        ]
       },
       "scores": {
         "severity": 3,
         "risk_radius_m": 2000
       },
-      "tags": ["harbour", "vts", "cruise"]
+      "tags": [
+        "harbour",
+        "vts",
+        "cruise"
+      ]
     },
     {
       "id": "de-hamburg-port-2025-09-24",
@@ -1055,7 +1245,10 @@
         "duration_min": 75,
         "uav_count": 3,
         "uav_characteristics": "industrial surveillance drones",
-        "response": ["police", "port-authority"],
+        "response": [
+          "police",
+          "port-authority"
+        ],
         "narrative": "Multiple surveillance drones detected over container terminals during night shift."
       },
       "evidence": {
@@ -1075,7 +1268,12 @@
         "severity": 4,
         "risk_radius_m": 3000
       },
-      "tags": ["industrial", "surveillance", "night", "containers"]
+      "tags": [
+        "industrial",
+        "surveillance",
+        "night",
+        "containers"
+      ]
     },
     {
       "id": "nl-rotterdam-port-2025-09-23",
@@ -1094,7 +1292,10 @@
         "duration_min": 70,
         "uav_count": 2,
         "uav_characteristics": "cargo inspection drones",
-        "response": ["port-authority", "customs"],
+        "response": [
+          "port-authority",
+          "customs"
+        ],
         "narrative": "Unauthorized drones conducting cargo inspections at Maasvlakte terminal."
       },
       "evidence": {
@@ -1114,7 +1315,12 @@
         "severity": 3,
         "risk_radius_m": 2500
       },
-      "tags": ["cargo", "inspection", "customs", "maasvlakte"]
+      "tags": [
+        "cargo",
+        "inspection",
+        "customs",
+        "maasvlakte"
+      ]
     },
     {
       "id": "gr-piraeus-port-2025-09-24",
@@ -1153,7 +1359,11 @@
         "severity": 1,
         "risk_radius_m": 1500
       },
-      "tags": ["tourism", "ferry", "instagram"]
+      "tags": [
+        "tourism",
+        "ferry",
+        "instagram"
+      ]
     },
     {
       "id": "fr-nuclear-flamanville-2025-09-24",
@@ -1172,7 +1382,11 @@
         "duration_min": 45,
         "uav_count": 1,
         "uav_characteristics": "stealth design, IR suppression",
-        "response": ["military", "nuclear-security", "police"],
+        "response": [
+          "military",
+          "nuclear-security",
+          "police"
+        ],
         "narrative": "Stealth drone penetrated restricted airspace over reactor building 3."
       },
       "evidence": {
@@ -1186,13 +1400,20 @@
             "first_seen": "2025-09-24T06:00:00Z"
           }
         ],
-        "notam_navtex_ids": ["NOTAM A0223/25"]
+        "notam_navtex_ids": [
+          "NOTAM A0223/25"
+        ]
       },
       "scores": {
         "severity": 5,
         "risk_radius_m": 15000
       },
-      "tags": ["nuclear", "intrusion", "stealth", "military-response"]
+      "tags": [
+        "nuclear",
+        "intrusion",
+        "stealth",
+        "military-response"
+      ]
     },
     {
       "id": "be-nuclear-doel-2025-09-23",
@@ -1211,7 +1432,10 @@
         "duration_min": 45,
         "uav_count": 2,
         "uav_characteristics": "thermal imaging equipment",
-        "response": ["nuclear-security", "police"],
+        "response": [
+          "nuclear-security",
+          "police"
+        ],
         "narrative": "Pair of thermal-equipped drones observed scanning cooling towers."
       },
       "evidence": {
@@ -1231,7 +1455,12 @@
         "severity": 4,
         "risk_radius_m": 12000
       },
-      "tags": ["nuclear", "thermal", "cooling-towers", "scanning"]
+      "tags": [
+        "nuclear",
+        "thermal",
+        "cooling-towers",
+        "scanning"
+      ]
     },
     {
       "id": "cz-nuclear-temelin-2025-09-25",
@@ -1270,7 +1499,11 @@
         "severity": 2,
         "risk_radius_m": 10000
       },
-      "tags": ["nuclear", "night", "security-alert"]
+      "tags": [
+        "nuclear",
+        "night",
+        "security-alert"
+      ]
     },
     {
       "id": "de-military-ramstein-2025-09-25",
@@ -1289,7 +1522,10 @@
         "duration_min": 30,
         "uav_count": 1,
         "uav_characteristics": "reconnaissance configuration",
-        "response": ["military", "nato-security"],
+        "response": [
+          "military",
+          "nato-security"
+        ],
         "narrative": "Single recon drone detected over secure communications facility."
       },
       "evidence": {
@@ -1303,13 +1539,20 @@
             "first_seen": "2025-09-25T12:15:00Z"
           }
         ],
-        "notam_navtex_ids": ["NOTAM A0289/25"]
+        "notam_navtex_ids": [
+          "NOTAM A0289/25"
+        ]
       },
       "scores": {
         "severity": 5,
         "risk_radius_m": 20000
       },
-      "tags": ["military", "nato", "reconnaissance", "communications"]
+      "tags": [
+        "military",
+        "nato",
+        "reconnaissance",
+        "communications"
+      ]
     },
     {
       "id": "gb-military-raf-brize-2025-09-24",
@@ -1328,7 +1571,10 @@
         "duration_min": 35,
         "uav_count": 1,
         "uav_characteristics": "long-range surveillance",
-        "response": ["military", "mod-police"],
+        "response": [
+          "military",
+          "mod-police"
+        ],
         "narrative": "Long-range surveillance drone observed near transport aircraft maintenance area."
       },
       "evidence": {
@@ -1348,7 +1594,12 @@
         "severity": 4,
         "risk_radius_m": 15000
       },
-      "tags": ["military", "raf", "surveillance", "maintenance"]
+      "tags": [
+        "military",
+        "raf",
+        "surveillance",
+        "maintenance"
+      ]
     },
     {
       "id": "pl-military-malbork-2025-09-23",
@@ -1387,7 +1638,12 @@
         "severity": 3,
         "risk_radius_m": 18000
       },
-      "tags": ["military", "formation", "air-defense", "night"]
+      "tags": [
+        "military",
+        "formation",
+        "air-defense",
+        "night"
+      ]
     },
     {
       "id": "de-rail-frankfurt-hbf-2025-09-25",
@@ -1406,7 +1662,10 @@
         "duration_min": 45,
         "uav_count": 1,
         "uav_characteristics": "infrastructure inspection drone",
-        "response": ["rail-security", "police"],
+        "response": [
+          "rail-security",
+          "police"
+        ],
         "narrative": "Infrastructure monitoring drone detected over high-speed rail junction during evening rush hour."
       },
       "evidence": {
@@ -1426,7 +1685,12 @@
         "severity": 2,
         "risk_radius_m": 1500
       },
-      "tags": ["rail", "infrastructure", "rush-hour", "junction"]
+      "tags": [
+        "rail",
+        "infrastructure",
+        "rush-hour",
+        "junction"
+      ]
     },
     {
       "id": "fr-rail-gare-du-nord-2025-09-24",
@@ -1445,7 +1709,9 @@
         "duration_min": 40,
         "uav_count": 1,
         "uav_characteristics": "media drone, news configuration",
-        "response": ["rail-security"],
+        "response": [
+          "rail-security"
+        ],
         "narrative": "News media drone filming morning commuter crowds without authorization."
       },
       "evidence": {
@@ -1465,7 +1731,12 @@
         "severity": 2,
         "risk_radius_m": 1000
       },
-      "tags": ["rail", "media", "commuters", "morning"]
+      "tags": [
+        "rail",
+        "media",
+        "commuters",
+        "morning"
+      ]
     },
     {
       "id": "de-border-passau-2025-09-23",
@@ -1476,7 +1747,10 @@
         "name": "Passau Border Crossing (DE-AT)",
         "lat": 48.5665,
         "lon": 13.4318,
-        "border_countries": ["DE", "AT"]
+        "border_countries": [
+          "DE",
+          "AT"
+        ]
       },
       "incident": {
         "category": "sighting",
@@ -1484,7 +1758,10 @@
         "duration_min": 45,
         "uav_count": 1,
         "uav_characteristics": "surveillance drone, border patrol configuration",
-        "response": ["border-police", "customs"],
+        "response": [
+          "border-police",
+          "customs"
+        ],
         "narrative": "Cross-border surveillance drone monitoring migration routes along Danube river."
       },
       "evidence": {
@@ -1504,7 +1781,12 @@
         "severity": 2,
         "risk_radius_m": 2000
       },
-      "tags": ["border", "surveillance", "migration", "danube"]
+      "tags": [
+        "border",
+        "surveillance",
+        "migration",
+        "danube"
+      ]
     },
     {
       "id": "fr-border-calais-2025-09-25",
@@ -1515,7 +1797,10 @@
         "name": "Port of Calais Border Control",
         "lat": 50.9581,
         "lon": 1.8503,
-        "border_countries": ["FR", "GB"]
+        "border_countries": [
+          "FR",
+          "GB"
+        ]
       },
       "incident": {
         "category": "sighting",
@@ -1543,7 +1828,12 @@
         "severity": 1,
         "risk_radius_m": 1500
       },
-      "tags": ["border", "night-patrol", "surveillance", "channel"]
+      "tags": [
+        "border",
+        "night-patrol",
+        "surveillance",
+        "channel"
+      ]
     }
   ]
 }
