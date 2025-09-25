@@ -1,5 +1,5 @@
 {
-  "generated_utc": "2025-09-25T21:06:27.077Z",
+  "generated_utc": "2025-09-25T21:07:58Z",
   "incidents": [
     {
       "id": "notam-airport-engm-2025-09-25-NO038321",
@@ -1441,23 +1441,5 @@
         "older"
       ]
     }
-  ],
-  "data_notice": "LIVE DATA: Real drone incidents collected from multiple sources including news, official NOTAMs, social media, and aviation authorities.",
-  "metadata": {
-    "collection_timestamp": "2025-09-25T21:06:27.076Z",
-    "total_sources": 5,
-    "source_breakdown": {
-      "social": 3,
-      "aviation": 4,
-      "news": 0,
-      "notam": 19,
-      "websearch": 0
-    },
-    "quality_stats": {
-      "raw": 26,
-      "deduplicated": 20,
-      "enriched": 20,
-      "final": 20
-    }
-  }
+  ]
 }
