@@ -967,6 +967,32 @@
     /* Mobile panel overlay */
     /* Mobile-First Modern UX - 2025 */
     @media (max-width: 767px) {
+      /* CRITICAL FIX: Ensure map displays on mobile */
+      .main-container {
+        display: flex;
+        flex-direction: column;
+        flex: 1;
+        min-height: 0;
+        position: relative;
+      }
+
+      #map-container {
+        flex: 1;
+        min-height: 300px; /* Ensure minimum height */
+        position: relative;
+        width: 100%;
+        background: var(--surface);
+      }
+
+      #map {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 1;
+      }
+
       /* Show modern mobile navigation */
       .mobile-nav {
         display: block;
@@ -983,6 +1009,11 @@
         display: none !important;
       }
 
+      /* Hide right panel on mobile - access via bottom sheet instead */
+      #right {
+        display: none;
+      }
+
       /* Adjust main container for mobile nav */
       #app {
         padding-bottom: calc(60px + env(safe-area-inset-bottom));
@@ -994,12 +1025,6 @@
         top: 0;
         z-index: 998;
         padding-top: calc(var(--space-4) + env(safe-area-inset-top));
-      }
-
-      /* Mobile-optimized map controls */
-      #right {
-        height: 280px;
-        margin-bottom: var(--space-4);
       }
 
       /* Optimize incident cards for mobile */
@@ -1329,7 +1354,8 @@
       from { transform: translateX(0); opacity: 1; }
       to { transform: translateX(100%); opacity: 0; }
     }
-    @media (max-width: 1120px) {
+    @media (max-width: 1120px) and (min-width: 768px) {
+      /* Tablet layout - keep panels visible but stacked */
       #app {
         display: flex;
         flex-direction: column;
@@ -1342,24 +1368,35 @@
         display: flex;
         flex-direction: column;
         overflow: hidden;
+        min-height: 0;
       }
 
       .panels-container {
         flex-shrink: 0;
-        height: 260px;
+        height: 200px;
         display: flex;
-        flex-direction: column;
-        overflow-y: auto;
+        flex-direction: row;
+        overflow-x: auto;
+        overflow-y: hidden;
       }
 
       #map-container {
         flex: 1;
-        min-height: 0;
+        min-height: 400px;
+        position: relative;
+      }
+
+      #map {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
       }
 
       #right {
         flex-shrink: 0;
-        height: 320px;
+        height: 250px;
         overflow-y: auto;
       }
     }
