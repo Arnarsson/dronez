@@ -1,0 +1,438 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Drone Sightings — European Airport Disruptions (Last 365 Days)</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <!-- Leaflet & MarkerCluster -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css" integrity="" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css" integrity="" crossorigin="anonymous">
+  <style>
+    :root {
+      --bg: #0f1115; --panel: #151823; --muted: #8a90a2; --text: #eef2ff; --accent: #6ea8fe; --accent-2:#22c55e;
+      --danger:#ef4444; --warn:#f59e0b; --ok:#10b981; --chip:#21263a; --chip-active:#2b3250;
+      --focus:#9db8ff; --border:#2a2f45;
+    }
+    * { box-sizing: border-box }
+    html, body { height: 100%; margin: 0; background: var(--bg); color: var(--text); font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial; }
+    #app { display: grid; grid-template-columns: 320px 1fr 360px; grid-template-rows: 56px 1fr; height: 100%; }
+    header { grid-column: 1 / 4; display:flex; align-items:center; gap: 12px; padding: 10px 16px; background: #0c0f17; border-bottom: 1px solid var(--border); }
+    header h1 { font-size: 16px; margin: 0; letter-spacing: .4px; }
+    header .badge { padding: 4px 8px; background: var(--chip); border: 1px solid var(--border); border-radius: 999px; color: var(--muted); font-size: 12px; }
+    #left { border-right: 1px solid var(--border); background: var(--panel); padding: 12px; overflow:auto; }
+    #map { width: 100%; height: 100%; }
+    #right { border-left: 1px solid var(--border); background: var(--panel); padding: 12px; overflow:auto; }
+    .section { margin-bottom: 16px; }
+    h2 { font-size: 13px; font-weight: 700; text-transform: uppercase; color: var(--muted); letter-spacing: .08em; margin: 8px 0 6px; }
+    .chips { display:flex; flex-wrap:wrap; gap:8px; }
+    .chip { padding:6px 10px; border:1px solid var(--border); border-radius:999px; background: var(--chip); color: var(--text); cursor:pointer; font-size: 12px; }
+    .chip.active { background: var(--chip-active); border-color:#3a4162; }
+    label { font-size: 12px; color: var(--muted); display:block; margin-bottom:6px; }
+    input[type="range"] { width:100%; }
+    select, input[type="text"] {
+      width: 100%; padding: 8px 10px; background:#0f1322; color: var(--text);
+      border:1px solid var(--border); border-radius: 8px; outline: none;
+    }
+    select:focus, input[type="text"]:focus { border-color: var(--focus); box-shadow: 0 0 0 3px rgba(157,184,255,.15); }
+    .statbar { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+    .stat { background:#0f1322; border:1px solid var(--border); border-radius:12px; padding:10px; text-align:center; }
+    .stat .k { font-size:18px; font-weight:700; }
+    .legend { display:flex; gap:10px; align-items:center; }
+    .dot { width:10px; height:10px; border-radius:50%; display:inline-block; }
+    .dot.red { background:#ef4444; }
+    .dot.blue { background:#3b82f6; }
+    .muted { color: var(--muted); font-size: 12px; }
+    .incident { border:1px solid var(--border); border-radius:12px; padding: 10px; margin-bottom: 10px; background:#0f1322; }
+    .btn { padding:6px 10px; border:1px solid var(--border); background:#0f1322; border-radius:8px; color:var(--text); cursor:pointer; }
+    .btn:hover { border-color:#3a4162; }
+    /* Leaflet container tweaks */
+    .leaflet-control-attribution { background: rgba(0,0,0,.45); color: #dfe4ff; border-radius: 8px; padding:2px 6px; }
+    .leaflet-popup-content-wrapper { background:#0f1322; color:var(--text); }
+    .leaflet-popup-tip { background:#0f1322; }
+    @media (max-width: 1120px) {
+      #app { grid-template-columns: 1fr; grid-template-rows: 56px 280px 1fr 320px; }
+      #left { grid-row: 2; }
+      #map { grid-row: 3; }
+      #right { grid-row: 4; }
+      header { grid-column: 1; }
+    }
+  </style>
+</head>
+<body>
+  <div id="app" role="application" aria-label="Drone Sightings map application">
+    <header>
+      <h1>Drone Sightings — European Airport Disruptions</h1>
+      <span class="badge">Satellite</span>
+      <span class="badge">Last 365 days</span>
+      <span class="badge" id="build-info">Build: static</span>
+    </header>
+
+    <aside id="left" aria-label="Filters panel">
+      <div class="section">
+        <h2>Time window</h2>
+        <div class="chips" role="group" aria-label="Quick time filters">
+          <button class="chip" data-window="7">7d</button>
+          <button class="chip" data-window="30">30d</button>
+          <button class="chip" data-window="90">90d</button>
+          <button class="chip active" data-window="365">365d</button>
+        </div>
+        <label for="dateRange">Filter by date</label>
+        <input id="dateRange" type="range" min="0" max="365" value="365" step="1" aria-valuemin="0" aria-valuemax="365" aria-valuenow="365">
+        <div class="muted" id="dateRangeLabel"></div>
+      </div>
+
+      <div class="section">
+        <h2>Filters</h2>
+        <label for="countrySelect">Country</label>
+        <select id="countrySelect" multiple size="6" aria-multiselectable="true"></select>
+
+        <label style="margin-top:8px;" for="statusSelect">Status</label>
+        <select id="statusSelect" multiple size="4">
+          <option value="closure" selected>Closure</option>
+          <option value="diversion" selected>Diversion</option>
+          <option value="lockdown" selected>Lockdown</option>
+          <option value="sighting" selected>Sighting</option>
+        </select>
+
+        <label style="margin-top:8px;" for="evidenceSelect">Evidence strength</label>
+        <select id="evidenceSelect" multiple size="4">
+          <option value="3" selected>3 — Official/NOTAM</option>
+          <option value="2" selected>2 — Multi tier-1 reports</option>
+          <option value="1" selected>1 — Single credible</option>
+          <option value="0">0 — Unconfirmed</option>
+        </select>
+
+        <label style="margin-top:8px;" for="searchBox">Search (airport/city/IATA/ICAO)</label>
+        <input id="searchBox" type="text" placeholder="e.g., CPH, Oslo, Riga">
+        <div class="legend" style="margin-top:10px;">
+          <span class="dot red" title="closure/diversion/lockdown"></span> Closure/Diversion/Lockdown
+          <span class="dot blue" title="sighting" style="margin-left:12px;"></span> Sighting
+        </div>
+      </div>
+
+      <div class="section">
+        <h2>Summary</h2>
+        <div class="statbar">
+          <div class="stat"><div class="k" id="stat-total">0</div><div class="muted">Incidents</div></div>
+          <div class="stat"><div class="k" id="stat-closures">0</div><div class="muted">Closures</div></div>
+          <div class="stat"><div class="k" id="stat-countries">0</div><div class="muted">Countries</div></div>
+        </div>
+      </div>
+
+      <div class="section">
+        <button class="btn" id="exportCsvBtn">Export CSV</button>
+        <button class="btn" id="resetBtn">Reset filters</button>
+      </div>
+
+      <div class="section muted" style="font-size:11px;">
+        Basemaps © Esri, OSM contributors. Libraries: Leaflet + MarkerCluster.
+      </div>
+    </aside>
+
+    <main id="map" role="region" aria-label="Map showing incidents"></main>
+
+    <aside id="right" aria-label="Incident detail panel">
+      <div id="details">
+        <h2>Details</h2>
+        <p class="muted">Click a marker to see full incident details here: time, duration, evidence, and sources.</p>
+        <div id="incidentList"></div>
+      </div>
+    </aside>
+  </div>
+
+  <!-- JS libs -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js" integrity="" crossorigin="anonymous"></script>
+
+  <script>
+  // ---------------------------
+  // Drone Sightings — App Logic
+  // ---------------------------
+
+  // Seed data (extend/replace with your pipeline). Evidence & examples align with recent reporting.
+  // Sources: Reuters/AP for DK/NO/PL, LSM/BNN for LV (see source URLs inside).
+  const seedIncidents = [
+    // Denmark
+    { id:"dk-cph-2025-09-22", date_start_utc:"2025-09-22T19:00:00Z", date_end_utc:"2025-09-22T23:00:00Z", country:"Denmark",
+      airport_name:"Copenhagen Airport", iata:"CPH", icao:"EKCH", lat:55.6181, lon:12.6561,
+      incident_type:"closure", duration_min:240, uav_count:2,
+      source_primary_url:"https://www.reuters.com/business/aerospace-defense/denmarks-aalborg-airport-closed-due-drones-airspace-2025-09-24/",
+      source_secondary_url:"https://www.reuters.com/world/europe/denmark-reopens-airports-after-drone-disruption-2025-09-25/",
+      evidence_strength:2, attribution:"suspected", severity:4, notes:"Multiple large drones; similar tradecraft to later Aalborg."
+    },
+    { id:"dk-aal-2025-09-24", date_start_utc:"2025-09-24T19:44:00Z", date_end_utc:"2025-09-24T22:54:00Z", country:"Denmark",
+      airport_name:"Aalborg Airport", iata:"AAL", icao:"EKYT", lat:57.0928, lon:9.8492,
+      incident_type:"closure", duration_min:190, uav_count:2,
+      source_primary_url:"https://www.reuters.com/business/aerospace-defense/denmarks-aalborg-airport-closed-due-drones-airspace-2025-09-24/",
+      source_secondary_url:"https://apnews.com/article/4fa3431f7db92a5fc62263ce0e78518f",
+      evidence_strength:2, attribution:"suspected", severity:4, notes:"Drones with lights; loiter ~3h."
+    },
+    { id:"dk-bll-2025-09-25", date_start_utc:"2025-09-25T00:00:00Z", date_end_utc:"2025-09-25T01:00:00Z", country:"Denmark",
+      airport_name:"Billund Airport", iata:"BLL", icao:"EKBI", lat:55.7403, lon:9.1518,
+      incident_type:"closure", duration_min:60, uav_count:1,
+      source_primary_url:"https://www.reuters.com/world/europe/denmark-reopens-airports-after-drone-disruption-2025-09-25/",
+      source_secondary_url:"https://apnews.com/article/4fa3431f7db92a5fc62263ce0e78518f",
+      evidence_strength:2, attribution:"suspected", severity:3, notes:"Short closure; reopened quickly."
+    },
+    { id:"dk-ebj-2025-09-25", date_start_utc:"2025-09-25T00:30:00Z", date_end_utc:"2025-09-25T01:10:00Z", country:"Denmark",
+      airport_name:"Esbjerg Airport", iata:"EBJ", icao:"EKEB", lat:55.5259, lon:8.5534,
+      incident_type:"sighting", duration_min:40, uav_count:1,
+      source_primary_url:"https://apnews.com/article/4fa3431f7db92a5fc62263ce0e78518f",
+      source_secondary_url:"https://www.reuters.com/world/europe/denmark-reopens-airports-after-drone-disruption-2025-09-25/",
+      evidence_strength:1, attribution:"suspected", severity:2, notes:"Sighting; closure not verified."
+    },
+    { id:"dk-sgd-2025-09-25", date_start_utc:"2025-09-25T00:30:00Z", date_end_utc:"2025-09-25T01:10:00Z", country:"Denmark",
+      airport_name:"Sønderborg Airport", iata:"SGD", icao:"EKSB", lat:54.9644, lon:9.7917,
+      incident_type:"sighting", duration_min:40, uav_count:1,
+      source_primary_url:"https://apnews.com/article/4fa3431f7db92a5fc62263ce0e78518f",
+      source_secondary_url:"https://www.reuters.com/world/europe/denmark-reopens-airports-after-drone-disruption-2025-09-25/",
+      evidence_strength:1, attribution:"suspected", severity:2, notes:"Sighting; closure not verified."
+    },
+    // Norway
+    { id:"no-osl-2025-09-23", date_start_utc:"2025-09-22T23:22:00Z", date_end_utc:"2025-09-23T02:22:00Z", country:"Norway",
+      airport_name:"Oslo Gardermoen", iata:"OSL", icao:"ENGM", lat:60.1939, lon:11.1004,
+      incident_type:"closure", duration_min:180, uav_count:1,
+      source_primary_url:"https://www.reuters.com/business/aerospace-defense/denmarks-aalborg-airport-closed-due-drones-airspace-2025-09-24/",
+      source_secondary_url:"https://www.reuters.com/world/europe/denmark-reopens-airports-after-drone-disruption-2025-09-25/",
+      evidence_strength:2, attribution:"suspected", severity:3, notes:"Overnight closure; coordination with DK."
+    },
+    // Poland
+    { id:"pl-waw-2025-09-10", date_start_utc:"2025-09-09T21:00:00Z", date_end_utc:"2025-09-10T01:30:00Z", country:"Poland",
+      airport_name:"Warsaw Chopin", iata:"WAW", icao:"EPWA", lat:52.1658, lon:20.9671,
+      incident_type:"closure", duration_min:270, uav_count:1,
+      source_primary_url:"https://www.reuters.com/world/europe/denmark-reopens-airports-after-drone-disruption-2025-09-25/",
+      source_secondary_url:"https://www.reuters.com/business/aerospace-defense/denmarks-aalborg-airport-closed-due-drones-airspace-2025-09-24/",
+      evidence_strength:2, attribution:"claimed", severity:4, notes:"Part of larger incursion; NATO consultations."
+    },
+    { id:"pl-wmi-2025-09-10", date_start_utc:"2025-09-09T21:00:00Z", date_end_utc:"2025-09-10T01:30:00Z", country:"Poland",
+      airport_name:"Warsaw Modlin", iata:"WMI", icao:"EPMO", lat:52.4511, lon:20.6518,
+      incident_type:"closure", duration_min:210, uav_count:1,
+      source_primary_url:"https://www.reuters.com/world/europe/denmark-reopens-airports-after-drone-disruption-2025-09-25/",
+      source_secondary_url:"https://www.reuters.com/business/aerospace-defense/denmarks-aalborg-airport-closed-due-drones-airspace-2025-09-24/",
+      evidence_strength:2, attribution:"claimed", severity:4, notes:"Temporary closure."
+    },
+    { id:"pl-rze-2025-09-10", date_start_utc:"2025-09-09T21:00:00Z", date_end_utc:"2025-09-10T01:30:00Z", country:"Poland",
+      airport_name:"Rzeszów–Jasionka", iata:"RZE", icao:"EPRZ", lat:50.1100, lon:22.0190,
+      incident_type:"closure", duration_min:180, uav_count:1,
+      source_primary_url:"https://www.reuters.com/world/europe/denmark-reopens-airports-after-drone-disruption-2025-09-25/",
+      source_secondary_url:"https://www.reuters.com/business/aerospace-defense/denmarks-aalborg-airport-closed-due-drones-airspace-2025-09-24/",
+      evidence_strength:2, attribution:"claimed", severity:4, notes:"Logistics hub impact."
+    },
+    { id:"pl-luz-2025-09-10", date_start_utc:"2025-09-09T21:00:00Z", date_end_utc:"2025-09-10T01:30:00Z", country:"Poland",
+      airport_name:"Lublin", iata:"LUZ", icao:"EPLB", lat:51.2281, lon:22.7136,
+      incident_type:"closure", duration_min:150, uav_count:1,
+      source_primary_url:"https://www.reuters.com/world/europe/denmark-reopens-airports-after-drone-disruption-2025-09-25/",
+      source_secondary_url:"https://www.reuters.com/business/aerospace-defense/denmarks-aalborg-airport-closed-due-drones-airspace-2025-09-24/",
+      evidence_strength:2, attribution:"claimed", severity:3, notes:"Temporary closure."
+    },
+    // Latvia
+    { id:"lv-rix-2025-01-13", date_start_utc:"2025-01-13T19:20:00Z", date_end_utc:"2025-01-13T19:50:00Z", country:"Latvia",
+      airport_name:"Riga International", iata:"RIX", icao:"EVRA", lat:56.9236, lon:23.9718,
+      incident_type:"lockdown", duration_min:30, uav_count:1,
+      source_primary_url:"https://lsm.lv/",
+      source_secondary_url:"https://lsm.lv/", /* Replace with the specific LSM article URL when logged */
+      evidence_strength:2, attribution:"none", severity:3, notes:"Lockdown with three diversions; repeated short restrictions."
+    }
+  ];
+
+  // Utility: clamp to last N days
+  function withinDays(isoStart, days) {
+    const end = new Date(isoStart);
+    const now = new Date();
+    const diff = (now - end) / (1000*60*60*24);
+    return diff <= days;
+  }
+
+  // Prepare map
+  const satellite = L.tileLayer(
+    'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
+    { attribution: 'Basemap © Esri — Sources: Esri, i-cubed, USDA, USGS, AeroGRID, IGN, IGP, and the GIS User Community' }
+  );
+  const streets = L.tileLayer(
+    'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+    { attribution: '© OpenStreetMap contributors' }
+  );
+
+  const map = L.map('map', {
+    center: [56.0, 12.0], zoom: 4, layers: [satellite], minZoom: 3, worldCopyJump: true
+  });
+  L.control.layers({ 'Satellite (Esri)': satellite, 'Streets (OSM)': streets }, null, { collapsed:true }).addTo(map);
+
+  const cluster = L.markerClusterGroup();
+  let markers = [];
+  const listEl = document.getElementById('incidentList');
+
+  // Populate country select
+  const countrySelect = document.getElementById('countrySelect');
+  [...new Set(seedIncidents.map(i => i.country))].sort().forEach(c => {
+    const opt = document.createElement('option'); opt.value = c; opt.textContent = c; countrySelect.appendChild(opt);
+  });
+
+  // Status & evidence selects
+  const statusSelect = document.getElementById('statusSelect');
+  const evidenceSelect = document.getElementById('evidenceSelect');
+
+  // Date slider
+  const dateRange = document.getElementById('dateRange');
+  const dateLabel = document.getElementById('dateRangeLabel');
+
+  function fmtDate(s) { const d = new Date(s); return d.toISOString().slice(0,10); }
+
+  function activeDays(){ return parseInt(dateRange.value,10); }
+  function activeStatuses(){
+    return [...statusSelect.selectedOptions].map(o=>o.value);
+  }
+  function activeEvidence(){
+    return new Set([...evidenceSelect.selectedOptions].map(o=>parseInt(o.value,10)));
+  }
+  function activeCountries(){
+    const set = new Set([...countrySelect.selectedOptions].map(o=>o.value));
+    return set.size ? set : null;
+  }
+  function searchTerm(){
+    return document.getElementById('searchBox').value.trim().toLowerCase();
+  }
+
+  function filterIncidents(){
+    const days = activeDays();
+    const st = new Set(activeStatuses());
+    const ev = activeEvidence();
+    const countries = activeCountries();
+    const term = searchTerm();
+
+    return seedIncidents.filter(i=>{
+      if(!withinDays(i.date_start_utc, days)) return false;
+      if(!st.has(i.incident_type)) return false;
+      if(!ev.has(i.evidence_strength)) return false;
+      if(countries && !countries.has(i.country)) return false;
+      if(term){
+        const hay = (i.airport_name+" "+i.iata+" "+i.icao+" "+i.country+" "+i.notes).toLowerCase();
+        if(!hay.includes(term)) return false;
+      }
+      return true;
+    });
+  }
+
+  function updateStats(filtered){
+    document.getElementById('stat-total').textContent = filtered.length;
+    document.getElementById('stat-closures').textContent = filtered.filter(i=>i.incident_type!=='sighting').length;
+    document.getElementById('stat-countries').textContent = new Set(filtered.map(i=>i.country)).size;
+  }
+
+  function markerFor(i){
+    const color = (i.incident_type==='sighting') ? '#3b82f6' : '#ef4444';
+    const icon = L.divIcon({
+      html:`<div style="width:12px;height:12px;border-radius:50%;background:${color};border:2px solid #fff;box-shadow:0 0 0 1px rgba(0,0,0,.4)"></div>`,
+      className:'', iconSize:[12,12]
+    });
+    const popup = `
+      <strong>${i.airport_name} (${i.iata || ''}${i.iata?'/':''}${i.icao||''})</strong><br/>
+      ${i.country}<br/>
+      <b>From:</b> ${fmtDate(i.date_start_utc)} &nbsp; <b>To:</b> ${fmtDate(i.date_end_utc)}<br/>
+      <b>Type:</b> ${i.incident_type} &nbsp; <b>Duration:</b> ${i.duration_min||'—'} min<br/>
+      <b>Evidence:</b> ${i.evidence_strength} &nbsp; <b>Severity:</b> ${i.severity}<br/>
+      <b>Sources:</b> <a href="${i.source_primary_url}" target="_blank" rel="noopener">primary</a>${i.source_secondary_url?` · <a href="${i.source_secondary_url}" target="_blank" rel="noopener">secondary</a>`:''}
+    `;
+    const m = L.marker([i.lat, i.lon], {icon}).bindPopup(popup);
+    m.on('click',()=>renderDetails([i]));
+    return m;
+  }
+
+  function renderDetails(items){
+    listEl.innerHTML = '';
+    items.sort((a,b)=> new Date(b.date_start_utc)-new Date(a.date_start_utc)).forEach(i=>{
+      const div = document.createElement('div');
+      div.className = 'incident';
+      div.innerHTML = `
+        <div style="display:flex;justify-content:space-between;gap:10px;align-items:center;">
+          <strong>${i.airport_name}</strong>
+          <span class="muted">${i.country}</span>
+        </div>
+        <div class="muted" style="margin:6px 0">${i.iata||''}${i.iata?'/':''}${i.icao||''} • ${fmtDate(i.date_start_utc)} → ${fmtDate(i.date_end_utc)}</div>
+        <div>Type: <b>${i.incident_type}</b> • Duration: <b>${i.duration_min||'—'}m</b> • Evidence: <b>${i.evidence_strength}</b> • Severity: <b>${i.severity}</b></div>
+        <div class="muted" style="margin:6px 0">${i.notes||''}</div>
+        <div>Sources: <a href="${i.source_primary_url}" target="_blank" rel="noopener">primary</a>${i.source_secondary_url?` · <a href="${i.source_secondary_url}" target="_blank" rel="noopener">secondary</a>`:''}</div>
+      `;
+      listEl.appendChild(div);
+    });
+  }
+
+  function refresh(){
+    // Update range label
+    dateLabel.textContent = `Showing last ${activeDays()} days`;
+    // Clear map
+    cluster.clearLayers(); markers = [];
+    const filtered = filterIncidents();
+
+    // Add markers
+    filtered.forEach(i => {
+      const m = markerFor(i); markers.push(m); cluster.addLayer(m);
+    });
+    map.addLayer(cluster);
+
+    // Fit bounds
+    if (markers.length) {
+      const group = L.featureGroup(markers);
+      map.fitBounds(group.getBounds().pad(0.2));
+    }
+
+    updateStats(filtered);
+    renderDetails(filtered.slice(0, 8));
+    console.info(`[DroneSightings] Rendered ${filtered.length} incidents.`);
+  }
+
+  // Quick time chips
+  document.querySelectorAll('.chip[data-window]').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      document.querySelectorAll('.chip[data-window]').forEach(b=>b.classList.remove('active'));
+      btn.classList.add('active');
+      dateRange.value = btn.dataset.window;
+      refresh();
+    });
+  });
+
+  // Inputs
+  [dateRange, statusSelect, evidenceSelect, countrySelect].forEach(el=>{
+    el.addEventListener('input', refresh);
+    el.addEventListener('change', refresh);
+  });
+  document.getElementById('searchBox').addEventListener('input', refresh);
+
+  // Export CSV
+  document.getElementById('exportCsvBtn').addEventListener('click', ()=>{
+    const items = filterIncidents();
+    if(items.length === 0) return;
+    const head = Object.keys(items[0]);
+    const rows = [head.join(',')].concat(items.map(i=>head.map(h=>JSON.stringify(i[h]??'')).join(',')));
+    const blob = new Blob([rows.join('\n')], {type:'text/csv;charset=utf-8;'});
+    const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
+    a.download = `drone_sightings_${new Date().toISOString().slice(0,10)}.csv`; a.click();
+  });
+
+  // Reset
+  document.getElementById('resetBtn').addEventListener('click', ()=>{
+    document.getElementById('searchBox').value='';
+    [...statusSelect.options].forEach(o=>o.selected=true);
+    [...evidenceSelect.options].forEach(o=>o.selected=(o.value!=='0'));
+    [...countrySelect.options].forEach(o=>o.selected=false);
+    dateRange.value = 365;
+    document.querySelectorAll('.chip[data-window]').forEach(b=>b.classList.remove('active'));
+    document.querySelector('.chip[data-window="365"]').classList.add('active');
+    refresh();
+  });
+
+  // Init
+  dateRange.value = 365;
+  dateLabel.textContent = 'Showing last 365 days';
+  refresh();
+
+  // Keyboard: jump between panels
+  document.addEventListener('keydown', (e)=>{
+    if(e.key==='m') document.getElementById('map').focus();
+    if(e.key==='f') document.getElementById('left').focus();
+    if(e.key==='d') document.getElementById('right').focus();
+  });
+  </script>
+</body>
+</html>
