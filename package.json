@@ -1,0 +1,11 @@
+{
+  "name": "drone-sightings",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Interactive Europe-wide drone incident map",
+  "scripts": {
+    "build-assets": "python3 tools/build_assets.py",
+    "ingest": "python3 tools/ingest.py"
+  }
+}
