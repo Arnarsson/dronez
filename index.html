@@ -174,8 +174,8 @@
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin="anonymous"></script>
   <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js" crossorigin="anonymous"></script>
   <script>
-    const DATA_URL = 'data/processed/incidents_last365.json';
-    const SUMMARY_URL = 'data/processed/incidents_summary.json';
+    const DATA_ENDPOINTS = ['/api/incidents', 'data/processed/incidents_last365.json'];
+    const SUMMARY_ENDPOINTS = ['/api/summary', 'data/processed/incidents_summary.json'];
 
     let allIncidents = [];
     let map;
@@ -499,19 +499,34 @@
       });
     }
 
+    async function fetchWithFallback(urls) {
+      for (const url of urls) {
+        try {
+          const response = await fetch(url);
+          if (response.ok) {
+            return response;
+          }
+        } catch (error) {
+          console.warn(`[DroneSightings] fetch failed for ${url}`, error);
+        }
+      }
+      throw new Error(`All endpoints failed: ${urls.join(', ')}`);
+    }
+
     async function bootstrap() {
       try {
-        const [dataResp, summaryResp] = await Promise.all([
-          fetch(DATA_URL),
-          fetch(SUMMARY_URL)
-        ]);
-        if (!dataResp.ok) {
-          throw new Error(`Failed to load incidents dataset: ${dataResp.status}`);
-        }
+        const dataResp = await fetchWithFallback(DATA_ENDPOINTS);
         const rawData = await dataResp.json();
         allIncidents = rawData.map(enrichIncident);
-        if (summaryResp.ok) {
-          const summary = await summaryResp.json();
+        let summary;
+        try {
+          const summaryResp = await fetchWithFallback(SUMMARY_ENDPOINTS);
+          summary = await summaryResp.json();
+        } catch (summaryError) {
+          console.warn('[DroneSightings] falling back to build timestamp because summary fetch failed', summaryError);
+          summary = null;
+        }
+        if (summary && summary.generated_at) {
           datasetAsOf = new Date(summary.generated_at);
           document.getElementById('build-info').textContent = `Build: static • generated ${summary.generated_at.slice(0, 10)}`;
         } else {
