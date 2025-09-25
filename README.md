@@ -36,7 +36,9 @@ A build summary is written to `data/processed/incidents_summary.json` for quick 
 
 ## 3. Data pipeline
 
-The pipeline is scripted in `scripts/build_dataset.py` (standard-library only).
+The pipeline is scripted in `scripts/build_dataset.py` (standard-library only) and automated via GitHub Actions for continuous refreshes.
+
+### Local rebuild
 
 ```bash
 # Rebuild processed artefacts (CSV, JSON, GeoJSON, summary)
@@ -60,6 +62,17 @@ The pipeline is scripted in `scripts/build_dataset.py` (standard-library only).
 - **Airport metadata:** refresh from the [OurAirports open dataset](https://ourairports.com/data/) if new fields are required (e.g., runway bearings for approach-risk buffers).
 - **CI/CD:** drop the build command into a scheduled GitHub Action, committing updated `data/processed` artefacts nightly.
 
+### API endpoints
+
+- `GET /api/incidents` → latest processed incidents (JSON array).
+- `GET /api/summary` → build metadata (JSON object with counts and timestamps).
+
+These endpoints are served by Vercel’s serverless runtime and fall back to the static JSON files when deployed on GitHub Pages.
+
+### Automated rebuild (GitHub Actions)
+
+`.github/workflows/build-dataset.yml` runs every day at 04:00 UTC (and on manual dispatch). It executes the build script and, when processed artefacts change, commits them back to the repository. Once the repo is connected to Vercel or Pages, each commit triggers a redeploy with fresh data.
+
 ## 4. Web application
 
 `index.html` is a self-contained Leaflet app that fetches `data/processed/incidents_last365.json` and `incidents_summary.json` at runtime.
@@ -69,6 +82,7 @@ Highlights:
 - Filter-aware CSV export to share briefings quickly.
 - ISO-week histogram rendered with vanilla JS for zero extra dependencies.
 - Detail panel that cross-links map markers and contextual notes.
+- The front-end first queries `/api/incidents` (serverless function on Vercel) and falls back to the static JSON for GitHub Pages compatibility.
 
 All assets load from public CDNs; no build step is required. For local testing:
 
@@ -79,9 +93,9 @@ python -m http.server 8000
 
 ## 5. Deployment
 
-- **GitHub Pages:** push to `main`, then enable Pages → “Deploy from branch” (root). The dataset lives within the repo, so no additional hosting is needed.
-- **Vercel / Netlify:** drag-and-drop the repository or point to it via the CLI; these hosts treat the project as a static site.
-- **Custom hosting:** serve the repository directory from any HTTP server (S3 + CloudFront, Azure Static Web Apps, etc.).
+- **GitHub Pages:** push to `main`, then enable Pages → “Deploy from branch” (root). The site consumes the baked JSON from `data/processed`, so it works out-of-the-box.
+- **Vercel (dynamic refresh):** connect the repo, set the project type to _Static Site_, and Vercel will redeploy automatically whenever the scheduled workflow commits a refreshed dataset. The `/api/incidents` and `/api/summary` serverless routes serve the latest JSON to the front-end. (Add a custom deploy step with `vercel deploy` if you prefer explicit control.)
+- **Netlify / other:** drag-and-drop the repository or point a CI/CD pipeline at it; ensure `data/processed` is published alongside `index.html`.
 
 ## 6. Sources & verification
 
