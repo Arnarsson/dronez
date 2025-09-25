@@ -5,6 +5,7 @@
   "type": "module",
   "description": "Interactive Europe-wide drone incident map",
   "scripts": {
+    "build": "rm -rf dist && mkdir -p dist && cp index.html dist/index.html && cp public/incidents.json dist/incidents.json && cp public/incidents.schema.json dist/incidents.schema.json && cp public/favicon.svg dist/favicon.svg",
     "build-assets": "python3 tools/build_assets.py",
     "ingest": "python3 tools/ingest.py"
   }
