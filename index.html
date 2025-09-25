@@ -174,7 +174,10 @@
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin="anonymous"></script>
   <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js" crossorigin="anonymous"></script>
   <script>
-    const INCIDENTS_URL = 'public/incidents.json';
+    const INCIDENTS_PATHS = [
+      'incidents.json',
+      'public/incidents.json'
+    ];
     const REFRESH_MS = 5 * 60 * 1000;
 
     const assetColors = {
@@ -382,15 +385,26 @@
     }
 
     async function fetchIncidents() {
-      try {
-        const res = await fetch(`${INCIDENTS_URL}?_=${Date.now()}`, { cache: 'no-store' });
-        if (!res.ok) throw new Error(`HTTP ${res.status}`);
-        const data = await res.json();
-        state.data = data;
-        document.getElementById('badge-generated').textContent = `Generated: ${data.generated_utc || '—'}`;
-      } catch (err) {
-        console.error('Failed to fetch incidents.json', err);
+      const cacheBust = Date.now();
+      let lastError = null;
+
+      for (const path of INCIDENTS_PATHS) {
+        try {
+          const res = await fetch(`${path}?_=${cacheBust}`, { cache: 'no-store' });
+          if (!res.ok) {
+            lastError = new Error(`HTTP ${res.status} for ${path}`);
+            continue;
+          }
+          const data = await res.json();
+          state.data = data;
+          document.getElementById('badge-generated').textContent = `Generated: ${data.generated_utc || '—'}`;
+          return;
+        } catch (err) {
+          lastError = err;
+        }
       }
+
+      console.error('Failed to fetch incidents dataset', lastError);
     }
 
     async function refreshAll() {
