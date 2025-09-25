@@ -1586,17 +1586,17 @@
       </div>
     </aside>
 
-    <!-- Map Container -->
-    <div id="map-container">
-      <main id="map" role="region" aria-label="Incident map">
-        <div id="mapOverlay" style="display: none; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 1000; background: var(--surface); border: 3px solid var(--severity-4); border-radius: 16px; padding: 40px 60px; text-align: center; box-shadow: 0 8px 32px rgba(0,0,0,0.8);">
-          <div style="font-size: 48px; font-weight: 900; color: var(--severity-4); margin-bottom: 16px; letter-spacing: 3px;">NO DATA</div>
-          <div style="color: var(--muted); font-size: 16px; line-height: 1.4;">Europe-wide incident monitoring system<br/>No current incidents detected</div>
-        </div>
-      </main>
-    </div>
+      <!-- Map Container - NOW PROPERLY INSIDE main-container -->
+      <div id="map-container">
+        <main id="map" role="region" aria-label="Incident map">
+          <div id="mapOverlay" style="display: none; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 1000; background: var(--surface); border: 3px solid var(--severity-4); border-radius: 16px; padding: 40px 60px; text-align: center; box-shadow: 0 8px 32px rgba(0,0,0,0.8);">
+            <div style="font-size: 48px; font-weight: 900; color: var(--severity-4); margin-bottom: 16px; letter-spacing: 3px;">NO DATA</div>
+            <div style="color: var(--muted); font-size: 16px; line-height: 1.4;">Europe-wide incident monitoring system<br/>No current incidents detected</div>
+          </div>
+        </main>
+      </div>
 
-    <aside id="right" aria-label="Incident details">
+      <aside id="right" aria-label="Incident details">
       <div id="details">
         <h2>Incident feed</h2>
         <p class="muted" id="detailsIntro">Pins refresh every few minutes. Click a marker or list item for full provenance.</p>
@@ -1606,7 +1606,8 @@
         </div>
         <div id="incidentList"></div>
       </div>
-    </aside>
+      </aside>
+    </div> <!-- End of main-container - CRITICAL FIX -->
 
     <!-- Provenance Modal -->
     <div id="provenanceModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 2000; overflow-y: auto;">
