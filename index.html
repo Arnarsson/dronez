@@ -346,6 +346,7 @@
   <div id="app" role="application" aria-label="Drone Sightings interactive map">
     <header>
       <h1>Drone Sightings — Europe (Air, Sea & Critical Nodes)</h1>
+      <span class="badge" style="background: var(--severity-3); color: #000; font-weight: 700;">DEMO DATA</span>
       <span class="badge">Satellite</span>
       <span class="badge" id="badge-refresh">Auto refresh</span>
       <span class="badge" id="badge-generated">Generated: —</span>
@@ -374,6 +375,13 @@
     </div>
 
     <aside id="left" aria-label="Filters">
+      <div class="section" style="background: var(--chip); border: 1px solid var(--border); border-radius: 8px; padding: 12px; margin-bottom: 16px;">
+        <h2 style="color: var(--severity-3); margin-top: 0;">⚠️ Demo Platform</h2>
+        <p style="font-size: 11px; line-height: 1.4; margin: 0; color: var(--muted);">
+          This is a demonstration of drone incident monitoring capabilities. All incidents are <strong>simulated data</strong> for security research and system testing purposes. No real incidents or sources are represented.
+        </p>
+      </div>
+
       <div class="section">
         <h2>Time Window</h2>
         <div class="chips" role="group" aria-label="Quick time windows">

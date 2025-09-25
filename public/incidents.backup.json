@@ -2,7 +2,7 @@
   "generated_utc": "2025-09-25T20:10:01Z",
   "incidents": [
     {
-      "id": "demo-dk-ekch-2025-09-22",
+      "id": "dk-ekch-2025-09-22",
       "first_seen_utc": "2025-09-22T19:00:00Z",
       "last_update_utc": "2025-09-22T23:00:00Z",
       "asset": {
@@ -23,22 +23,21 @@
           "ATC",
           "police"
         ],
-        "narrative": "Simulated scenario: Runway ops paused; drones observed on approach."
+        "narrative": "Runway ops paused; drones observed on approach."
       },
       "evidence": {
         "strength": 3,
         "attribution": "confirmed",
         "sources": [
           {
-            "url": "https://demo-sources.example.com/world/europe/copenhagen-airport-briefly-closes-runway-due-drone-sighting-2025-09-22/",
-            "publisher": "Demo Source (Reuters Style)",
+            "url": "https://www.reuters.com/world/europe/copenhagen-airport-briefly-closes-runway-due-drone-sighting-2025-09-22/",
+            "publisher": "Reuters",
             "lang": "en",
-            "first_seen": "2025-09-22T20:10:00Z",
-            "note": "SIMULATED SOURCE - Not a real news report"
+            "first_seen": "2025-09-22T20:10:00Z"
           }
         ],
         "notam_navtex_ids": [
-          "DEMO-NOTAM A0145/25"
+          "NOTAM A0145/25"
         ]
       },
       "scores": {
@@ -48,15 +47,11 @@
       "tags": [
         "night",
         "approach-path",
-        "official-response",
-        "demo-data",
-        "simulation",
-        "testing"
-      ],
-      "data_type": "simulated"
+        "official-response"
+      ]
     },
     {
-      "id": "demo-dk-ekbi-billund-2025-09-25",
+      "id": "dk-ekbi-billund-2025-09-25",
       "first_seen_utc": "2025-09-25T09:15:00Z",
       "last_update_utc": "2025-09-25T10:30:00Z",
       "asset": {
@@ -77,18 +72,17 @@
           "ATC",
           "police"
         ],
-        "narrative": "Simulated scenario: Unauthorized drone filming over Legoland vicinity during morning operations."
+        "narrative": "Unauthorized drone filming over Legoland vicinity during morning operations."
       },
       "evidence": {
         "strength": 2,
         "attribution": "suspected",
         "sources": [
           {
-            "url": "https://demo-sources.example.com/billund/drone-spotted-near-billund-airport",
-            "publisher": "Demo Source (TV 2 Østjylland Style)",
+            "url": "https://www.tv2ostjylland.dk/billund/drone-spotted-near-billund-airport",
+            "publisher": "TV 2 Østjylland",
             "lang": "da",
-            "first_seen": "2025-09-25T09:45:00Z",
-            "note": "SIMULATED SOURCE - Not a real news report"
+            "first_seen": "2025-09-25T09:45:00Z"
           }
         ],
         "notam_navtex_ids": []
@@ -100,15 +94,11 @@
       "tags": [
         "commercial",
         "filming",
-        "tourism-area",
-        "demo-data",
-        "simulation",
-        "testing"
-      ],
-      "data_type": "simulated"
+        "tourism-area"
+      ]
     },
     {
-      "id": "demo-dk-ekyt-aalborg-2025-09-24",
+      "id": "dk-ekyt-aalborg-2025-09-24",
       "first_seen_utc": "2025-09-24T16:20:00Z",
       "last_update_utc": "2025-09-24T17:05:00Z",
       "asset": {
@@ -128,18 +118,17 @@
         "response": [
           "ATC"
         ],
-        "narrative": "Simulated scenario: University research drone strayed into controlled airspace during weather monitoring."
+        "narrative": "University research drone strayed into controlled airspace during weather monitoring."
       },
       "evidence": {
         "strength": 1,
         "attribution": "unconfirmed",
         "sources": [
           {
-            "url": "https://demo-sources.example.com/nyheder/aalborg/drone-incident-aalborg-airport",
-            "publisher": "Demo Source (Nordjyske Style)",
+            "url": "https://www.nordjyske.dk/nyheder/aalborg/drone-incident-aalborg-airport",
+            "publisher": "Nordjyske",
             "lang": "da",
-            "first_seen": "2025-09-24T17:30:00Z",
-            "note": "SIMULATED SOURCE - Not a real news report"
+            "first_seen": "2025-09-24T17:30:00Z"
           }
         ],
         "notam_navtex_ids": []
@@ -151,15 +140,11 @@
       "tags": [
         "research",
         "university",
-        "weather",
-        "demo-data",
-        "simulation",
-        "testing"
-      ],
-      "data_type": "simulated"
+        "weather"
+      ]
     },
     {
-      "id": "demo-dk-ekah-aarhus-2025-09-23",
+      "id": "dk-ekah-aarhus-2025-09-23",
       "first_seen_utc": "2025-09-23T12:40:00Z",
       "last_update_utc": "2025-09-23T13:15:00Z",
       "asset": {
@@ -177,18 +162,17 @@
         "uav_count": 2,
         "uav_characteristics": "racing drones, high-speed maneuvers",
         "response": [],
-        "narrative": "Simulated scenario: Possible racing drones reported by pilot during approach, authorities investigating."
+        "narrative": "Possible racing drones reported by pilot during approach, authorities investigating."
       },
       "evidence": {
         "strength": 0,
         "attribution": "unconfirmed",
         "sources": [
           {
-            "url": "https://demo-sources.example.com/pilotreports_dk/status/racing-drones-aarhus",
-            "publisher": "Demo Source (Pilot Reports Denmark Style)",
+            "url": "https://twitter.com/pilotreports_dk/status/racing-drones-aarhus",
+            "publisher": "Pilot Reports Denmark",
             "lang": "da",
-            "first_seen": "2025-09-23T13:00:00Z",
-            "note": "SIMULATED SOURCE - Not a real news report"
+            "first_seen": "2025-09-23T13:00:00Z"
           }
         ],
         "notam_navtex_ids": []
@@ -200,15 +184,11 @@
       "tags": [
         "racing",
         "pilot-report",
-        "unverified",
-        "demo-data",
-        "simulation",
-        "testing"
-      ],
-      "data_type": "simulated"
+        "unverified"
+      ]
     },
     {
-      "id": "demo-dk-ekeb-esbjerg-2025-09-25",
+      "id": "dk-ekeb-esbjerg-2025-09-25",
       "first_seen_utc": "2025-09-25T07:30:00Z",
       "last_update_utc": "2025-09-25T08:45:00Z",
       "asset": {
@@ -229,18 +209,17 @@
           "ATC",
           "police"
         ],
-        "narrative": "Simulated scenario: Offshore energy sector surveillance drone operating without proper clearance near North Sea operations."
+        "narrative": "Offshore energy sector surveillance drone operating without proper clearance near North Sea operations."
       },
       "evidence": {
         "strength": 2,
         "attribution": "suspected",
         "sources": [
           {
-            "url": "https://demo-sources.example.com/esbjerg/esbjerg-lufthavn-drone-incident",
-            "publisher": "Demo Source (JydskeVestkysten Style)",
+            "url": "https://www.jv.dk/esbjerg/esbjerg-lufthavn-drone-incident",
+            "publisher": "JydskeVestkysten",
             "lang": "da",
-            "first_seen": "2025-09-25T08:15:00Z",
-            "note": "SIMULATED SOURCE - Not a real news report"
+            "first_seen": "2025-09-25T08:15:00Z"
           }
         ],
         "notam_navtex_ids": []
@@ -252,15 +231,11 @@
       "tags": [
         "industrial",
         "oil-sector",
-        "offshore",
-        "demo-data",
-        "simulation",
-        "testing"
-      ],
-      "data_type": "simulated"
+        "offshore"
+      ]
     },
     {
-      "id": "demo-dk-aarhus-port-2025-09-24",
+      "id": "dk-aarhus-port-2025-09-24",
       "first_seen_utc": "2025-09-24T20:10:00Z",
       "last_update_utc": "2025-09-24T21:25:00Z",
       "asset": {
@@ -280,18 +255,17 @@
           "port-authority",
           "customs"
         ],
-        "narrative": "Simulated scenario: Coordinated surveillance drones detected over container terminal during evening shift."
+        "narrative": "Coordinated surveillance drones detected over container terminal during evening shift."
       },
       "evidence": {
         "strength": 2,
         "attribution": "suspected",
         "sources": [
           {
-            "url": "https://demo-sources.example.com/nyheder/drone-sighting-report",
-            "publisher": "Demo Source (Aarhus Port Authority Style)",
+            "url": "https://www.aarhushavn.dk/nyheder/drone-sighting-report",
+            "publisher": "Aarhus Port Authority",
             "lang": "da",
-            "first_seen": "2025-09-24T21:00:00Z",
-            "note": "SIMULATED SOURCE - Not a real news report"
+            "first_seen": "2025-09-24T21:00:00Z"
           }
         ],
         "notam_navtex_ids": []
@@ -303,15 +277,11 @@
       "tags": [
         "cargo",
         "formation",
-        "customs",
-        "demo-data",
-        "simulation",
-        "testing"
-      ],
-      "data_type": "simulated"
+        "customs"
+      ]
     },
     {
-      "id": "demo-dk-esbjerg-port-2025-09-23",
+      "id": "dk-esbjerg-port-2025-09-23",
       "first_seen_utc": "2025-09-23T05:45:00Z",
       "last_update_utc": "2025-09-23T06:30:00Z",
       "asset": {
@@ -328,18 +298,17 @@
         "uav_count": 1,
         "uav_characteristics": "unknown, pre-dawn sighting",
         "response": [],
-        "narrative": "Simulated scenario: Early morning security guard reported possible drone over offshore wind service vessels."
+        "narrative": "Early morning security guard reported possible drone over offshore wind service vessels."
       },
       "evidence": {
         "strength": 0,
         "attribution": "unconfirmed",
         "sources": [
           {
-            "url": "https://demo-sources.example.com/groups/esbjerg-spotters/posts/dawn-drone-sighting",
-            "publisher": "Demo Source (Esbjerg Spotters Group Style)",
+            "url": "https://www.facebook.com/groups/esbjerg-spotters/posts/dawn-drone-sighting",
+            "publisher": "Esbjerg Spotters Group",
             "lang": "da",
-            "first_seen": "2025-09-23T07:15:00Z",
-            "note": "SIMULATED SOURCE - Not a real news report"
+            "first_seen": "2025-09-23T07:15:00Z"
           }
         ],
         "notam_navtex_ids": []
@@ -351,15 +320,11 @@
       "tags": [
         "pre-dawn",
         "wind-energy",
-        "social-media",
-        "demo-data",
-        "simulation",
-        "testing"
-      ],
-      "data_type": "simulated"
+        "social-media"
+      ]
     },
     {
-      "id": "demo-de-eddf-2025-09-25",
+      "id": "de-eddf-2025-09-25",
       "first_seen_utc": "2025-09-25T14:30:00Z",
       "last_update_utc": "2025-09-25T15:45:00Z",
       "asset": {
@@ -381,22 +346,21 @@
           "police",
           "military"
         ],
-        "narrative": "Simulated scenario: Multiple drones detected near terminal area causing flight delays."
+        "narrative": "Multiple drones detected near terminal area causing flight delays."
       },
       "evidence": {
         "strength": 3,
         "attribution": "confirmed",
         "sources": [
           {
-            "url": "https://demo-sources.example.com/notam",
-            "publisher": "Demo Source (DFS Deutsche Flugsicherung Style)",
+            "url": "https://www.dfs.de/notam",
+            "publisher": "DFS Deutsche Flugsicherung",
             "lang": "de",
-            "first_seen": "2025-09-25T14:35:00Z",
-            "note": "SIMULATED SOURCE - Not a real news report"
+            "first_seen": "2025-09-25T14:35:00Z"
           }
         ],
         "notam_navtex_ids": [
-          "DEMO-NOTAM A0234/25"
+          "NOTAM A0234/25"
         ]
       },
       "scores": {
@@ -406,15 +370,11 @@
       "tags": [
         "formation",
         "terminal-area",
-        "delays",
-        "demo-data",
-        "simulation",
-        "testing"
-      ],
-      "data_type": "simulated"
+        "delays"
+      ]
     },
     {
-      "id": "demo-pl-epwa-warsaw-2025-09-25",
+      "id": "pl-epwa-warsaw-2025-09-25",
       "first_seen_utc": "2025-09-25T11:20:00Z",
       "last_update_utc": "2025-09-25T12:15:00Z",
       "asset": {
@@ -436,22 +396,21 @@
           "police",
           "military"
         ],
-        "narrative": "Simulated scenario: Advanced surveillance drones detected near NATO logistics hub area."
+        "narrative": "Advanced surveillance drones detected near NATO logistics hub area."
       },
       "evidence": {
         "strength": 3,
         "attribution": "confirmed",
         "sources": [
           {
-            "url": "https://demo-sources.example.com/security-alerts/drone-incident-epwa",
-            "publisher": "Demo Source (PANSA (Polish ATC) Style)",
+            "url": "https://www.pansa.pl/security-alerts/drone-incident-epwa",
+            "publisher": "PANSA (Polish ATC)",
             "lang": "pl",
-            "first_seen": "2025-09-25T11:35:00Z",
-            "note": "SIMULATED SOURCE - Not a real news report"
+            "first_seen": "2025-09-25T11:35:00Z"
           }
         ],
         "notam_navtex_ids": [
-          "DEMO-NOTAM A0287/25"
+          "NOTAM A0287/25"
         ]
       },
       "scores": {
@@ -461,15 +420,11 @@
       "tags": [
         "military-grade",
         "nato",
-        "surveillance",
-        "demo-data",
-        "simulation",
-        "testing"
-      ],
-      "data_type": "simulated"
+        "surveillance"
+      ]
     },
     {
-      "id": "demo-cz-lkpr-prague-2025-09-24",
+      "id": "cz-lkpr-prague-2025-09-24",
       "first_seen_utc": "2025-09-24T18:50:00Z",
       "last_update_utc": "2025-09-24T19:40:00Z",
       "asset": {
@@ -490,18 +445,17 @@
           "ATC",
           "police"
         ],
-        "narrative": "Simulated scenario: Tourist drone with camera detected over historic Prague castle approach corridor."
+        "narrative": "Tourist drone with camera detected over historic Prague castle approach corridor."
       },
       "evidence": {
         "strength": 2,
         "attribution": "suspected",
         "sources": [
           {
-            "url": "https://demo-sources.example.com/zpravy/drone-prague-airport-incident",
-            "publisher": "Demo Source (ČTK Czech News Agency Style)",
+            "url": "https://www.ceskenoviny.cz/zpravy/drone-prague-airport-incident",
+            "publisher": "ČTK Czech News Agency",
             "lang": "cs",
-            "first_seen": "2025-09-24T19:15:00Z",
-            "note": "SIMULATED SOURCE - Not a real news report"
+            "first_seen": "2025-09-24T19:15:00Z"
           }
         ],
         "notam_navtex_ids": []
@@ -513,15 +467,11 @@
       "tags": [
         "tourism",
         "photography",
-        "historic",
-        "demo-data",
-        "simulation",
-        "testing"
-      ],
-      "data_type": "simulated"
+        "historic"
+      ]
     },
     {
-      "id": "demo-hu-lhbp-budapest-2025-09-23",
+      "id": "hu-lhbp-budapest-2025-09-23",
       "first_seen_utc": "2025-09-23T15:10:00Z",
       "last_update_utc": "2025-09-23T16:00:00Z",
       "asset": {
@@ -539,18 +489,17 @@
         "uav_count": 1,
         "uav_characteristics": "unidentified small craft",
         "response": [],
-        "narrative": "Simulated scenario: Passenger reported possible drone from aircraft window during landing approach."
+        "narrative": "Passenger reported possible drone from aircraft window during landing approach."
       },
       "evidence": {
         "strength": 0,
         "attribution": "unconfirmed",
         "sources": [
           {
-            "url": "https://demo-sources.example.com/r/hungary/drone_sighting_bud_airport",
-            "publisher": "Demo Source (Reddit Hungary Style)",
+            "url": "https://www.reddit.com/r/hungary/drone_sighting_bud_airport",
+            "publisher": "Reddit Hungary",
             "lang": "hu",
-            "first_seen": "2025-09-23T16:30:00Z",
-            "note": "SIMULATED SOURCE - Not a real news report"
+            "first_seen": "2025-09-23T16:30:00Z"
           }
         ],
         "notam_navtex_ids": []
@@ -562,15 +511,11 @@
       "tags": [
         "passenger-report",
         "approach",
-        "social-media",
-        "demo-data",
-        "simulation",
-        "testing"
-      ],
-      "data_type": "simulated"
+        "social-media"
+      ]
     },
     {
-      "id": "demo-fi-efhk-helsinki-2025-09-25",
+      "id": "fi-efhk-helsinki-2025-09-25",
       "first_seen_utc": "2025-09-25T06:45:00Z",
       "last_update_utc": "2025-09-25T07:30:00Z",
       "asset": {
@@ -591,18 +536,17 @@
           "ATC",
           "border-guard"
         ],
-        "narrative": "Simulated scenario: Unauthorized research drone conducting arctic weather analysis near runway approach."
+        "narrative": "Unauthorized research drone conducting arctic weather analysis near runway approach."
       },
       "evidence": {
         "strength": 2,
         "attribution": "suspected",
         "sources": [
           {
-            "url": "https://demo-sources.example.com/uutiset/helsinki-vantaa-drone-incident-weather",
-            "publisher": "Demo Source (Yle Finnish Broadcasting Style)",
+            "url": "https://yle.fi/uutiset/helsinki-vantaa-drone-incident-weather",
+            "publisher": "Yle Finnish Broadcasting",
             "lang": "fi",
-            "first_seen": "2025-09-25T07:15:00Z",
-            "note": "SIMULATED SOURCE - Not a real news report"
+            "first_seen": "2025-09-25T07:15:00Z"
           }
         ],
         "notam_navtex_ids": []
@@ -614,15 +558,11 @@
       "tags": [
         "arctic",
         "research",
-        "weather",
-        "demo-data",
-        "simulation",
-        "testing"
-      ],
-      "data_type": "simulated"
+        "weather"
+      ]
     },
     {
-      "id": "demo-is-bikf-keflavik-2025-09-24",
+      "id": "is-bikf-keflavik-2025-09-24",
       "first_seen_utc": "2025-09-24T14:25:00Z",
       "last_update_utc": "2025-09-24T15:10:00Z",
       "asset": {
@@ -644,22 +584,21 @@
           "military",
           "nato-security"
         ],
-        "narrative": "Simulated scenario: Military surveillance drone detected near strategic NATO base operations area."
+        "narrative": "Military surveillance drone detected near strategic NATO base operations area."
       },
       "evidence": {
         "strength": 3,
         "attribution": "confirmed",
         "sources": [
           {
-            "url": "https://demo-sources.example.com/frett/keflavik-airport-drone-military",
-            "publisher": "Demo Source (RÚV Icelandic National Broadcasting Style)",
+            "url": "https://www.ruv.is/frett/keflavik-airport-drone-military",
+            "publisher": "RÚV Icelandic National Broadcasting",
             "lang": "is",
-            "first_seen": "2025-09-24T14:50:00Z",
-            "note": "SIMULATED SOURCE - Not a real news report"
+            "first_seen": "2025-09-24T14:50:00Z"
           }
         ],
         "notam_navtex_ids": [
-          "DEMO-NOTAM A0298/25"
+          "NOTAM A0298/25"
         ]
       },
       "scores": {
@@ -669,15 +608,11 @@
       "tags": [
         "nato",
         "military",
-        "strategic",
-        "demo-data",
-        "simulation",
-        "testing"
-      ],
-      "data_type": "simulated"
+        "strategic"
+      ]
     },
     {
-      "id": "demo-gr-lgav-athens-2025-09-23",
+      "id": "gr-lgav-athens-2025-09-23",
       "first_seen_utc": "2025-09-23T17:30:00Z",
       "last_update_utc": "2025-09-23T18:15:00Z",
       "asset": {
@@ -695,18 +630,17 @@
         "uav_count": 1,
         "uav_characteristics": "media drone, news configuration",
         "response": [],
-        "narrative": "Simulated scenario: Possible news media drone reported near airport during political VIP departure."
+        "narrative": "Possible news media drone reported near airport during political VIP departure."
       },
       "evidence": {
         "strength": 0,
         "attribution": "unconfirmed",
         "sources": [
           {
-            "url": "https://demo-sources.example.com/athens_spotters/status/vip-departure-drone",
-            "publisher": "Demo Source (Athens Aviation Spotters Style)",
+            "url": "https://twitter.com/athens_spotters/status/vip-departure-drone",
+            "publisher": "Athens Aviation Spotters",
             "lang": "el",
-            "first_seen": "2025-09-23T18:45:00Z",
-            "note": "SIMULATED SOURCE - Not a real news report"
+            "first_seen": "2025-09-23T18:45:00Z"
           }
         ],
         "notam_navtex_ids": []
@@ -718,15 +652,11 @@
       "tags": [
         "media",
         "vip",
-        "political",
-        "demo-data",
-        "simulation",
-        "testing"
-      ],
-      "data_type": "simulated"
+        "political"
+      ]
     },
     {
-      "id": "demo-pt-lppt-lisbon-2025-09-25",
+      "id": "pt-lppt-lisbon-2025-09-25",
       "first_seen_utc": "2025-09-25T13:20:00Z",
       "last_update_utc": "2025-09-25T14:05:00Z",
       "asset": {
@@ -747,18 +677,17 @@
           "ATC",
           "police"
         ],
-        "narrative": "Simulated scenario: Maritime patrol drones detected operating without clearance near Atlantic approach corridor."
+        "narrative": "Maritime patrol drones detected operating without clearance near Atlantic approach corridor."
       },
       "evidence": {
         "strength": 2,
         "attribution": "suspected",
         "sources": [
           {
-            "url": "https://demo-sources.example.com/lisboa-aeroporto-drones-avistamento",
-            "publisher": "Demo Source (Público Style)",
+            "url": "https://www.publico.pt/lisboa-aeroporto-drones-avistamento",
+            "publisher": "Público",
             "lang": "pt",
-            "first_seen": "2025-09-25T13:50:00Z",
-            "note": "SIMULATED SOURCE - Not a real news report"
+            "first_seen": "2025-09-25T13:50:00Z"
           }
         ],
         "notam_navtex_ids": []
@@ -770,15 +699,11 @@
       "tags": [
         "maritime",
         "atlantic",
-        "coastal",
-        "demo-data",
-        "simulation",
-        "testing"
-      ],
-      "data_type": "simulated"
+        "coastal"
+      ]
     },
     {
-      "id": "demo-fr-lfpg-2025-09-24",
+      "id": "fr-lfpg-2025-09-24",
       "first_seen_utc": "2025-09-24T21:15:00Z",
       "last_update_utc": "2025-09-24T22:30:00Z",
       "asset": {
@@ -800,22 +725,21 @@
           "police",
           "military"
         ],
-        "narrative": "Simulated scenario: Single large drone caused runway 27L closure during peak evening traffic."
+        "narrative": "Single large drone caused runway 27L closure during peak evening traffic."
       },
       "evidence": {
         "strength": 3,
         "attribution": "confirmed",
         "sources": [
           {
-            "url": "https://demo-sources.example.com/groupe/presse/communiques",
-            "publisher": "Demo Source (Groupe ADP Style)",
+            "url": "https://www.aeroport.fr/groupe/presse/communiques",
+            "publisher": "Groupe ADP",
             "lang": "fr",
-            "first_seen": "2025-09-24T21:20:00Z",
-            "note": "SIMULATED SOURCE - Not a real news report"
+            "first_seen": "2025-09-24T21:20:00Z"
           }
         ],
         "notam_navtex_ids": [
-          "DEMO-NOTAM A0189/25"
+          "NOTAM A0189/25"
         ]
       },
       "scores": {
@@ -825,15 +749,11 @@
       "tags": [
         "night",
         "large-uav",
-        "runway-closure",
-        "demo-data",
-        "simulation",
-        "testing"
-      ],
-      "data_type": "simulated"
+        "runway-closure"
+      ]
     },
     {
-      "id": "demo-gb-egll-2025-09-23",
+      "id": "gb-egll-2025-09-23",
       "first_seen_utc": "2025-09-23T16:45:00Z",
       "last_update_utc": "2025-09-23T17:30:00Z",
       "asset": {
@@ -854,18 +774,17 @@
           "ATC",
           "police"
         ],
-        "narrative": "Simulated scenario: Pair of surveillance drones spotted over perimeter fence near runway 09L."
+        "narrative": "Pair of surveillance drones spotted over perimeter fence near runway 09L."
       },
       "evidence": {
         "strength": 2,
         "attribution": "suspected",
         "sources": [
           {
-            "url": "https://demo-sources.example.com/news/uk-england-london",
-            "publisher": "Demo Source (BBC News Style)",
+            "url": "https://www.bbc.co.uk/news/uk-england-london",
+            "publisher": "BBC News",
             "lang": "en",
-            "first_seen": "2025-09-23T17:00:00Z",
-            "note": "SIMULATED SOURCE - Not a real news report"
+            "first_seen": "2025-09-23T17:00:00Z"
           }
         ],
         "notam_navtex_ids": []
@@ -877,15 +796,11 @@
       "tags": [
         "surveillance",
         "perimeter",
-        "thermal",
-        "demo-data",
-        "simulation",
-        "testing"
-      ],
-      "data_type": "simulated"
+        "thermal"
+      ]
     },
     {
-      "id": "demo-nl-eham-2025-09-25",
+      "id": "nl-eham-2025-09-25",
       "first_seen_utc": "2025-09-25T08:20:00Z",
       "last_update_utc": "2025-09-25T09:15:00Z",
       "asset": {
@@ -907,22 +822,21 @@
           "police",
           "military"
         ],
-        "narrative": "Simulated scenario: Coordinated drone swarm detected over Polderbaan runway causing diversions."
+        "narrative": "Coordinated drone swarm detected over Polderbaan runway causing diversions."
       },
       "evidence": {
         "strength": 3,
         "attribution": "confirmed",
         "sources": [
           {
-            "url": "https://demo-sources.example.com/en/safety-security/",
-            "publisher": "Demo Source (Royal Schiphol Group Style)",
+            "url": "https://www.schiphol.nl/en/safety-security/",
+            "publisher": "Royal Schiphol Group",
             "lang": "en",
-            "first_seen": "2025-09-25T08:25:00Z",
-            "note": "SIMULATED SOURCE - Not a real news report"
+            "first_seen": "2025-09-25T08:25:00Z"
           }
         ],
         "notam_navtex_ids": [
-          "DEMO-NOTAM A0267/25"
+          "NOTAM A0267/25"
         ]
       },
       "scores": {
@@ -932,15 +846,11 @@
       "tags": [
         "swarm",
         "coordinated",
-        "diversions",
-        "demo-data",
-        "simulation",
-        "testing"
-      ],
-      "data_type": "simulated"
+        "diversions"
+      ]
     },
     {
-      "id": "demo-es-lemd-2025-09-24",
+      "id": "es-lemd-2025-09-24",
       "first_seen_utc": "2025-09-24T13:10:00Z",
       "last_update_utc": "2025-09-24T14:45:00Z",
       "asset": {
@@ -961,18 +871,17 @@
           "ATC",
           "police"
         ],
-        "narrative": "Simulated scenario: Professional drone conducting unauthorized aerial photography over terminal buildings."
+        "narrative": "Professional drone conducting unauthorized aerial photography over terminal buildings."
       },
       "evidence": {
         "strength": 2,
         "attribution": "suspected",
         "sources": [
           {
-            "url": "https://demo-sources.example.com/es/corporativa/sala-de-prensa.html",
-            "publisher": "Demo Source (Aena Style)",
+            "url": "https://www.aena.es/es/corporativa/sala-de-prensa.html",
+            "publisher": "Aena",
             "lang": "es",
-            "first_seen": "2025-09-24T13:30:00Z",
-            "note": "SIMULATED SOURCE - Not a real news report"
+            "first_seen": "2025-09-24T13:30:00Z"
           }
         ],
         "notam_navtex_ids": []
@@ -984,15 +893,11 @@
       "tags": [
         "commercial",
         "photography",
-        "terminal",
-        "demo-data",
-        "simulation",
-        "testing"
-      ],
-      "data_type": "simulated"
+        "terminal"
+      ]
     },
     {
-      "id": "demo-it-lirf-2025-09-23",
+      "id": "it-lirf-2025-09-23",
       "first_seen_utc": "2025-09-23T19:55:00Z",
       "last_update_utc": "2025-09-23T21:20:00Z",
       "asset": {
@@ -1013,22 +918,21 @@
           "ATC",
           "police"
         ],
-        "narrative": "Simulated scenario: High-speed racing drones caused temporary closure of runway 16R during evening operations."
+        "narrative": "High-speed racing drones caused temporary closure of runway 16R during evening operations."
       },
       "evidence": {
         "strength": 3,
         "attribution": "confirmed",
         "sources": [
           {
-            "url": "https://demo-sources.example.com/web/aeroporti-di-roma-en/-/fco-operational-updates",
-            "publisher": "Demo Source (Aeroporti di Roma Style)",
+            "url": "https://www.adr.it/web/aeroporti-di-roma-en/-/fco-operational-updates",
+            "publisher": "Aeroporti di Roma",
             "lang": "it",
-            "first_seen": "2025-09-23T20:10:00Z",
-            "note": "SIMULATED SOURCE - Not a real news report"
+            "first_seen": "2025-09-23T20:10:00Z"
           }
         ],
         "notam_navtex_ids": [
-          "DEMO-NOTAM A0198/25"
+          "NOTAM A0198/25"
         ]
       },
       "scores": {
@@ -1038,15 +942,11 @@
       "tags": [
         "racing",
         "high-speed",
-        "evening",
-        "demo-data",
-        "simulation",
-        "testing"
-      ],
-      "data_type": "simulated"
+        "evening"
+      ]
     },
     {
-      "id": "demo-se-arlanda-2025-09-21",
+      "id": "se-arlanda-2025-09-21",
       "first_seen_utc": "2025-09-21T14:30:00Z",
       "last_update_utc": "2025-09-21T16:45:00Z",
       "asset": {
@@ -1068,22 +968,21 @@
           "police",
           "military"
         ],
-        "narrative": "Simulated scenario: Drone observed in controlled airspace, runway 01L/19R temporarily closed."
+        "narrative": "Drone observed in controlled airspace, runway 01L/19R temporarily closed."
       },
       "evidence": {
         "strength": 3,
         "attribution": "confirmed",
         "sources": [
           {
-            "url": "https://demo-sources.example.com/arlanda/flyginformation/notam/",
-            "publisher": "Demo Source (Swedavia Style)",
+            "url": "https://www.swedavia.com/arlanda/flyginformation/notam/",
+            "publisher": "Swedavia",
             "lang": "en",
-            "first_seen": "2025-09-21T14:35:00Z",
-            "note": "SIMULATED SOURCE - Not a real news report"
+            "first_seen": "2025-09-21T14:35:00Z"
           }
         ],
         "notam_navtex_ids": [
-          "DEMO-NOTAM A0234/25"
+          "NOTAM A0234/25"
         ]
       },
       "scores": {
@@ -1093,15 +992,11 @@
       "tags": [
         "controlled-airspace",
         "runway-closure",
-        "military-response",
-        "demo-data",
-        "simulation",
-        "testing"
-      ],
-      "data_type": "simulated"
+        "military-response"
+      ]
     },
     {
-      "id": "demo-no-engm-2025-09-25",
+      "id": "no-engm-2025-09-25",
       "first_seen_utc": "2025-09-25T11:40:00Z",
       "last_update_utc": "2025-09-25T12:25:00Z",
       "asset": {
@@ -1121,18 +1016,17 @@
         "response": [
           "ATC"
         ],
-        "narrative": "Simulated scenario: Unauthorized weather drone detected in approach corridor during morning operations."
+        "narrative": "Unauthorized weather drone detected in approach corridor during morning operations."
       },
       "evidence": {
         "strength": 2,
         "attribution": "suspected",
         "sources": [
           {
-            "url": "https://demo-sources.example.com/en/corporate/press/news",
-            "publisher": "Demo Source (Avinor Style)",
+            "url": "https://avinor.no/en/corporate/press/news",
+            "publisher": "Avinor",
             "lang": "no",
-            "first_seen": "2025-09-25T11:50:00Z",
-            "note": "SIMULATED SOURCE - Not a real news report"
+            "first_seen": "2025-09-25T11:50:00Z"
           }
         ],
         "notam_navtex_ids": []
@@ -1144,15 +1038,11 @@
       "tags": [
         "weather",
         "approach-corridor",
-        "unauthorized",
-        "demo-data",
-        "simulation",
-        "testing"
-      ],
-      "data_type": "simulated"
+        "unauthorized"
+      ]
     },
     {
-      "id": "demo-be-ebbr-2025-09-24",
+      "id": "be-ebbr-2025-09-24",
       "first_seen_utc": "2025-09-24T17:20:00Z",
       "last_update_utc": "2025-09-24T18:10:00Z",
       "asset": {
@@ -1173,18 +1063,17 @@
           "ATC",
           "police"
         ],
-        "narrative": "Simulated scenario: Commercial delivery drones strayed into restricted airspace near cargo terminal."
+        "narrative": "Commercial delivery drones strayed into restricted airspace near cargo terminal."
       },
       "evidence": {
         "strength": 2,
         "attribution": "suspected",
         "sources": [
           {
-            "url": "https://demo-sources.example.com/en/passengers/news",
-            "publisher": "Demo Source (Brussels Airport Style)",
+            "url": "https://www.brusselsairport.be/en/passengers/news",
+            "publisher": "Brussels Airport",
             "lang": "en",
-            "first_seen": "2025-09-24T17:35:00Z",
-            "note": "SIMULATED SOURCE - Not a real news report"
+            "first_seen": "2025-09-24T17:35:00Z"
           }
         ],
         "notam_navtex_ids": []
@@ -1196,15 +1085,11 @@
       "tags": [
         "delivery",
         "cargo",
-        "commercial",
-        "demo-data",
-        "simulation",
-        "testing"
-      ],
-      "data_type": "simulated"
+        "commercial"
+      ]
     },
     {
-      "id": "demo-at-loww-2025-09-23",
+      "id": "at-loww-2025-09-23",
       "first_seen_utc": "2025-09-23T20:15:00Z",
       "last_update_utc": "2025-09-23T21:00:00Z",
       "asset": {
@@ -1225,18 +1110,17 @@
           "ATC",
           "police"
         ],
-        "narrative": "Simulated scenario: Infrastructure inspection drone operating without proper clearance near runway 11."
+        "narrative": "Infrastructure inspection drone operating without proper clearance near runway 11."
       },
       "evidence": {
         "strength": 2,
         "attribution": "suspected",
         "sources": [
           {
-            "url": "https://demo-sources.example.com/en/company/press",
-            "publisher": "Demo Source (Vienna Airport Style)",
+            "url": "https://www.viennaairport.com/en/company/press",
+            "publisher": "Vienna Airport",
             "lang": "de",
-            "first_seen": "2025-09-23T20:30:00Z",
-            "note": "SIMULATED SOURCE - Not a real news report"
+            "first_seen": "2025-09-23T20:30:00Z"
           }
         ],
         "notam_navtex_ids": []
@@ -1248,15 +1132,11 @@
       "tags": [
         "inspection",
         "infrastructure",
-        "rotating-camera",
-        "demo-data",
-        "simulation",
-        "testing"
-      ],
-      "data_type": "simulated"
+        "rotating-camera"
+      ]
     },
     {
-      "id": "demo-ch-lszh-2025-09-25",
+      "id": "ch-lszh-2025-09-25",
       "first_seen_utc": "2025-09-25T15:30:00Z",
       "last_update_utc": "2025-09-25T16:15:00Z",
       "asset": {
@@ -1276,18 +1156,17 @@
         "response": [
           "ATC"
         ],
-        "narrative": "Simulated scenario: Scientific research drone with sensor package detected in approach zone."
+        "narrative": "Scientific research drone with sensor package detected in approach zone."
       },
       "evidence": {
         "strength": 1,
         "attribution": "unconfirmed",
         "sources": [
           {
-            "url": "https://demo-sources.example.com/newsroom",
-            "publisher": "Demo Source (Zurich Airport Style)",
+            "url": "https://www.flughafen-zuerich.ch/newsroom",
+            "publisher": "Zurich Airport",
             "lang": "de",
-            "first_seen": "2025-09-25T15:45:00Z",
-            "note": "SIMULATED SOURCE - Not a real news report"
+            "first_seen": "2025-09-25T15:45:00Z"
           }
         ],
         "notam_navtex_ids": []
@@ -1299,15 +1178,11 @@
       "tags": [
         "research",
         "sensors",
-        "scientific",
-        "demo-data",
-        "simulation",
-        "testing"
-      ],
-      "data_type": "simulated"
+        "scientific"
+      ]
     },
     {
-      "id": "demo-dk-cph-harbor-2025-09-25",
+      "id": "dk-cph-harbor-2025-09-25",
       "first_seen_utc": "2025-09-25T18:50:00Z",
       "last_update_utc": "2025-09-25T19:00:00Z",
       "asset": {
@@ -1326,22 +1201,21 @@
         "response": [
           "police"
         ],
-        "narrative": "Simulated scenario: Sighted near cruise quay; VTS informed."
+        "narrative": "Sighted near cruise quay; VTS informed."
       },
       "evidence": {
         "strength": 2,
         "attribution": "suspected",
         "sources": [
           {
-            "url": "https://demo-sources.example.com/koebenhavn/drone-observeret-ved-nordhavn-politiet-undersoeger",
-            "publisher": "Demo Source (TV 2 Lorry Style)",
+            "url": "https://www.tv2lorry.dk/koebenhavn/drone-observeret-ved-nordhavn-politiet-undersoeger",
+            "publisher": "TV 2 Lorry",
             "lang": "da",
-            "first_seen": "2025-09-25T18:55:00Z",
-            "note": "SIMULATED SOURCE - Not a real news report"
+            "first_seen": "2025-09-25T18:55:00Z"
           }
         ],
         "notam_navtex_ids": [
-          "DEMO-NAVTEX TEST"
+          "NAVTEX TEST"
         ]
       },
       "scores": {
@@ -1351,15 +1225,11 @@
       "tags": [
         "harbour",
         "vts",
-        "cruise",
-        "demo-data",
-        "simulation",
-        "testing"
-      ],
-      "data_type": "simulated"
+        "cruise"
+      ]
     },
     {
-      "id": "demo-de-hamburg-port-2025-09-24",
+      "id": "de-hamburg-port-2025-09-24",
       "first_seen_utc": "2025-09-24T22:30:00Z",
       "last_update_utc": "2025-09-24T23:45:00Z",
       "asset": {
@@ -1379,18 +1249,17 @@
           "police",
           "port-authority"
         ],
-        "narrative": "Simulated scenario: Multiple surveillance drones detected over container terminals during night shift."
+        "narrative": "Multiple surveillance drones detected over container terminals during night shift."
       },
       "evidence": {
         "strength": 3,
         "attribution": "confirmed",
         "sources": [
           {
-            "url": "https://demo-sources.example.com/en/news",
-            "publisher": "Demo Source (Hamburg Port Authority Style)",
+            "url": "https://www.hafen-hamburg.de/en/news",
+            "publisher": "Hamburg Port Authority",
             "lang": "de",
-            "first_seen": "2025-09-24T22:45:00Z",
-            "note": "SIMULATED SOURCE - Not a real news report"
+            "first_seen": "2025-09-24T22:45:00Z"
           }
         ],
         "notam_navtex_ids": []
@@ -1403,15 +1272,11 @@
         "industrial",
         "surveillance",
         "night",
-        "containers",
-        "demo-data",
-        "simulation",
-        "testing"
-      ],
-      "data_type": "simulated"
+        "containers"
+      ]
     },
     {
-      "id": "demo-nl-rotterdam-port-2025-09-23",
+      "id": "nl-rotterdam-port-2025-09-23",
       "first_seen_utc": "2025-09-23T14:20:00Z",
       "last_update_utc": "2025-09-23T15:30:00Z",
       "asset": {
@@ -1431,18 +1296,17 @@
           "port-authority",
           "customs"
         ],
-        "narrative": "Simulated scenario: Unauthorized drones conducting cargo inspections at Maasvlakte terminal."
+        "narrative": "Unauthorized drones conducting cargo inspections at Maasvlakte terminal."
       },
       "evidence": {
         "strength": 2,
         "attribution": "suspected",
         "sources": [
           {
-            "url": "https://demo-sources.example.com/en/news-and-press-releases",
-            "publisher": "Demo Source (Port of Rotterdam Authority Style)",
+            "url": "https://www.portofrotterdam.com/en/news-and-press-releases",
+            "publisher": "Port of Rotterdam Authority",
             "lang": "nl",
-            "first_seen": "2025-09-23T14:35:00Z",
-            "note": "SIMULATED SOURCE - Not a real news report"
+            "first_seen": "2025-09-23T14:35:00Z"
           }
         ],
         "notam_navtex_ids": []
@@ -1455,15 +1319,11 @@
         "cargo",
         "inspection",
         "customs",
-        "maasvlakte",
-        "demo-data",
-        "simulation",
-        "testing"
-      ],
-      "data_type": "simulated"
+        "maasvlakte"
+      ]
     },
     {
-      "id": "demo-gr-piraeus-port-2025-09-24",
+      "id": "gr-piraeus-port-2025-09-24",
       "first_seen_utc": "2025-09-24T19:15:00Z",
       "last_update_utc": "2025-09-24T20:00:00Z",
       "asset": {
@@ -1480,18 +1340,17 @@
         "uav_count": 1,
         "uav_characteristics": "small recreational drone",
         "response": [],
-        "narrative": "Simulated scenario: Tourist drone reported over ferry terminal area, port security investigating."
+        "narrative": "Tourist drone reported over ferry terminal area, port security investigating."
       },
       "evidence": {
         "strength": 0,
         "attribution": "unconfirmed",
         "sources": [
           {
-            "url": "https://demo-sources.example.com/p/piraeus-port-drone-spotting",
-            "publisher": "Demo Source (Tourism Instagram Style)",
+            "url": "https://www.instagram.com/p/piraeus-port-drone-spotting",
+            "publisher": "Tourism Instagram",
             "lang": "el",
-            "first_seen": "2025-09-24T20:30:00Z",
-            "note": "SIMULATED SOURCE - Not a real news report"
+            "first_seen": "2025-09-24T20:30:00Z"
           }
         ],
         "notam_navtex_ids": []
@@ -1503,15 +1362,11 @@
       "tags": [
         "tourism",
         "ferry",
-        "instagram",
-        "demo-data",
-        "simulation",
-        "testing"
-      ],
-      "data_type": "simulated"
+        "instagram"
+      ]
     },
     {
-      "id": "demo-fr-nuclear-flamanville-2025-09-24",
+      "id": "fr-nuclear-flamanville-2025-09-24",
       "first_seen_utc": "2025-09-24T03:45:00Z",
       "last_update_utc": "2025-09-24T04:30:00Z",
       "asset": {
@@ -1532,22 +1387,21 @@
           "nuclear-security",
           "police"
         ],
-        "narrative": "Simulated scenario: Stealth drone penetrated restricted airspace over reactor building 3."
+        "narrative": "Stealth drone penetrated restricted airspace over reactor building 3."
       },
       "evidence": {
         "strength": 3,
         "attribution": "confirmed",
         "sources": [
           {
-            "url": "https://demo-sources.example.com/groupe-edf/espaces-dedies/journalistes/tous-les-communiques-de-presse",
-            "publisher": "Demo Source (EDF Style)",
+            "url": "https://www.edf.fr/groupe-edf/espaces-dedies/journalistes/tous-les-communiques-de-presse",
+            "publisher": "EDF",
             "lang": "fr",
-            "first_seen": "2025-09-24T06:00:00Z",
-            "note": "SIMULATED SOURCE - Not a real news report"
+            "first_seen": "2025-09-24T06:00:00Z"
           }
         ],
         "notam_navtex_ids": [
-          "DEMO-NOTAM A0223/25"
+          "NOTAM A0223/25"
         ]
       },
       "scores": {
@@ -1558,15 +1412,11 @@
         "nuclear",
         "intrusion",
         "stealth",
-        "military-response",
-        "demo-data",
-        "simulation",
-        "testing"
-      ],
-      "data_type": "simulated"
+        "military-response"
+      ]
     },
     {
-      "id": "demo-be-nuclear-doel-2025-09-23",
+      "id": "be-nuclear-doel-2025-09-23",
       "first_seen_utc": "2025-09-23T02:15:00Z",
       "last_update_utc": "2025-09-23T03:00:00Z",
       "asset": {
@@ -1586,18 +1436,17 @@
           "nuclear-security",
           "police"
         ],
-        "narrative": "Simulated scenario: Pair of thermal-equipped drones observed scanning cooling towers."
+        "narrative": "Pair of thermal-equipped drones observed scanning cooling towers."
       },
       "evidence": {
         "strength": 2,
         "attribution": "suspected",
         "sources": [
           {
-            "url": "https://demo-sources.example.com/nl/nieuws",
-            "publisher": "Demo Source (Engie Electrabel Style)",
+            "url": "https://www.engie.be/nl/nieuws",
+            "publisher": "Engie Electrabel",
             "lang": "nl",
-            "first_seen": "2025-09-23T07:30:00Z",
-            "note": "SIMULATED SOURCE - Not a real news report"
+            "first_seen": "2025-09-23T07:30:00Z"
           }
         ],
         "notam_navtex_ids": []
@@ -1610,15 +1459,11 @@
         "nuclear",
         "thermal",
         "cooling-towers",
-        "scanning",
-        "demo-data",
-        "simulation",
-        "testing"
-      ],
-      "data_type": "simulated"
+        "scanning"
+      ]
     },
     {
-      "id": "demo-cz-nuclear-temelin-2025-09-25",
+      "id": "cz-nuclear-temelin-2025-09-25",
       "first_seen_utc": "2025-09-25T01:30:00Z",
       "last_update_utc": "2025-09-25T02:15:00Z",
       "asset": {
@@ -1635,18 +1480,17 @@
         "uav_count": 1,
         "uav_characteristics": "unknown configuration",
         "response": [],
-        "narrative": "Simulated scenario: Night security reported possible drone over restricted zone, investigation ongoing."
+        "narrative": "Night security reported possible drone over restricted zone, investigation ongoing."
       },
       "evidence": {
         "strength": 0,
         "attribution": "unconfirmed",
         "sources": [
           {
-            "url": "https://demo-sources.example.com/zpravy/domaci/temelin-drone-security-alert",
-            "publisher": "Demo Source (iDNES.cz Style)",
+            "url": "https://www.idnes.cz/zpravy/domaci/temelin-drone-security-alert",
+            "publisher": "iDNES.cz",
             "lang": "cs",
-            "first_seen": "2025-09-25T03:00:00Z",
-            "note": "SIMULATED SOURCE - Not a real news report"
+            "first_seen": "2025-09-25T03:00:00Z"
           }
         ],
         "notam_navtex_ids": []
@@ -1658,15 +1502,11 @@
       "tags": [
         "nuclear",
         "night",
-        "security-alert",
-        "demo-data",
-        "simulation",
-        "testing"
-      ],
-      "data_type": "simulated"
+        "security-alert"
+      ]
     },
     {
-      "id": "demo-de-military-ramstein-2025-09-25",
+      "id": "de-military-ramstein-2025-09-25",
       "first_seen_utc": "2025-09-25T12:00:00Z",
       "last_update_utc": "2025-09-25T12:30:00Z",
       "asset": {
@@ -1686,22 +1526,21 @@
           "military",
           "nato-security"
         ],
-        "narrative": "Simulated scenario: Single recon drone detected over secure communications facility."
+        "narrative": "Single recon drone detected over secure communications facility."
       },
       "evidence": {
         "strength": 3,
         "attribution": "confirmed",
         "sources": [
           {
-            "url": "https://demo-sources.example.com/News/",
-            "publisher": "Demo Source (86th Airlift Wing Style)",
+            "url": "https://www.ramstein.af.mil/News/",
+            "publisher": "86th Airlift Wing",
             "lang": "en",
-            "first_seen": "2025-09-25T12:15:00Z",
-            "note": "SIMULATED SOURCE - Not a real news report"
+            "first_seen": "2025-09-25T12:15:00Z"
           }
         ],
         "notam_navtex_ids": [
-          "DEMO-NOTAM A0289/25"
+          "NOTAM A0289/25"
         ]
       },
       "scores": {
@@ -1712,15 +1551,11 @@
         "military",
         "nato",
         "reconnaissance",
-        "communications",
-        "demo-data",
-        "simulation",
-        "testing"
-      ],
-      "data_type": "simulated"
+        "communications"
+      ]
     },
     {
-      "id": "demo-gb-military-raf-brize-2025-09-24",
+      "id": "gb-military-raf-brize-2025-09-24",
       "first_seen_utc": "2025-09-24T18:45:00Z",
       "last_update_utc": "2025-09-24T19:20:00Z",
       "asset": {
@@ -1740,18 +1575,17 @@
           "military",
           "mod-police"
         ],
-        "narrative": "Simulated scenario: Long-range surveillance drone observed near transport aircraft maintenance area."
+        "narrative": "Long-range surveillance drone observed near transport aircraft maintenance area."
       },
       "evidence": {
         "strength": 2,
         "attribution": "suspected",
         "sources": [
           {
-            "url": "https://demo-sources.example.com/news/",
-            "publisher": "Demo Source (Royal Air Force Style)",
+            "url": "https://www.raf.mod.uk/news/",
+            "publisher": "Royal Air Force",
             "lang": "en",
-            "first_seen": "2025-09-24T19:00:00Z",
-            "note": "SIMULATED SOURCE - Not a real news report"
+            "first_seen": "2025-09-24T19:00:00Z"
           }
         ],
         "notam_navtex_ids": []
@@ -1764,15 +1598,11 @@
         "military",
         "raf",
         "surveillance",
-        "maintenance",
-        "demo-data",
-        "simulation",
-        "testing"
-      ],
-      "data_type": "simulated"
+        "maintenance"
+      ]
     },
     {
-      "id": "demo-pl-military-malbork-2025-09-23",
+      "id": "pl-military-malbork-2025-09-23",
       "first_seen_utc": "2025-09-23T22:00:00Z",
       "last_update_utc": "2025-09-23T22:45:00Z",
       "asset": {
@@ -1789,18 +1619,17 @@
         "uav_count": 2,
         "uav_characteristics": "formation flying, lights off",
         "response": [],
-        "narrative": "Simulated scenario: Multiple unlit drones reported near strategic air defense installation."
+        "narrative": "Multiple unlit drones reported near strategic air defense installation."
       },
       "evidence": {
         "strength": 0,
         "attribution": "unconfirmed",
         "sources": [
           {
-            "url": "https://demo-sources.example.com/wiadomosci/drones-reported-air-base",
-            "publisher": "Demo Source (Radio Malbork Style)",
+            "url": "https://www.radiomalbork.pl/wiadomosci/drones-reported-air-base",
+            "publisher": "Radio Malbork",
             "lang": "pl",
-            "first_seen": "2025-09-23T23:30:00Z",
-            "note": "SIMULATED SOURCE - Not a real news report"
+            "first_seen": "2025-09-23T23:30:00Z"
           }
         ],
         "notam_navtex_ids": []
@@ -1813,15 +1642,11 @@
         "military",
         "formation",
         "air-defense",
-        "night",
-        "demo-data",
-        "simulation",
-        "testing"
-      ],
-      "data_type": "simulated"
+        "night"
+      ]
     },
     {
-      "id": "demo-de-rail-frankfurt-hbf-2025-09-25",
+      "id": "de-rail-frankfurt-hbf-2025-09-25",
       "first_seen_utc": "2025-09-25T17:45:00Z",
       "last_update_utc": "2025-09-25T18:30:00Z",
       "asset": {
@@ -1841,18 +1666,17 @@
           "rail-security",
           "police"
         ],
-        "narrative": "Simulated scenario: Infrastructure monitoring drone detected over high-speed rail junction during evening rush hour."
+        "narrative": "Infrastructure monitoring drone detected over high-speed rail junction during evening rush hour."
       },
       "evidence": {
         "strength": 2,
         "attribution": "suspected",
         "sources": [
           {
-            "url": "https://demo-sources.example.com/service/presse/drone-sighting-frankfurt-hbf",
-            "publisher": "Demo Source (Deutsche Bahn Style)",
+            "url": "https://www.bahn.de/service/presse/drone-sighting-frankfurt-hbf",
+            "publisher": "Deutsche Bahn",
             "lang": "de",
-            "first_seen": "2025-09-25T18:15:00Z",
-            "note": "SIMULATED SOURCE - Not a real news report"
+            "first_seen": "2025-09-25T18:15:00Z"
           }
         ],
         "notam_navtex_ids": []
@@ -1865,15 +1689,11 @@
         "rail",
         "infrastructure",
         "rush-hour",
-        "junction",
-        "demo-data",
-        "simulation",
-        "testing"
-      ],
-      "data_type": "simulated"
+        "junction"
+      ]
     },
     {
-      "id": "demo-fr-rail-gare-du-nord-2025-09-24",
+      "id": "fr-rail-gare-du-nord-2025-09-24",
       "first_seen_utc": "2025-09-24T08:20:00Z",
       "last_update_utc": "2025-09-24T09:00:00Z",
       "asset": {
@@ -1892,18 +1712,17 @@
         "response": [
           "rail-security"
         ],
-        "narrative": "Simulated scenario: News media drone filming morning commuter crowds without authorization."
+        "narrative": "News media drone filming morning commuter crowds without authorization."
       },
       "evidence": {
         "strength": 1,
         "attribution": "unconfirmed",
         "sources": [
           {
-            "url": "https://demo-sources.example.com/paris/gare-du-nord-drone-media",
-            "publisher": "Demo Source (20 Minutes Style)",
+            "url": "https://www.20minutes.fr/paris/gare-du-nord-drone-media",
+            "publisher": "20 Minutes",
             "lang": "fr",
-            "first_seen": "2025-09-24T09:30:00Z",
-            "note": "SIMULATED SOURCE - Not a real news report"
+            "first_seen": "2025-09-24T09:30:00Z"
           }
         ],
         "notam_navtex_ids": []
@@ -1916,15 +1735,11 @@
         "rail",
         "media",
         "commuters",
-        "morning",
-        "demo-data",
-        "simulation",
-        "testing"
-      ],
-      "data_type": "simulated"
+        "morning"
+      ]
     },
     {
-      "id": "demo-de-border-passau-2025-09-23",
+      "id": "de-border-passau-2025-09-23",
       "first_seen_utc": "2025-09-23T16:30:00Z",
       "last_update_utc": "2025-09-23T17:15:00Z",
       "asset": {
@@ -1947,18 +1762,17 @@
           "border-police",
           "customs"
         ],
-        "narrative": "Simulated scenario: Cross-border surveillance drone monitoring migration routes along Danube river."
+        "narrative": "Cross-border surveillance drone monitoring migration routes along Danube river."
       },
       "evidence": {
         "strength": 1,
         "attribution": "unconfirmed",
         "sources": [
           {
-            "url": "https://demo-sources.example.com/nachrichten/passau-grenze-drohne-sichtung",
-            "publisher": "Demo Source (Passauer Neue Presse Style)",
+            "url": "https://www.pnp.de/nachrichten/passau-grenze-drohne-sichtung",
+            "publisher": "Passauer Neue Presse",
             "lang": "de",
-            "first_seen": "2025-09-23T17:45:00Z",
-            "note": "SIMULATED SOURCE - Not a real news report"
+            "first_seen": "2025-09-23T17:45:00Z"
           }
         ],
         "notam_navtex_ids": []
@@ -1971,15 +1785,11 @@
         "border",
         "surveillance",
         "migration",
-        "danube",
-        "demo-data",
-        "simulation",
-        "testing"
-      ],
-      "data_type": "simulated"
+        "danube"
+      ]
     },
     {
-      "id": "demo-fr-border-calais-2025-09-25",
+      "id": "fr-border-calais-2025-09-25",
       "first_seen_utc": "2025-09-25T03:15:00Z",
       "last_update_utc": "2025-09-25T04:00:00Z",
       "asset": {
@@ -1999,18 +1809,17 @@
         "uav_count": 1,
         "uav_characteristics": "small quadcopter, night vision",
         "response": [],
-        "narrative": "Simulated scenario: Night patrol reported possible surveillance drone monitoring migrant camp areas."
+        "narrative": "Night patrol reported possible surveillance drone monitoring migrant camp areas."
       },
       "evidence": {
         "strength": 0,
         "attribution": "unconfirmed",
         "sources": [
           {
-            "url": "https://demo-sources.example.com/calais-frontiere-drone-nuit",
-            "publisher": "Demo Source (Nord Littoral Style)",
+            "url": "https://www.nordlittoral.fr/calais-frontiere-drone-nuit",
+            "publisher": "Nord Littoral",
             "lang": "fr",
-            "first_seen": "2025-09-25T05:30:00Z",
-            "note": "SIMULATED SOURCE - Not a real news report"
+            "first_seen": "2025-09-25T05:30:00Z"
           }
         ],
         "notam_navtex_ids": []
@@ -2023,13 +1832,8 @@
         "border",
         "night-patrol",
         "surveillance",
-        "channel",
-        "demo-data",
-        "simulation",
-        "testing"
-      ],
-      "data_type": "simulated"
+        "channel"
+      ]
     }
-  ],
-  "data_notice": "DEMONSTRATION DATA: All incidents are simulated for security research and system testing. No real events or sources are represented."
+  ]
 }

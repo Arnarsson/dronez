@@ -1,0 +1,57 @@
+{
+  "generated_utc": "2025-09-25T20:10:01Z",
+  "data_notice": "SIMULATED DATA: All incidents are fictional and created for demonstration purposes. No real events, sources, or organizations are represented.",
+  "incidents": [
+    {
+      "id": "demo-dk-ekch-2025-09-22",
+      "first_seen_utc": "2025-09-22T19:00:00Z",
+      "last_update_utc": "2025-09-22T23:00:00Z",
+      "asset": {
+        "type": "airport",
+        "name": "Copenhagen Airport",
+        "iata": "CPH",
+        "icao": "EKCH",
+        "lat": 55.6181,
+        "lon": 12.6561
+      },
+      "incident": {
+        "category": "closure",
+        "status": "active",
+        "duration_min": 240,
+        "uav_count": 2,
+        "uav_characteristics": "lights toggled",
+        "response": [
+          "ATC",
+          "police"
+        ],
+        "narrative": "Simulated runway closure scenario for system testing."
+      },
+      "evidence": {
+        "strength": 3,
+        "attribution": "confirmed",
+        "sources": [
+          {
+            "url": "https://demo-source.example.com/incident-001",
+            "publisher": "Demo News Agency",
+            "lang": "en",
+            "first_seen": "2025-09-22T20:10:00Z",
+            "note": "SIMULATED SOURCE"
+          }
+        ],
+        "notam_navtex_ids": [
+          "DEMO-NOTAM-A0145/25"
+        ]
+      },
+      "scores": {
+        "severity": 5,
+        "risk_radius_m": 8000
+      },
+      "tags": [
+        "demo-data",
+        "simulation",
+        "testing"
+      ],
+      "data_type": "simulated"
+    }
+  ]
+}
