@@ -359,12 +359,14 @@
 
       // Asset layers
       const layers = params.getAll('layers');
-      document.getElementById('layer-airport').checked = layers.includes('airport');
-      document.getElementById('layer-harbour').checked = layers.includes('harbour');
-      document.getElementById('layer-energy').checked = layers.includes('energy');
-      document.getElementById('layer-rail').checked = layers.includes('rail');
-      document.getElementById('layer-border').checked = layers.includes('border');
-      document.getElementById('layer-military').checked = layers.includes('military');
+      if (layers.length > 0) {
+        document.getElementById('layer-airport').checked = layers.includes('airport');
+        document.getElementById('layer-harbour').checked = layers.includes('harbour');
+        document.getElementById('layer-energy').checked = layers.includes('energy');
+        document.getElementById('layer-rail').checked = layers.includes('rail');
+        document.getElementById('layer-border').checked = layers.includes('border');
+        document.getElementById('layer-military').checked = layers.includes('military');
+      }
 
       // Status filters
       const statuses = params.getAll('status');
