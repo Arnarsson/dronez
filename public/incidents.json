@@ -1,5 +1,5 @@
 {
-  "generated_utc": "2025-09-25T21:29:29.021Z",
+  "generated_utc": "2025-09-25T22:01:40Z",
   "incidents": [
     {
       "id": "rss-eddf-2025-09-25-vf7h5z",
@@ -352,20 +352,5 @@
       "source_type": "rss_news",
       "collection_timestamp": "2025-09-25T21:29:10.402Z"
     }
-  ],
-  "data_notice": "LIVE DATA: Real drone incidents collected from multiple sources including news, official NOTAMs, social media, and aviation authorities.",
-  "metadata": {
-    "collection_timestamp": "2025-09-25T21:29:29.020Z",
-    "total_sources": 2,
-    "source_breakdown": {
-      "rss_news": 9,
-      "reddit": 0
-    },
-    "quality_stats": {
-      "raw": 9,
-      "deduplicated": 6,
-      "enriched": 6,
-      "final": 6
-    }
-  }
+  ]
 }
