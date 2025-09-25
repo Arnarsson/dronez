@@ -82,6 +82,249 @@
       border: 1px solid var(--border) !important;
       font-size: 12px !important;
     }
+
+    /* Live Activity Pulse Animations */
+    @keyframes pulse {
+      0% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.7; transform: scale(1.15); }
+      100% { opacity: 1; transform: scale(1); }
+    }
+
+    @keyframes pulse-ring {
+      0% { opacity: 0.8; transform: scale(1); }
+      100% { opacity: 0; transform: scale(2.5); }
+    }
+
+    .live-marker {
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    .live-marker::before {
+      content: '';
+      position: absolute;
+      top: -5px;
+      left: -5px;
+      right: -5px;
+      bottom: -5px;
+      border: 2px solid var(--severity-4);
+      border-radius: 50%;
+      animation: pulse-ring 3s ease-out infinite;
+      pointer-events: none;
+    }
+
+    .activity-indicator {
+      position: fixed;
+      top: 68px;
+      right: 20px;
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 12px 16px;
+      color: var(--text);
+      font-size: 14px;
+      font-weight: 600;
+      z-index: 1000;
+      display: none;
+      align-items: center;
+      gap: 8px;
+      animation: slideInRight 0.3s ease-out;
+    }
+
+    .activity-indicator.visible {
+      display: flex;
+    }
+
+    .activity-pulse {
+      width: 8px;
+      height: 8px;
+      background: var(--severity-4);
+      border-radius: 50%;
+      animation: pulse 1.5s ease-in-out infinite;
+    }
+
+    /* Breaking News Alert */
+    .breaking-news-alert {
+      position: fixed;
+      top: 68px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: linear-gradient(135deg, var(--severity-4), #dc2626);
+      border: 2px solid rgba(255, 255, 255, 0.2);
+      border-radius: 16px;
+      color: white;
+      font-weight: 600;
+      z-index: 2000;
+      display: none;
+      min-width: 400px;
+      max-width: 600px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+      animation: breakingSlideIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .breaking-news-alert.visible {
+      display: block;
+    }
+
+    .breaking-news-content {
+      padding: 16px 20px;
+    }
+
+    .breaking-news-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 8px;
+    }
+
+    .breaking-badge {
+      background: rgba(255, 255, 255, 0.9);
+      color: var(--severity-4);
+      padding: 4px 8px;
+      border-radius: 6px;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 0.5px;
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    .breaking-close {
+      background: rgba(255, 255, 255, 0.2);
+      border: none;
+      color: white;
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      cursor: pointer;
+      font-size: 16px;
+      font-weight: bold;
+      margin-left: auto;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s ease;
+    }
+
+    .breaking-close:hover {
+      background: rgba(255, 255, 255, 0.3);
+    }
+
+    .breaking-details {
+      font-size: 14px;
+      font-weight: 500;
+      opacity: 0.9;
+      line-height: 1.4;
+    }
+
+    @keyframes breakingSlideIn {
+      0% {
+        transform: translate(-50%, -100%);
+        opacity: 0;
+      }
+      70% {
+        transform: translate(-50%, 10px);
+      }
+      100% {
+        transform: translate(-50%, 0);
+        opacity: 1;
+      }
+    }
+
+    /* Activity Timeline */
+    .activity-timeline {
+      max-height: 200px;
+      overflow-y: auto;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: var(--surface);
+    }
+
+    .timeline-loading {
+      padding: 20px;
+      text-align: center;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .timeline-hour {
+      border-bottom: 1px solid var(--border);
+      padding: 8px 12px;
+    }
+
+    .timeline-hour:last-child {
+      border-bottom: none;
+    }
+
+    .timeline-hour-label {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--muted);
+      margin-bottom: 4px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .timeline-hour-count {
+      background: var(--chip);
+      color: var(--text);
+      padding: 2px 6px;
+      border-radius: 10px;
+      font-size: 10px;
+    }
+
+    .timeline-incidents {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+
+    .timeline-incident {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 3px 6px;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background 0.15s ease;
+      font-size: 11px;
+    }
+
+    .timeline-incident:hover {
+      background: var(--chip-active);
+    }
+
+    .timeline-incident-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    .timeline-incident-info {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .timeline-incident-name {
+      font-weight: 500;
+      color: var(--text);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .timeline-incident-time {
+      color: var(--muted);
+      font-size: 10px;
+    }
+
+    .timeline-empty {
+      padding: 12px;
+      text-align: center;
+      color: var(--muted);
+      font-size: 11px;
+      font-style: italic;
+    }
     @keyframes slideInRight {
       from { transform: translateX(100%); opacity: 0; }
       to { transform: translateX(0); opacity: 1; }
@@ -109,6 +352,26 @@
       <span class="badge" id="badge-status" style="display: none; background: var(--severity-4); color: #fff; font-weight: 700;">NO DATA</span>
       <button class="badge" id="btn-share" style="background: var(--focus); color: #fff; border: none; cursor: pointer; font-weight: 600;">📎 Share</button>
     </header>
+
+    <!-- Live Activity Indicator -->
+    <div id="activity-indicator" class="activity-indicator">
+      <div class="activity-pulse"></div>
+      <span id="activity-text">Live Activity</span>
+    </div>
+
+    <!-- Breaking News Alert -->
+    <div id="breaking-news-alert" class="breaking-news-alert">
+      <div class="breaking-news-content">
+        <div class="breaking-news-header">
+          <span class="breaking-badge">BREAKING</span>
+          <span id="breaking-title">New Drone Incident</span>
+          <button id="breaking-close" class="breaking-close">×</button>
+        </div>
+        <div id="breaking-details" class="breaking-details">
+          Location and details will appear here
+        </div>
+      </div>
+    </div>
 
     <aside id="left" aria-label="Filters">
       <div class="section">
@@ -140,6 +403,9 @@
         <h2>Risk Visualization</h2>
         <label><input type="checkbox" id="show-risk-rings" checked /> Show risk rings around critical assets</label>
         <div class="muted" style="font-size: 11px; margin-top: 4px;">2km/5km operational zones based on asset type and threat profile</div>
+
+        <label style="margin-top: 8px;"><input type="checkbox" id="show-threat-heatmap" /> Show regional threat heatmap</label>
+        <div class="muted" style="font-size: 11px; margin-top: 4px;">Visualize incident density and severity concentrations across regions</div>
       </div>
 
       <div class="section">
@@ -184,6 +450,13 @@
         <h2>Find</h2>
         <label for="searchBox">Search assets, sources, narratives</label>
         <input id="searchBox" type="text" placeholder="e.g., CPH, Nordhavn, Reuters" />
+      </div>
+
+      <div class="section">
+        <h2>Activity Timeline</h2>
+        <div id="activity-timeline" class="activity-timeline">
+          <div class="timeline-loading">Loading timeline...</div>
+        </div>
       </div>
 
       <div class="section">
@@ -287,13 +560,19 @@
     // Risk rings layer group
     const riskRings = L.layerGroup().addTo(map);
 
+    // Threat heatmap layer group
+    const threatHeatmap = L.layerGroup();
+
     const state = {
       data: { generated_utc: null, incidents: [] },
       markers: new Map(),
       showRiskRings: true,
+      showThreatHeatmap: false,
       compareMode: false,
       hasAutoFocused: false,
-      autoFocusEnabled: true
+      autoFocusEnabled: true,
+      liveIncidents: new Set(),
+      activityIndicatorVisible: false
     };
 
     // URL state management for shareable links
@@ -801,6 +1080,114 @@
       });
     }
 
+    function renderThreatHeatmap() {
+      threatHeatmap.clearLayers();
+
+      if (!state.showThreatHeatmap) {
+        if (map.hasLayer(threatHeatmap)) {
+          map.removeLayer(threatHeatmap);
+        }
+        return;
+      }
+
+      if (!map.hasLayer(threatHeatmap)) {
+        map.addLayer(threatHeatmap);
+      }
+
+      const filtered = filterIncidents('current');
+      if (filtered.length === 0) return;
+
+      // Create grid-based threat analysis
+      const gridSize = 50000; // 50km grid cells
+      const threatGrid = new Map();
+
+      // Group incidents by geographic grid cells
+      filtered.forEach(incident => {
+        const lat = incident.asset.lat;
+        const lon = incident.asset.lon;
+
+        // Calculate grid cell
+        const gridLat = Math.floor(lat * 1000 / (gridSize / 111320)) * (gridSize / 111320) / 1000;
+        const gridLon = Math.floor(lon * 1000 / (gridSize / (111320 * Math.cos(lat * Math.PI / 180)))) * (gridSize / (111320 * Math.cos(lat * Math.PI / 180))) / 1000;
+        const gridKey = `${gridLat},${gridLon}`;
+
+        if (!threatGrid.has(gridKey)) {
+          threatGrid.set(gridKey, {
+            lat: gridLat,
+            lon: gridLon,
+            incidents: [],
+            totalSeverity: 0,
+            maxSeverity: 0,
+            recentIncidents: 0
+          });
+        }
+
+        const cell = threatGrid.get(gridKey);
+        cell.incidents.push(incident);
+        cell.totalSeverity += incident.scores.severity || 1;
+        cell.maxSeverity = Math.max(cell.maxSeverity, incident.scores.severity || 1);
+
+        // Count recent incidents (last 24 hours)
+        const incidentTime = new Date(incident.first_seen_utc);
+        const dayAgo = Date.now() - 24 * 60 * 60 * 1000;
+        if (incidentTime > dayAgo) {
+          cell.recentIncidents++;
+        }
+      });
+
+      // Create heatmap circles for each grid cell
+      threatGrid.forEach(cell => {
+        const incidentCount = cell.incidents.length;
+        if (incidentCount === 0) return;
+
+        // Calculate threat level (0-1)
+        const density = incidentCount / 10; // Normalize by expected max incidents per cell
+        const severity = cell.totalSeverity / incidentCount; // Average severity
+        const recency = cell.recentIncidents / incidentCount; // Recent activity ratio
+
+        const threatLevel = Math.min(1, (density * 0.4 + severity / 5 * 0.4 + recency * 0.2));
+
+        // Determine colors based on threat level
+        const color = threatLevel > 0.7 ? '#dc2626' : // High threat - red
+                     threatLevel > 0.5 ? '#ea580c' : // Medium-high threat - orange
+                     threatLevel > 0.3 ? '#f59e0b' : // Medium threat - yellow
+                     '#3b82f6'; // Low threat - blue
+
+        const opacity = Math.max(0.1, threatLevel * 0.6);
+        const radius = Math.max(15000, threatLevel * 40000); // 15-40km radius
+
+        // Create heatmap circle
+        const circle = L.circle([cell.lat, cell.lon], {
+          radius: radius,
+          fillColor: color,
+          fillOpacity: opacity,
+          color: color,
+          weight: 1,
+          opacity: opacity * 1.5
+        });
+
+        // Create tooltip with threat information
+        const tooltipContent = `
+          <div style="font-size: 12px; line-height: 1.4;">
+            <strong>Threat Level: ${Math.round(threatLevel * 100)}%</strong><br>
+            ${incidentCount} incident${incidentCount > 1 ? 's' : ''}<br>
+            Avg Severity: ${(cell.totalSeverity / incidentCount).toFixed(1)}<br>
+            ${cell.recentIncidents} recent (24h)<br>
+            Max Severity: ${cell.maxSeverity}
+          </div>
+        `;
+
+        circle.bindTooltip(tooltipContent, {
+          permanent: false,
+          className: 'risk-tooltip'
+        });
+
+        threatHeatmap.addLayer(circle);
+      });
+
+      console.log(`Rendered threat heatmap with ${threatGrid.size} grid cells`);
+    }
+
     function render() {
       console.log('render() called, total incidents:', state.data.incidents.length);
       Object.values(clusterGroups).forEach(group => group.clearLayers());
@@ -860,6 +1247,15 @@
           clusterGroups[mappedType].addLayer(marker);
         }
         mapMarkers.push(marker);
+
+        // Add live animation if incident is live
+        if (isLiveIncident(incident)) {
+          // Add to live incidents set
+          state.liveIncidents.add(incident.id);
+          // Apply animation after marker is added to map
+          setTimeout(() => addLiveMarkerAnimation(marker), 100);
+        }
+
         if (mappedType === 'airport') countAir += 1;
         if (mappedType === 'harbour') countHar += 1;
       });
@@ -939,6 +1335,16 @@
 
       renderDetails(currentFiltered, previousFiltered);
       renderRiskRings();
+      renderThreatHeatmap();
+
+      // Update live activity after rendering
+      updateLiveActivity();
+
+      // Check for breaking news after rendering
+      checkForBreakingNews();
+
+      // Render activity timeline
+      renderActivityTimeline();
     }
 
     async function fetchIncidents() {
@@ -979,6 +1385,321 @@
           refreshBadge.textContent = originalText;
           refreshBadge.style.background = '';
         }, 3000);
+      }
+    }
+
+    // Live Activity Functions
+    function isLiveIncident(incident) {
+      const incidentTime = new Date(incident.first_seen_utc).getTime();
+      const now = Date.now();
+      const oneHour = 60 * 60 * 1000;
+
+      // Incident is "live" if it occurred within the last hour
+      return (now - incidentTime) <= oneHour;
+    }
+
+    function updateLiveActivity() {
+      const currentLive = new Set();
+      const now = Date.now();
+
+      // Find all live incidents
+      state.data.incidents.forEach(incident => {
+        if (isLiveIncident(incident)) {
+          currentLive.add(incident.id);
+        }
+      });
+
+      // Update live incidents set
+      const newLiveIncidents = [...currentLive].filter(id => !state.liveIncidents.has(id));
+      const expiredLiveIncidents = [...state.liveIncidents].filter(id => !currentLive.has(id));
+
+      state.liveIncidents = currentLive;
+
+      // Update activity indicator
+      updateActivityIndicator();
+
+      // Add pulse animation to new live incident markers
+      newLiveIncidents.forEach(incidentId => {
+        const marker = state.markers.get(incidentId);
+        if (marker && marker.getElement) {
+          const element = marker.getElement();
+          if (element) {
+            element.classList.add('live-marker');
+          }
+        }
+      });
+
+      // Remove pulse animation from expired live incidents
+      expiredLiveIncidents.forEach(incidentId => {
+        const marker = state.markers.get(incidentId);
+        if (marker && marker.getElement) {
+          const element = marker.getElement();
+          if (element) {
+            element.classList.remove('live-marker');
+          }
+        }
+      });
+
+      console.log(`Live activity update: ${currentLive.size} active incidents`, {
+        new: newLiveIncidents.length,
+        expired: expiredLiveIncidents.length
+      });
+    }
+
+    function updateActivityIndicator() {
+      const indicator = document.getElementById('activity-indicator');
+      const activityText = document.getElementById('activity-text');
+      const liveCount = state.liveIncidents.size;
+
+      if (liveCount > 0) {
+        if (!state.activityIndicatorVisible) {
+          indicator.classList.add('visible');
+          state.activityIndicatorVisible = true;
+        }
+
+        activityText.textContent = liveCount === 1
+          ? '1 Live Incident'
+          : `${liveCount} Live Incidents`;
+      } else {
+        if (state.activityIndicatorVisible) {
+          indicator.classList.remove('visible');
+          state.activityIndicatorVisible = false;
+        }
+      }
+    }
+
+    function addLiveMarkerAnimation(marker) {
+      if (marker.getElement) {
+        const element = marker.getElement();
+        if (element) {
+          element.classList.add('live-marker');
+        }
+      }
+    }
+
+    // Breaking News Alert Functions
+    let lastAlertTime = 0;
+    let shownAlerts = new Set();
+
+    function checkForBreakingNews() {
+      const now = Date.now();
+      const fifteenMinutes = 15 * 60 * 1000;
+
+      // Find incidents that are less than 15 minutes old and not already shown
+      const breakingIncidents = state.data.incidents.filter(incident => {
+        const incidentTime = new Date(incident.first_seen_utc).getTime();
+        const age = now - incidentTime;
+        return age <= fifteenMinutes &&
+               age >= 0 && // Not in the future
+               !shownAlerts.has(incident.id) &&
+               incident.scores?.severity >= 3; // Only show high severity incidents
+      });
+
+      if (breakingIncidents.length > 0) {
+        // Sort by recency and severity, show the most significant
+        const mostSignificant = breakingIncidents.sort((a, b) => {
+          const aTime = new Date(a.first_seen_utc).getTime();
+          const bTime = new Date(b.first_seen_utc).getTime();
+          const aSeverity = a.scores?.severity || 1;
+          const bSeverity = b.scores?.severity || 1;
+
+          // Prioritize by severity first, then by recency
+          if (bSeverity !== aSeverity) return bSeverity - aSeverity;
+          return bTime - aTime;
+        })[0];
+
+        showBreakingNewsAlert(mostSignificant);
+      }
+    }
+
+    function showBreakingNewsAlert(incident) {
+      // Don't spam alerts - at least 2 minutes between alerts
+      const now = Date.now();
+      if (now - lastAlertTime < 120000) return;
+
+      lastAlertTime = now;
+      shownAlerts.add(incident.id);
+
+      const alert = document.getElementById('breaking-news-alert');
+      const title = document.getElementById('breaking-title');
+      const details = document.getElementById('breaking-details');
+
+      // Create breaking news content
+      const assetName = incident.asset?.name || 'Unknown Location';
+      const assetType = incident.asset?.type || 'facility';
+      const timeAgo = getTimeAgo(new Date(incident.first_seen_utc));
+      const severity = incident.scores?.severity || 1;
+
+      title.textContent = `${assetType.charAt(0).toUpperCase() + assetType.slice(1)} Incident Detected`;
+      details.innerHTML = `
+        <strong>${assetName}</strong><br>
+        Severity ${severity} • ${timeAgo} • Evidence: ${incident.evidence?.attribution || 'Unknown'}
+      `;
+
+      // Show alert with animation
+      alert.classList.add('visible');
+
+      // Play notification sound (if user has interacted with page)
+      playNotificationSound();
+
+      // Auto-hide after 8 seconds
+      setTimeout(() => {
+        hideBreakingNewsAlert();
+      }, 8000);
+
+      console.log('Breaking news alert shown for incident:', incident.id);
+    }
+
+    function hideBreakingNewsAlert() {
+      const alert = document.getElementById('breaking-news-alert');
+      alert.classList.remove('visible');
+    }
+
+    function playNotificationSound() {
+      // Create a subtle notification sound using Web Audio API
+      try {
+        const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        const oscillator = audioContext.createOscillator();
+        const gainNode = audioContext.createGain();
+
+        oscillator.connect(gainNode);
+        gainNode.connect(audioContext.destination);
+
+        oscillator.frequency.setValueAtTime(800, audioContext.currentTime);
+        oscillator.frequency.exponentialRampToValueAtTime(600, audioContext.currentTime + 0.1);
+
+        gainNode.gain.setValueAtTime(0, audioContext.currentTime);
+        gainNode.gain.linearRampToValueAtTime(0.1, audioContext.currentTime + 0.01);
+        gainNode.gain.exponentialRampToValueAtTime(0.001, audioContext.currentTime + 0.3);
+
+        oscillator.start(audioContext.currentTime);
+        oscillator.stop(audioContext.currentTime + 0.3);
+      } catch (error) {
+        console.log('Audio notification not available:', error.message);
+      }
+    }
+
+    function getTimeAgo(date) {
+      const now = new Date();
+      const diff = now - date;
+      const minutes = Math.floor(diff / (1000 * 60));
+
+      if (minutes < 1) return 'Just now';
+      if (minutes === 1) return '1 minute ago';
+      if (minutes < 60) return `${minutes} minutes ago`;
+
+      const hours = Math.floor(minutes / 60);
+      if (hours === 1) return '1 hour ago';
+      return `${hours} hours ago`;
+    }
+
+    // Activity Timeline Functions
+    function renderActivityTimeline() {
+      const timeline = document.getElementById('activity-timeline');
+      const filtered = filterIncidents('current');
+
+      if (filtered.length === 0) {
+        timeline.innerHTML = '<div class="timeline-empty">No incidents in selected time window</div>';
+        return;
+      }
+
+      // Group incidents by hour
+      const hourlyGroups = new Map();
+      const now = new Date();
+      const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+
+      // Initialize last 12 hours
+      for (let i = 0; i < 12; i++) {
+        const hour = new Date(now.getTime() - i * 60 * 60 * 1000);
+        const key = `${hour.getDate()}-${hour.getHours()}`;
+        hourlyGroups.set(key, {
+          hour: hour,
+          incidents: [],
+          isToday: hour >= today
+        });
+      }
+
+      // Group incidents by hour
+      filtered.forEach(incident => {
+        const incidentDate = new Date(incident.first_seen_utc);
+        const key = `${incidentDate.getDate()}-${incidentDate.getHours()}`;
+
+        if (hourlyGroups.has(key)) {
+          hourlyGroups.get(key).incidents.push(incident);
+        }
+      });
+
+      // Sort groups by time (most recent first)
+      const sortedGroups = Array.from(hourlyGroups.values())
+        .sort((a, b) => b.hour - a.hour);
+
+      // Render timeline
+      let html = '';
+      for (const group of sortedGroups) {
+        if (group.incidents.length === 0) continue;
+
+        const hourLabel = group.isToday
+          ? (group.hour.getHours() === now.getHours() ? 'This hour' : `${group.hour.getHours()}:00`)
+          : group.hour.toLocaleDateString('en-GB', { month: 'short', day: 'numeric', hour: '2-digit' });
+
+        html += `
+          <div class="timeline-hour">
+            <div class="timeline-hour-label">
+              ${hourLabel}
+              <span class="timeline-hour-count">${group.incidents.length}</span>
+            </div>
+            <div class="timeline-incidents">
+        `;
+
+        // Sort incidents within hour by time (most recent first)
+        const sortedIncidents = group.incidents.sort((a, b) =>
+          new Date(b.first_seen_utc) - new Date(a.first_seen_utc)
+        );
+
+        for (const incident of sortedIncidents) {
+          const assetColor = assetColors[mapAssetType(incident.asset.type)] || '#6ea8fe';
+          const assetName = incident.asset.name || 'Unknown Location';
+          const time = new Date(incident.first_seen_utc);
+          const timeStr = time.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' });
+          const isLive = isLiveIncident(incident);
+
+          html += `
+            <div class="timeline-incident ${isLive ? 'live-incident' : ''}" data-incident-id="${incident.id}">
+              <div class="timeline-incident-dot" style="background: ${assetColor};"></div>
+              <div class="timeline-incident-info">
+                <div class="timeline-incident-name" title="${assetName}">
+                  ${assetName}
+                  ${isLive ? ' 🔴' : ''}
+                </div>
+                <div class="timeline-incident-time">
+                  ${timeStr} • Sev ${incident.scores?.severity || 1} • ${incident.evidence?.attribution || 'Unknown'}
+                </div>
+              </div>
+            </div>
+          `;
+        }
+
+        html += `
+            </div>
+          </div>
+        `;
+      }
+
+      if (html === '') {
+        timeline.innerHTML = '<div class="timeline-empty">No recent activity</div>';
+      } else {
+        timeline.innerHTML = html;
+
+        // Add click handlers for timeline incidents
+        timeline.querySelectorAll('.timeline-incident').forEach(element => {
+          element.addEventListener('click', (e) => {
+            const incidentId = e.currentTarget.getAttribute('data-incident-id');
+            const incident = filtered.find(inc => inc.id === incidentId);
+            if (incident) {
+              focusIncident(incident);
+            }
+          });
+        });
       }
     }
 
@@ -1137,6 +1858,7 @@
         document.getElementById('layer-border'),
         document.getElementById('layer-military'),
         document.getElementById('show-risk-rings'),
+        document.getElementById('show-threat-heatmap'),
         document.getElementById('compare-mode'),
         document.getElementById('auto-focus')
       ].forEach(control => {
@@ -1155,6 +1877,8 @@
         control.addEventListener('change', () => {
           if (control.id === 'show-risk-rings') {
             state.showRiskRings = control.checked;
+          } else if (control.id === 'show-threat-heatmap') {
+            state.showThreatHeatmap = control.checked;
           } else if (control.id === 'compare-mode') {
             state.compareMode = control.checked;
             document.getElementById('compare-controls').style.display = control.checked ? 'block' : 'none';
@@ -1169,6 +1893,11 @@
       document.getElementById('searchBox').addEventListener('input', () => {
         render();
         saveStateToURL();
+      });
+
+      // Breaking news alert close button
+      document.getElementById('breaking-close').addEventListener('click', () => {
+        hideBreakingNewsAlert();
       });
 
       // Share button functionality
