@@ -967,31 +967,39 @@
     /* Mobile panel overlay */
     /* Mobile-First Modern UX - 2025 */
     @media (max-width: 767px) {
-      /* CRITICAL FIX: Ensure map displays on mobile */
+      /* AGGRESSIVE FIX: Force map to display on mobile */
       #app {
         display: flex;
         flex-direction: column;
         height: 100vh;
         height: 100dvh;
         overflow: hidden;
+        position: relative;
       }
 
+      /* Override everything for mobile */
       .main-container {
-        flex: 1;
-        display: flex;
-        flex-direction: column;
-        min-height: 0;
-        position: relative;
-        height: calc(100vh - 120px); /* Subtract header height */
+        position: fixed !important;
+        top: 80px !important; /* After header */
+        left: 0 !important;
+        right: 0 !important;
+        bottom: 60px !important; /* Before bottom nav */
+        display: block !important;
+        width: 100% !important;
+        height: auto !important;
       }
 
       #map-container {
-        flex: 1;
-        height: 100%; /* Explicit height */
-        width: 100%;
-        position: relative;
+        position: absolute !important;
+        top: 0 !important;
+        left: 0 !important;
+        right: 0 !important;
+        bottom: 0 !important;
+        width: 100% !important;
+        height: 100% !important;
+        display: block !important;
         background: var(--surface);
-        min-height: 300px;
+        z-index: 1 !important;
       }
 
       #map {
@@ -1000,7 +1008,8 @@
         left: 0 !important;
         width: 100% !important;
         height: 100% !important;
-        z-index: 1 !important;
+        z-index: 2 !important;
+        display: block !important;
       }
 
       /* CRITICAL: Ensure Leaflet map displays on mobile */
