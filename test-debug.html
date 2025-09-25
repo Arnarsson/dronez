@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Debug Incidents Loading</title>
+    <style>
+        body { font-family: monospace; background: #111; color: #eee; padding: 20px; }
+        .status { padding: 10px; margin: 10px 0; border-left: 4px solid #0f0; }
+        .error { border-left-color: #f00; }
+        .info { border-left-color: #00f; }
+        pre { background: #222; padding: 10px; overflow: auto; }
+    </style>
+</head>
+<body>
+    <h1>🚁 Incidents Debug Page</h1>
+    <div id="results"></div>
+
+    <script>
+    async function debugIncidents() {
+        const results = document.getElementById('results');
+
+        function log(message, type = 'status') {
+            const div = document.createElement('div');
+            div.className = type;
+            div.innerHTML = message;
+            results.appendChild(div);
+            console.log(message.replace(/<[^>]*>/g, ''));
+        }
+
+        try {
+            log('🔄 Starting debug test...');
+
+            // Fetch incidents
+            log('📡 Fetching incidents.json...');
+            const response = await fetch('incidents.json?_=' + Date.now(), { cache: 'no-store' });
+            log(`📊 Response status: ${response.status} ${response.statusText}`);
+
+            if (!response.ok) {
+                log(`❌ Failed to fetch: HTTP ${response.status}`, 'error');
+                return;
+            }
+
+            const data = await response.json();
+            log(`✅ Loaded ${data.incidents.length} incidents`);
+            log(`📅 Data generated: ${data.generated_utc}`);
+
+            // Test date filtering (7 days)
+            const now = Date.now();
+            const sevenDaysAgo = now - 7 * 24 * 3600 * 1000;
+            log(`🗓️ Current time: ${new Date(now).toISOString()}`);
+            log(`🗓️ 7 days ago: ${new Date(sevenDaysAgo).toISOString()}`);
+
+            let validCount = 0;
+            let filteredIncidents = [];
+
+            data.incidents.forEach((incident, i) => {
+                const seenTs = Date.parse(incident.first_seen_utc || incident.last_update_utc || data.generated_utc || Date.now());
+                const isValid = Number.isFinite(seenTs);
+                const inRange = seenTs >= sevenDaysAgo && seenTs <= now;
+
+                log(`<pre>Incident ${i+1}: ${incident.id}
+  First seen: ${incident.first_seen_utc}
+  Parsed TS: ${new Date(seenTs).toISOString()}
+  Valid: ${isValid}
+  In 7-day range: ${inRange}
+  Status: ${incident.incident.status}
+  Evidence: ${incident.evidence.strength}
+  Asset: ${incident.asset.type}</pre>`, 'info');
+
+                if (isValid && inRange) {
+                    validCount++;
+                    filteredIncidents.push(incident);
+                }
+            });
+
+            log(`✅ ${validCount} incidents pass date filter`);
+
+            // Test status filtering
+            const statusFilters = ['active', 'resolved', 'unconfirmed'];
+            let statusFiltered = filteredIncidents.filter(inc => statusFilters.includes(inc.incident.status));
+            log(`✅ ${statusFiltered.length} incidents pass status filter`);
+
+            // Test evidence filtering
+            const evidenceFilters = ['0', '1', '2', '3'];
+            let evidenceFiltered = statusFiltered.filter(inc => evidenceFilters.includes(String(inc.evidence.strength)));
+            log(`✅ ${evidenceFiltered.length} incidents pass evidence filter`);
+
+            // Test asset type filtering
+            const assetTypes = ['airport', 'harbour', 'energy', 'military', 'rail', 'border', 'nuclear'];
+            let assetFiltered = evidenceFiltered.filter(inc => {
+                const assetType = inc.asset.type;
+                const mappedType = assetType === 'nuclear' ? 'energy' : assetType;
+                return assetTypes.includes(mappedType);
+            });
+            log(`✅ ${assetFiltered.length} incidents pass asset filter`);
+
+            if (assetFiltered.length === 0) {
+                log('❌ No incidents survive all filters!', 'error');
+            } else {
+                log(`🎉 ${assetFiltered.length} incidents should be visible!`);
+                assetFiltered.forEach(inc => {
+                    log(`  • ${inc.asset.name} (${inc.asset.type}) - ${inc.incident.status}`);
+                });
+            }
+
+        } catch (error) {
+            log(`❌ Error: ${error.message}`, 'error');
+            console.error('Full error:', error);
+        }
+    }
+
+    debugIncidents();
+    </script>
+</body>
+</html>
