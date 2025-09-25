@@ -55,8 +55,8 @@
     },
     {
       "id": "dk-cph-hbr-test-2025-09-25",
-      "first_seen_utc": "2025-09-25T19:50:00Z",
-      "last_update_utc": "2025-09-25T20:10:00Z",
+      "first_seen_utc": "2025-09-25T18:50:00Z",
+      "last_update_utc": "2025-09-25T19:00:00Z",
       "asset": {
         "type": "harbour",
         "name": "Port of Copenhagen (Nordhavn)",
@@ -83,7 +83,7 @@
             "url": "https://www.tv2lorry.dk/koebenhavn/drone-observeret-ved-nordhavn-politiet-undersoeger",
             "publisher": "TV 2 Lorry",
             "lang": "da",
-            "first_seen": "2025-09-25T20:05:00Z"
+            "first_seen": "2025-09-25T18:55:00Z"
           }
         ],
         "notam_navtex_ids": [
