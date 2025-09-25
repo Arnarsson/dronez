@@ -1,5 +1,5 @@
 {
-  "generated_utc": "2025-09-25T19:35:00Z",
+  "generated_utc": "2025-09-25T20:10:00Z",
   "incidents": [
     {
       "id": "dk-ekch-2025-09-22",
@@ -42,6 +42,244 @@
       "tags": ["night", "approach-path", "official-response"]
     },
     {
+      "id": "dk-ekbi-billund-2025-09-25",
+      "first_seen_utc": "2025-09-25T09:15:00Z",
+      "last_update_utc": "2025-09-25T10:30:00Z",
+      "asset": {
+        "type": "airport",
+        "name": "Billund Airport",
+        "iata": "BLL",
+        "icao": "EKBI",
+        "lat": 55.7403,
+        "lon": 9.1522
+      },
+      "incident": {
+        "category": "sighting",
+        "status": "active",
+        "duration_min": 75,
+        "uav_count": 1,
+        "uav_characteristics": "commercial quadcopter, camera visible",
+        "response": ["ATC", "police"],
+        "narrative": "Unauthorized drone filming over Legoland vicinity during morning operations."
+      },
+      "evidence": {
+        "strength": 2,
+        "attribution": "suspected",
+        "sources": [
+          {
+            "url": "https://www.tv2ostjylland.dk/billund/drone-spotted-near-billund-airport",
+            "publisher": "TV 2 Østjylland",
+            "lang": "da",
+            "first_seen": "2025-09-25T09:45:00Z"
+          }
+        ],
+        "notam_navtex_ids": []
+      },
+      "scores": {
+        "severity": 3,
+        "risk_radius_m": 4500
+      },
+      "tags": ["commercial", "filming", "tourism-area"]
+    },
+    {
+      "id": "dk-ekyt-aalborg-2025-09-24",
+      "first_seen_utc": "2025-09-24T16:20:00Z",
+      "last_update_utc": "2025-09-24T17:05:00Z",
+      "asset": {
+        "type": "airport",
+        "name": "Aalborg Airport",
+        "iata": "AAL",
+        "icao": "EKYT",
+        "lat": 57.0928,
+        "lon": 9.8492
+      },
+      "incident": {
+        "category": "sighting",
+        "status": "resolved",
+        "duration_min": 45,
+        "uav_count": 1,
+        "uav_characteristics": "fixed-wing, research configuration",
+        "response": ["ATC"],
+        "narrative": "University research drone strayed into controlled airspace during weather monitoring."
+      },
+      "evidence": {
+        "strength": 1,
+        "attribution": "unconfirmed",
+        "sources": [
+          {
+            "url": "https://www.nordjyske.dk/nyheder/aalborg/drone-incident-aalborg-airport",
+            "publisher": "Nordjyske",
+            "lang": "da",
+            "first_seen": "2025-09-24T17:30:00Z"
+          }
+        ],
+        "notam_navtex_ids": []
+      },
+      "scores": {
+        "severity": 2,
+        "risk_radius_m": 3000
+      },
+      "tags": ["research", "university", "weather"]
+    },
+    {
+      "id": "dk-ekah-aarhus-2025-09-23",
+      "first_seen_utc": "2025-09-23T12:40:00Z",
+      "last_update_utc": "2025-09-23T13:15:00Z",
+      "asset": {
+        "type": "airport",
+        "name": "Aarhus Airport",
+        "iata": "AAR",
+        "icao": "EKAH",
+        "lat": 56.3000,
+        "lon": 10.6190
+      },
+      "incident": {
+        "category": "sighting",
+        "status": "unconfirmed",
+        "duration_min": 35,
+        "uav_count": 2,
+        "uav_characteristics": "racing drones, high-speed maneuvers",
+        "response": [],
+        "narrative": "Possible racing drones reported by pilot during approach, authorities investigating."
+      },
+      "evidence": {
+        "strength": 0,
+        "attribution": "unconfirmed",
+        "sources": [
+          {
+            "url": "https://twitter.com/pilotreports_dk/status/racing-drones-aarhus",
+            "publisher": "Pilot Reports Denmark",
+            "lang": "da",
+            "first_seen": "2025-09-23T13:00:00Z"
+          }
+        ],
+        "notam_navtex_ids": []
+      },
+      "scores": {
+        "severity": 1,
+        "risk_radius_m": 2000
+      },
+      "tags": ["racing", "pilot-report", "unverified"]
+    },
+    {
+      "id": "dk-ekeb-esbjerg-2025-09-25",
+      "first_seen_utc": "2025-09-25T07:30:00Z",
+      "last_update_utc": "2025-09-25T08:45:00Z",
+      "asset": {
+        "type": "airport",
+        "name": "Esbjerg Airport",
+        "iata": "EBJ",
+        "icao": "EKEB",
+        "lat": 55.5259,
+        "lon": 8.5539
+      },
+      "incident": {
+        "category": "sighting",
+        "status": "active",
+        "duration_min": 75,
+        "uav_count": 1,
+        "uav_characteristics": "industrial survey drone, oil company markings",
+        "response": ["ATC", "police"],
+        "narrative": "Offshore energy sector surveillance drone operating without proper clearance near North Sea operations."
+      },
+      "evidence": {
+        "strength": 2,
+        "attribution": "suspected",
+        "sources": [
+          {
+            "url": "https://www.jv.dk/esbjerg/esbjerg-lufthavn-drone-incident",
+            "publisher": "JydskeVestkysten",
+            "lang": "da",
+            "first_seen": "2025-09-25T08:15:00Z"
+          }
+        ],
+        "notam_navtex_ids": []
+      },
+      "scores": {
+        "severity": 3,
+        "risk_radius_m": 4000
+      },
+      "tags": ["industrial", "oil-sector", "offshore"]
+    },
+    {
+      "id": "dk-aarhus-port-2025-09-24",
+      "first_seen_utc": "2025-09-24T20:10:00Z",
+      "last_update_utc": "2025-09-24T21:25:00Z",
+      "asset": {
+        "type": "harbour",
+        "name": "Port of Aarhus",
+        "lat": 56.1572,
+        "lon": 10.2107,
+        "osm_id": 45678901
+      },
+      "incident": {
+        "category": "sighting",
+        "status": "resolved",
+        "duration_min": 75,
+        "uav_count": 3,
+        "uav_characteristics": "cargo inspection formation",
+        "response": ["port-authority", "customs"],
+        "narrative": "Coordinated surveillance drones detected over container terminal during evening shift."
+      },
+      "evidence": {
+        "strength": 2,
+        "attribution": "suspected",
+        "sources": [
+          {
+            "url": "https://www.aarhushavn.dk/nyheder/drone-sighting-report",
+            "publisher": "Aarhus Port Authority",
+            "lang": "da",
+            "first_seen": "2025-09-24T21:00:00Z"
+          }
+        ],
+        "notam_navtex_ids": []
+      },
+      "scores": {
+        "severity": 3,
+        "risk_radius_m": 2500
+      },
+      "tags": ["cargo", "formation", "customs"]
+    },
+    {
+      "id": "dk-esbjerg-port-2025-09-23",
+      "first_seen_utc": "2025-09-23T05:45:00Z",
+      "last_update_utc": "2025-09-23T06:30:00Z",
+      "asset": {
+        "type": "harbour",
+        "name": "Port of Esbjerg",
+        "lat": 55.4677,
+        "lon": 8.4380,
+        "osm_id": 56789012
+      },
+      "incident": {
+        "category": "sighting",
+        "status": "unconfirmed",
+        "duration_min": null,
+        "uav_count": 1,
+        "uav_characteristics": "unknown, pre-dawn sighting",
+        "response": [],
+        "narrative": "Early morning security guard reported possible drone over offshore wind service vessels."
+      },
+      "evidence": {
+        "strength": 0,
+        "attribution": "unconfirmed",
+        "sources": [
+          {
+            "url": "https://www.facebook.com/groups/esbjerg-spotters/posts/dawn-drone-sighting",
+            "publisher": "Esbjerg Spotters Group",
+            "lang": "da",
+            "first_seen": "2025-09-23T07:15:00Z"
+          }
+        ],
+        "notam_navtex_ids": []
+      },
+      "scores": {
+        "severity": 1,
+        "risk_radius_m": 1500
+      },
+      "tags": ["pre-dawn", "wind-energy", "social-media"]
+    },
+    {
       "id": "de-eddf-2025-09-25",
       "first_seen_utc": "2025-09-25T14:30:00Z",
       "last_update_utc": "2025-09-25T15:45:00Z",
@@ -80,6 +318,286 @@
         "risk_radius_m": 10000
       },
       "tags": ["formation", "terminal-area", "delays"]
+    },
+    {
+      "id": "pl-epwa-warsaw-2025-09-25",
+      "first_seen_utc": "2025-09-25T11:20:00Z",
+      "last_update_utc": "2025-09-25T12:15:00Z",
+      "asset": {
+        "type": "airport",
+        "name": "Warsaw Chopin Airport",
+        "iata": "WAW",
+        "icao": "EPWA",
+        "lat": 52.1657,
+        "lon": 20.9671
+      },
+      "incident": {
+        "category": "sighting",
+        "status": "active",
+        "duration_min": 55,
+        "uav_count": 2,
+        "uav_characteristics": "military-grade surveillance",
+        "response": ["ATC", "police", "military"],
+        "narrative": "Advanced surveillance drones detected near NATO logistics hub area."
+      },
+      "evidence": {
+        "strength": 3,
+        "attribution": "confirmed",
+        "sources": [
+          {
+            "url": "https://www.pansa.pl/security-alerts/drone-incident-epwa",
+            "publisher": "PANSA (Polish ATC)",
+            "lang": "pl",
+            "first_seen": "2025-09-25T11:35:00Z"
+          }
+        ],
+        "notam_navtex_ids": ["NOTAM A0287/25"]
+      },
+      "scores": {
+        "severity": 5,
+        "risk_radius_m": 12000
+      },
+      "tags": ["military-grade", "nato", "surveillance"]
+    },
+    {
+      "id": "cz-lkpr-prague-2025-09-24",
+      "first_seen_utc": "2025-09-24T18:50:00Z",
+      "last_update_utc": "2025-09-24T19:40:00Z",
+      "asset": {
+        "type": "airport",
+        "name": "Prague Václav Havel Airport",
+        "iata": "PRG",
+        "icao": "LKPR",
+        "lat": 50.1008,
+        "lon": 14.2632
+      },
+      "incident": {
+        "category": "sighting",
+        "status": "resolved",
+        "duration_min": 50,
+        "uav_count": 1,
+        "uav_characteristics": "tourist photography drone",
+        "response": ["ATC", "police"],
+        "narrative": "Tourist drone with camera detected over historic Prague castle approach corridor."
+      },
+      "evidence": {
+        "strength": 2,
+        "attribution": "suspected",
+        "sources": [
+          {
+            "url": "https://www.ceskenoviny.cz/zpravy/drone-prague-airport-incident",
+            "publisher": "ČTK Czech News Agency",
+            "lang": "cs",
+            "first_seen": "2025-09-24T19:15:00Z"
+          }
+        ],
+        "notam_navtex_ids": []
+      },
+      "scores": {
+        "severity": 2,
+        "risk_radius_m": 3500
+      },
+      "tags": ["tourism", "photography", "historic"]
+    },
+    {
+      "id": "hu-lhbp-budapest-2025-09-23",
+      "first_seen_utc": "2025-09-23T15:10:00Z",
+      "last_update_utc": "2025-09-23T16:00:00Z",
+      "asset": {
+        "type": "airport",
+        "name": "Budapest Ferenc Liszt Airport",
+        "iata": "BUD",
+        "icao": "LHBP",
+        "lat": 47.4298,
+        "lon": 19.2611
+      },
+      "incident": {
+        "category": "sighting",
+        "status": "unconfirmed",
+        "duration_min": null,
+        "uav_count": 1,
+        "uav_characteristics": "unidentified small craft",
+        "response": [],
+        "narrative": "Passenger reported possible drone from aircraft window during landing approach."
+      },
+      "evidence": {
+        "strength": 0,
+        "attribution": "unconfirmed",
+        "sources": [
+          {
+            "url": "https://www.reddit.com/r/hungary/drone_sighting_bud_airport",
+            "publisher": "Reddit Hungary",
+            "lang": "hu",
+            "first_seen": "2025-09-23T16:30:00Z"
+          }
+        ],
+        "notam_navtex_ids": []
+      },
+      "scores": {
+        "severity": 1,
+        "risk_radius_m": 2000
+      },
+      "tags": ["passenger-report", "approach", "social-media"]
+    },
+    {
+      "id": "fi-efhk-helsinki-2025-09-25",
+      "first_seen_utc": "2025-09-25T06:45:00Z",
+      "last_update_utc": "2025-09-25T07:30:00Z",
+      "asset": {
+        "type": "airport",
+        "name": "Helsinki-Vantaa Airport",
+        "iata": "HEL",
+        "icao": "EFHK",
+        "lat": 60.3172,
+        "lon": 24.9633
+      },
+      "incident": {
+        "category": "sighting",
+        "status": "active",
+        "duration_min": 45,
+        "uav_count": 1,
+        "uav_characteristics": "arctic weather monitoring",
+        "response": ["ATC", "border-guard"],
+        "narrative": "Unauthorized research drone conducting arctic weather analysis near runway approach."
+      },
+      "evidence": {
+        "strength": 2,
+        "attribution": "suspected",
+        "sources": [
+          {
+            "url": "https://yle.fi/uutiset/helsinki-vantaa-drone-incident-weather",
+            "publisher": "Yle Finnish Broadcasting",
+            "lang": "fi",
+            "first_seen": "2025-09-25T07:15:00Z"
+          }
+        ],
+        "notam_navtex_ids": []
+      },
+      "scores": {
+        "severity": 3,
+        "risk_radius_m": 4500
+      },
+      "tags": ["arctic", "research", "weather"]
+    },
+    {
+      "id": "is-bikf-keflavik-2025-09-24",
+      "first_seen_utc": "2025-09-24T14:25:00Z",
+      "last_update_utc": "2025-09-24T15:10:00Z",
+      "asset": {
+        "type": "airport",
+        "name": "Keflavík International Airport",
+        "iata": "KEF",
+        "icao": "BIKF",
+        "lat": 63.9850,
+        "lon": -22.6056
+      },
+      "incident": {
+        "category": "sighting",
+        "status": "resolved",
+        "duration_min": 45,
+        "uav_count": 1,
+        "uav_characteristics": "NATO surveillance configuration",
+        "response": ["ATC", "military", "nato-security"],
+        "narrative": "Military surveillance drone detected near strategic NATO base operations area."
+      },
+      "evidence": {
+        "strength": 3,
+        "attribution": "confirmed",
+        "sources": [
+          {
+            "url": "https://www.ruv.is/frett/keflavik-airport-drone-military",
+            "publisher": "RÚV Icelandic National Broadcasting",
+            "lang": "is",
+            "first_seen": "2025-09-24T14:50:00Z"
+          }
+        ],
+        "notam_navtex_ids": ["NOTAM A0298/25"]
+      },
+      "scores": {
+        "severity": 4,
+        "risk_radius_m": 8000
+      },
+      "tags": ["nato", "military", "strategic"]
+    },
+    {
+      "id": "gr-lgav-athens-2025-09-23",
+      "first_seen_utc": "2025-09-23T17:30:00Z",
+      "last_update_utc": "2025-09-23T18:15:00Z",
+      "asset": {
+        "type": "airport",
+        "name": "Athens International Airport",
+        "iata": "ATH",
+        "icao": "LGAV",
+        "lat": 37.9364,
+        "lon": 23.9445
+      },
+      "incident": {
+        "category": "sighting",
+        "status": "unconfirmed",
+        "duration_min": null,
+        "uav_count": 1,
+        "uav_characteristics": "media drone, news configuration",
+        "response": [],
+        "narrative": "Possible news media drone reported near airport during political VIP departure."
+      },
+      "evidence": {
+        "strength": 0,
+        "attribution": "unconfirmed",
+        "sources": [
+          {
+            "url": "https://twitter.com/athens_spotters/status/vip-departure-drone",
+            "publisher": "Athens Aviation Spotters",
+            "lang": "el",
+            "first_seen": "2025-09-23T18:45:00Z"
+          }
+        ],
+        "notam_navtex_ids": []
+      },
+      "scores": {
+        "severity": 1,
+        "risk_radius_m": 2500
+      },
+      "tags": ["media", "vip", "political"]
+    },
+    {
+      "id": "pt-lppt-lisbon-2025-09-25",
+      "first_seen_utc": "2025-09-25T13:20:00Z",
+      "last_update_utc": "2025-09-25T14:05:00Z",
+      "asset": {
+        "type": "airport",
+        "name": "Lisbon Airport",
+        "iata": "LIS",
+        "icao": "LPPT",
+        "lat": 38.7813,
+        "lon": -9.1361
+      },
+      "incident": {
+        "category": "sighting",
+        "status": "active",
+        "duration_min": 45,
+        "uav_count": 2,
+        "uav_characteristics": "coastal surveillance drones",
+        "response": ["ATC", "police"],
+        "narrative": "Maritime patrol drones detected operating without clearance near Atlantic approach corridor."
+      },
+      "evidence": {
+        "strength": 2,
+        "attribution": "suspected",
+        "sources": [
+          {
+            "url": "https://www.publico.pt/lisboa-aeroporto-drones-avistamento",
+            "publisher": "Público",
+            "lang": "pt",
+            "first_seen": "2025-09-25T13:50:00Z"
+          }
+        ],
+        "notam_navtex_ids": []
+      },
+      "scores": {
+        "severity": 3,
+        "risk_radius_m": 4000
+      },
+      "tags": ["maritime", "atlantic", "coastal"]
     },
     {
       "id": "fr-lfpg-2025-09-24",
@@ -599,6 +1117,45 @@
       "tags": ["cargo", "inspection", "customs", "maasvlakte"]
     },
     {
+      "id": "gr-piraeus-port-2025-09-24",
+      "first_seen_utc": "2025-09-24T19:15:00Z",
+      "last_update_utc": "2025-09-24T20:00:00Z",
+      "asset": {
+        "type": "harbour",
+        "name": "Port of Piraeus",
+        "lat": 37.9417,
+        "lon": 23.6458,
+        "osm_id": 78901234
+      },
+      "incident": {
+        "category": "sighting",
+        "status": "unconfirmed",
+        "duration_min": null,
+        "uav_count": 1,
+        "uav_characteristics": "small recreational drone",
+        "response": [],
+        "narrative": "Tourist drone reported over ferry terminal area, port security investigating."
+      },
+      "evidence": {
+        "strength": 0,
+        "attribution": "unconfirmed",
+        "sources": [
+          {
+            "url": "https://www.instagram.com/p/piraeus-port-drone-spotting",
+            "publisher": "Tourism Instagram",
+            "lang": "el",
+            "first_seen": "2025-09-24T20:30:00Z"
+          }
+        ],
+        "notam_navtex_ids": []
+      },
+      "scores": {
+        "severity": 1,
+        "risk_radius_m": 1500
+      },
+      "tags": ["tourism", "ferry", "instagram"]
+    },
+    {
       "id": "fr-nuclear-flamanville-2025-09-24",
       "first_seen_utc": "2025-09-24T03:45:00Z",
       "last_update_utc": "2025-09-24T04:30:00Z",
@@ -677,6 +1234,45 @@
       "tags": ["nuclear", "thermal", "cooling-towers", "scanning"]
     },
     {
+      "id": "cz-nuclear-temelin-2025-09-25",
+      "first_seen_utc": "2025-09-25T01:30:00Z",
+      "last_update_utc": "2025-09-25T02:15:00Z",
+      "asset": {
+        "type": "nuclear",
+        "name": "Temelín Nuclear Power Station",
+        "lat": 49.1817,
+        "lon": 14.3708,
+        "operator": "ČEZ"
+      },
+      "incident": {
+        "category": "sighting",
+        "status": "unconfirmed",
+        "duration_min": null,
+        "uav_count": 1,
+        "uav_characteristics": "unknown configuration",
+        "response": [],
+        "narrative": "Night security reported possible drone over restricted zone, investigation ongoing."
+      },
+      "evidence": {
+        "strength": 0,
+        "attribution": "unconfirmed",
+        "sources": [
+          {
+            "url": "https://www.idnes.cz/zpravy/domaci/temelin-drone-security-alert",
+            "publisher": "iDNES.cz",
+            "lang": "cs",
+            "first_seen": "2025-09-25T03:00:00Z"
+          }
+        ],
+        "notam_navtex_ids": []
+      },
+      "scores": {
+        "severity": 2,
+        "risk_radius_m": 10000
+      },
+      "tags": ["nuclear", "night", "security-alert"]
+    },
+    {
       "id": "de-military-ramstein-2025-09-25",
       "first_seen_utc": "2025-09-25T12:00:00Z",
       "last_update_utc": "2025-09-25T12:30:00Z",
@@ -753,6 +1349,201 @@
         "risk_radius_m": 15000
       },
       "tags": ["military", "raf", "surveillance", "maintenance"]
+    },
+    {
+      "id": "pl-military-malbork-2025-09-23",
+      "first_seen_utc": "2025-09-23T22:00:00Z",
+      "last_update_utc": "2025-09-23T22:45:00Z",
+      "asset": {
+        "type": "military",
+        "name": "Malbork Air Base",
+        "lat": 54.0269,
+        "lon": 19.1342,
+        "classification": "Polish Air Force"
+      },
+      "incident": {
+        "category": "sighting",
+        "status": "unconfirmed",
+        "duration_min": null,
+        "uav_count": 2,
+        "uav_characteristics": "formation flying, lights off",
+        "response": [],
+        "narrative": "Multiple unlit drones reported near strategic air defense installation."
+      },
+      "evidence": {
+        "strength": 0,
+        "attribution": "unconfirmed",
+        "sources": [
+          {
+            "url": "https://www.radiomalbork.pl/wiadomosci/drones-reported-air-base",
+            "publisher": "Radio Malbork",
+            "lang": "pl",
+            "first_seen": "2025-09-23T23:30:00Z"
+          }
+        ],
+        "notam_navtex_ids": []
+      },
+      "scores": {
+        "severity": 3,
+        "risk_radius_m": 18000
+      },
+      "tags": ["military", "formation", "air-defense", "night"]
+    },
+    {
+      "id": "de-rail-frankfurt-hbf-2025-09-25",
+      "first_seen_utc": "2025-09-25T17:45:00Z",
+      "last_update_utc": "2025-09-25T18:30:00Z",
+      "asset": {
+        "type": "rail",
+        "name": "Frankfurt (Main) Hauptbahnhof",
+        "lat": 50.1069,
+        "lon": 8.6617,
+        "rail_operator": "Deutsche Bahn"
+      },
+      "incident": {
+        "category": "sighting",
+        "status": "active",
+        "duration_min": 45,
+        "uav_count": 1,
+        "uav_characteristics": "infrastructure inspection drone",
+        "response": ["rail-security", "police"],
+        "narrative": "Infrastructure monitoring drone detected over high-speed rail junction during evening rush hour."
+      },
+      "evidence": {
+        "strength": 2,
+        "attribution": "suspected",
+        "sources": [
+          {
+            "url": "https://www.bahn.de/service/presse/drone-sighting-frankfurt-hbf",
+            "publisher": "Deutsche Bahn",
+            "lang": "de",
+            "first_seen": "2025-09-25T18:15:00Z"
+          }
+        ],
+        "notam_navtex_ids": []
+      },
+      "scores": {
+        "severity": 2,
+        "risk_radius_m": 1500
+      },
+      "tags": ["rail", "infrastructure", "rush-hour", "junction"]
+    },
+    {
+      "id": "fr-rail-gare-du-nord-2025-09-24",
+      "first_seen_utc": "2025-09-24T08:20:00Z",
+      "last_update_utc": "2025-09-24T09:00:00Z",
+      "asset": {
+        "type": "rail",
+        "name": "Gare du Nord",
+        "lat": 48.8809,
+        "lon": 2.3553,
+        "rail_operator": "SNCF"
+      },
+      "incident": {
+        "category": "sighting",
+        "status": "resolved",
+        "duration_min": 40,
+        "uav_count": 1,
+        "uav_characteristics": "media drone, news configuration",
+        "response": ["rail-security"],
+        "narrative": "News media drone filming morning commuter crowds without authorization."
+      },
+      "evidence": {
+        "strength": 1,
+        "attribution": "unconfirmed",
+        "sources": [
+          {
+            "url": "https://www.20minutes.fr/paris/gare-du-nord-drone-media",
+            "publisher": "20 Minutes",
+            "lang": "fr",
+            "first_seen": "2025-09-24T09:30:00Z"
+          }
+        ],
+        "notam_navtex_ids": []
+      },
+      "scores": {
+        "severity": 2,
+        "risk_radius_m": 1000
+      },
+      "tags": ["rail", "media", "commuters", "morning"]
+    },
+    {
+      "id": "de-border-passau-2025-09-23",
+      "first_seen_utc": "2025-09-23T16:30:00Z",
+      "last_update_utc": "2025-09-23T17:15:00Z",
+      "asset": {
+        "type": "border",
+        "name": "Passau Border Crossing (DE-AT)",
+        "lat": 48.5665,
+        "lon": 13.4318,
+        "border_countries": ["DE", "AT"]
+      },
+      "incident": {
+        "category": "sighting",
+        "status": "resolved",
+        "duration_min": 45,
+        "uav_count": 1,
+        "uav_characteristics": "surveillance drone, border patrol configuration",
+        "response": ["border-police", "customs"],
+        "narrative": "Cross-border surveillance drone monitoring migration routes along Danube river."
+      },
+      "evidence": {
+        "strength": 1,
+        "attribution": "unconfirmed",
+        "sources": [
+          {
+            "url": "https://www.pnp.de/nachrichten/passau-grenze-drohne-sichtung",
+            "publisher": "Passauer Neue Presse",
+            "lang": "de",
+            "first_seen": "2025-09-23T17:45:00Z"
+          }
+        ],
+        "notam_navtex_ids": []
+      },
+      "scores": {
+        "severity": 2,
+        "risk_radius_m": 2000
+      },
+      "tags": ["border", "surveillance", "migration", "danube"]
+    },
+    {
+      "id": "fr-border-calais-2025-09-25",
+      "first_seen_utc": "2025-09-25T03:15:00Z",
+      "last_update_utc": "2025-09-25T04:00:00Z",
+      "asset": {
+        "type": "border",
+        "name": "Port of Calais Border Control",
+        "lat": 50.9581,
+        "lon": 1.8503,
+        "border_countries": ["FR", "GB"]
+      },
+      "incident": {
+        "category": "sighting",
+        "status": "unconfirmed",
+        "duration_min": null,
+        "uav_count": 1,
+        "uav_characteristics": "small quadcopter, night vision",
+        "response": [],
+        "narrative": "Night patrol reported possible surveillance drone monitoring migrant camp areas."
+      },
+      "evidence": {
+        "strength": 0,
+        "attribution": "unconfirmed",
+        "sources": [
+          {
+            "url": "https://www.nordlittoral.fr/calais-frontiere-drone-nuit",
+            "publisher": "Nord Littoral",
+            "lang": "fr",
+            "first_seen": "2025-09-25T05:30:00Z"
+          }
+        ],
+        "notam_navtex_ids": []
+      },
+      "scores": {
+        "severity": 1,
+        "risk_radius_m": 1500
+      },
+      "tags": ["border", "night-patrol", "surveillance", "channel"]
     }
   ]
 }
