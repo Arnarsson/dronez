@@ -1659,6 +1659,23 @@
 
       const map = window.map; // Keep local reference
 
+      // CRITICAL: Force map to recalculate size on mobile
+      setTimeout(() => {
+        map.invalidateSize();
+        console.log('Map size invalidated');
+      }, 100);
+
+      // Also invalidate on window resize
+      window.addEventListener('resize', () => {
+        map.invalidateSize();
+      });
+
+      // Force another invalidation after a delay for mobile
+      setTimeout(() => {
+        map.invalidateSize();
+        console.log('Map size invalidated again');
+      }, 500);
+
     const satellite = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
       attribution: 'Basemap © Esri — Sources: Esri, i-cubed, USDA, USGS, AeroGRID, IGN, IGP'
     }).addTo(map);
