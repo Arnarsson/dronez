@@ -8,11 +8,14 @@
     "build": "rm -rf dist && mkdir -p dist && cp index.html dist/index.html && cp public/incidents.json dist/incidents.json && cp public/incidents.schema.json dist/incidents.schema.json && cp public/favicon.svg dist/favicon.svg",
     "build-assets": "python3 tools/build_assets.py",
     "ingest": "python3 tools/ingest.py",
+    "automation": "node automation/index.js run",
     "automation:start": "node automation/index.js start",
     "automation:run": "node automation/index.js run",
+    "automation:continuous": "node automation/continuous-monitor.js",
     "automation:test": "node automation/index.js test",
     "automation:audit": "node automation/index.js audit",
-    "automation:status": "node automation/index.js status"
+    "automation:status": "node automation/index.js status",
+    "collect": "npm run automation && npm run build"
   },
   "dependencies": {
     "node-cron": "^3.0.3",

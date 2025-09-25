@@ -1,36 +1,46 @@
 export class AviationAuthorityScraper {
   constructor() {
     this.authorities = {
-      'DK': {
-        name: 'Danish Transport, Construction and Housing Authority',
-        url: 'https://www.trafikstyrelsen.dk',
-        notam_url: 'https://aim-portal.trafikstyrelsen.dk'
-      },
-      'NL': {
-        name: 'Dutch Human Environment and Transport Inspectorate',
-        url: 'https://www.ilent.nl',
-        notam_url: 'https://www.lvnl.nl'
-      },
-      'DE': {
-        name: 'German Federal Aviation Office',
-        url: 'https://www.lba.de',
-        notam_url: 'https://www.dfs.de'
-      },
-      'NO': {
-        name: 'Norwegian Civil Aviation Authority',
-        url: 'https://luftfartstilsynet.no',
-        notam_url: 'https://www.avinor.no'
-      },
-      'SE': {
-        name: 'Swedish Transport Agency',
-        url: 'https://www.transportstyrelsen.se',
-        notam_url: 'https://www.lfv.se'
-      },
-      'FI': {
-        name: 'Finnish Transport and Communications Agency',
-        url: 'https://www.traficom.fi',
-        notam_url: 'https://www.finavia.fi'
-      }
+      // Nordic Countries
+      'DK': { name: 'Danish Transport Authority', url: 'https://www.trafikstyrelsen.dk', notam_url: 'https://aim-portal.trafikstyrelsen.dk' },
+      'NO': { name: 'Norwegian Civil Aviation Authority', url: 'https://luftfartstilsynet.no', notam_url: 'https://www.avinor.no' },
+      'SE': { name: 'Swedish Transport Agency', url: 'https://www.transportstyrelsen.se', notam_url: 'https://www.lfv.se' },
+      'FI': { name: 'Finnish Transport Agency', url: 'https://www.traficom.fi', notam_url: 'https://www.finavia.fi' },
+      'IS': { name: 'Icelandic Transport Authority', url: 'https://www.icetra.is', notam_url: 'https://www.isavia.is' },
+
+      // Western Europe
+      'NL': { name: 'Dutch Civil Aviation Authority', url: 'https://www.ilent.nl', notam_url: 'https://www.lvnl.nl' },
+      'DE': { name: 'German Federal Aviation Office', url: 'https://www.lba.de', notam_url: 'https://www.dfs.de' },
+      'FR': { name: 'French Civil Aviation Authority', url: 'https://www.ecologie.gouv.fr', notam_url: 'https://www.sia.aviation-civile.gouv.fr' },
+      'GB': { name: 'UK Civil Aviation Authority', url: 'https://www.caa.co.uk', notam_url: 'https://www.nats.aero' },
+      'IE': { name: 'Irish Aviation Authority', url: 'https://www.iaa.ie', notam_url: 'https://aim.iaa.ie' },
+      'BE': { name: 'Belgian Civil Aviation Authority', url: 'https://www.belgocontrol.be', notam_url: 'https://www.belgocontrol.be' },
+      'CH': { name: 'Swiss Federal Aviation Office', url: 'https://www.bazl.admin.ch', notam_url: 'https://www.skyguide.ch' },
+      'AT': { name: 'Austrian Civil Aviation Authority', url: 'https://www.austrocontrol.at', notam_url: 'https://www.austrocontrol.at' },
+
+      // Central Europe
+      'PL': { name: 'Polish Civil Aviation Authority', url: 'https://www.ulc.gov.pl', notam_url: 'https://www.pansa.pl' },
+      'CZ': { name: 'Czech Civil Aviation Authority', url: 'https://www.caa.cz', notam_url: 'https://rlp.caa.cz' },
+      'SK': { name: 'Slovak Civil Aviation Authority', url: 'https://www.nsat.sk', notam_url: 'https://www.lps.sk' },
+      'HU': { name: 'Hungarian Civil Aviation Authority', url: 'https://www.nkh.gov.hu', notam_url: 'https://www.hungarocontrol.hu' },
+      'SI': { name: 'Slovenian Civil Aviation Agency', url: 'https://www.caa.si', notam_url: 'https://www.sloveniacontrol.si' },
+
+      // Baltic States
+      'EE': { name: 'Estonian Civil Aviation Administration', url: 'https://www.tja.ee', notam_url: 'https://www.lennuliiklusteenindus.ee' },
+      'LV': { name: 'Latvian Civil Aviation Agency', url: 'https://www.caa.lv', notam_url: 'https://www.lgs.lv' },
+      'LT': { name: 'Lithuanian Civil Aviation Administration', url: 'https://www.caa.lt', notam_url: 'https://www.oro.lt' },
+
+      // Southern Europe
+      'ES': { name: 'Spanish Aviation Safety Agency', url: 'https://www.seguridadaerea.gob.es', notam_url: 'https://www.enaire.es' },
+      'PT': { name: 'Portuguese Civil Aviation Authority', url: 'https://www.anac.pt', notam_url: 'https://www.nav.pt' },
+      'IT': { name: 'Italian Civil Aviation Authority', url: 'https://www.enac.gov.it', notam_url: 'https://www.enav.it' },
+      'GR': { name: 'Hellenic Civil Aviation Authority', url: 'https://www.ypa.gr', notam_url: 'https://www.hcaa.gr' },
+
+      // Eastern Europe
+      'RO': { name: 'Romanian Civil Aviation Authority', url: 'https://www.caa.ro', notam_url: 'https://www.romatsa.ro' },
+      'BG': { name: 'Bulgarian Civil Aviation Administration', url: 'https://www.caa.bg', notam_url: 'https://www.bulatsa.com' },
+      'HR': { name: 'Croatian Civil Aviation Agency', url: 'https://www.ccaa.hr', notam_url: 'https://www.crocontrol.hr' },
+      'UA': { name: 'Ukrainian State Aviation Administration', url: 'https://avia.gov.ua', notam_url: 'https://www.ukraeroruch.gov.ua' }
     };
   }
 
