@@ -1,5 +1,5 @@
 {
-  "generated_utc": "2025-09-25T21:00:00Z",
+  "generated_utc": "2025-09-25T17:08:11Z",
   "incidents": [
     {
       "id": "dk-ekch-2025-09-22",
@@ -19,7 +19,10 @@
         "duration_min": 240,
         "uav_count": 2,
         "uav_characteristics": "lights toggled",
-        "response": ["ATC", "police"],
+        "response": [
+          "ATC",
+          "police"
+        ],
         "narrative": "Runway ops paused; drones observed on approach."
       },
       "evidence": {
@@ -39,7 +42,10 @@
         "severity": 4,
         "risk_radius_m": 5000
       },
-      "tags": ["night", "approach-path"]
+      "tags": [
+        "night",
+        "approach-path"
+      ]
     },
     {
       "id": "dk-cph-hbr-test-2025-09-25",
@@ -58,7 +64,9 @@
         "duration_min": null,
         "uav_count": 1,
         "uav_characteristics": "small quad",
-        "response": ["police"],
+        "response": [
+          "police"
+        ],
         "narrative": "Sighted near cruise quay; VTS informed."
       },
       "evidence": {
@@ -71,13 +79,18 @@
             "lang": "da"
           }
         ],
-        "notam_navtex_ids": ["NAVTEX TEST"]
+        "notam_navtex_ids": [
+          "NAVTEX TEST"
+        ]
       },
       "scores": {
         "severity": 2,
         "risk_radius_m": 1000
       },
-      "tags": ["harbour", "vts"]
+      "tags": [
+        "harbour",
+        "vts"
+      ]
     }
   ]
 }
