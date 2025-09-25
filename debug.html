@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Debug Incident Filtering</title>
+</head>
+<body>
+    <h1>Debug Incident Filtering</h1>
+    <div id="results"></div>
+
+    <script>
+    async function debugFiltering() {
+        const results = document.getElementById('results');
+        results.innerHTML = '<p>Loading incidents...</p>';
+
+        try {
+            // Fetch incidents
+            const response = await fetch('incidents.json?_=' + Date.now());
+            const data = await response.json();
+
+            console.log('Raw data:', data);
+            results.innerHTML += `<p><strong>Total incidents in JSON:</strong> ${data.incidents.length}</p>`;
+
+            // Test date filtering logic
+            const days = 7; // Default filter
+            const now = Date.now();
+            const cutoffStart = now - days * 24 * 3600 * 1000;
+            const cutoffEnd = now;
+
+            results.innerHTML += `<p><strong>Date range:</strong> ${new Date(cutoffStart).toISOString()} to ${new Date(cutoffEnd).toISOString()}</p>`;
+
+            // Check each incident
+            data.incidents.forEach((incident, i) => {
+                const seenTs = Date.parse(incident.first_seen_utc || incident.last_update_utc || data.generated_utc || Date.now());
+                const inDateRange = seenTs >= cutoffStart && seenTs <= cutoffEnd;
+
+                results.innerHTML += `<div style="border: 1px solid #ccc; margin: 10px 0; padding: 10px;">
+                    <h3>Incident ${i+1}: ${incident.id}</h3>
+                    <p><strong>First seen:</strong> ${incident.first_seen_utc}</p>
+                    <p><strong>Parsed timestamp:</strong> ${new Date(seenTs).toISOString()}</p>
+                    <p><strong>Status:</strong> ${incident.incident.status}</p>
+                    <p><strong>Evidence:</strong> ${incident.evidence.strength}</p>
+                    <p><strong>In date range:</strong> ${inDateRange ? 'YES' : 'NO'}</p>
+                    <p><strong>Timestamp valid:</strong> ${Number.isFinite(seenTs) ? 'YES' : 'NO'}</p>
+                </div>`;
+            });
+
+        } catch (error) {
+            console.error('Error:', error);
+            results.innerHTML += `<p style="color: red;"><strong>Error:</strong> ${error.message}</p>`;
+        }
+    }
+
+    debugFiltering();
+    </script>
+</body>
+</html>

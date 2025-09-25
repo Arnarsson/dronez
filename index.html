@@ -128,10 +128,10 @@
         <div class="legend" role="group" aria-label="Asset toggles">
           <label><input type="checkbox" id="layer-airport" checked /> <span class="dot" style="background:var(--air);"></span> Airports</label>
           <label><input type="checkbox" id="layer-harbour" checked /> <span class="dot" style="background:var(--harbour);"></span> Harbours</label>
-          <label><input type="checkbox" id="layer-energy" /> <span class="dot" style="background:var(--energy);"></span> Energy</label>
-          <label><input type="checkbox" id="layer-rail" /> <span class="dot" style="background:var(--rail);"></span> Rail hubs</label>
-          <label><input type="checkbox" id="layer-border" /> <span class="dot" style="background:var(--border-crossing);"></span> Border crossings</label>
-          <label><input type="checkbox" id="layer-military" /> <span class="dot" style="background:var(--military);"></span> Military</label>
+          <label><input type="checkbox" id="layer-energy" checked /> <span class="dot" style="background:var(--energy);"></span> Energy</label>
+          <label><input type="checkbox" id="layer-rail" checked /> <span class="dot" style="background:var(--rail);"></span> Rail hubs</label>
+          <label><input type="checkbox" id="layer-border" checked /> <span class="dot" style="background:var(--border-crossing);"></span> Border crossings</label>
+          <label><input type="checkbox" id="layer-military" checked /> <span class="dot" style="background:var(--military);"></span> Military</label>
         </div>
       </div>
 
@@ -466,6 +466,12 @@
       };
     }
 
+    function mapAssetType(assetType) {
+      // Map asset types to filter categories
+      if (assetType === 'nuclear') return 'energy';
+      return assetType;
+    }
+
     function searchTerm() {
       return document.getElementById('searchBox').value.trim().toLowerCase();
     }
@@ -738,8 +744,9 @@
       state.data.incidents.forEach(incident => {
         const asset = incident.asset;
         const assetKey = `${asset.type}-${asset.lat}-${asset.lon}`;
+        const mappedType = mapAssetType(asset.type);
 
-        if (processedAssets.has(assetKey) || !toggles[asset.type]) return;
+        if (processedAssets.has(assetKey) || !toggles[mappedType]) return;
         processedAssets.add(assetKey);
 
         // Risk ring sizes based on asset type
@@ -752,7 +759,7 @@
           military: { inner: 3000, outer: 8000, color: '#c084fc' }
         };
 
-        const config = ringConfig[asset.type];
+        const config = ringConfig[mappedType];
         if (!config) return;
 
         // Outer ring (restricted zone)
@@ -829,8 +836,9 @@
       // Render current period incidents
       currentFiltered.forEach(incident => {
         const assetType = incident.asset.type;
-        if (!toggles[assetType]) return;
-        const color = assetColors[assetType] || '#6ea8fe';
+        const mappedType = mapAssetType(assetType);
+        if (!toggles[mappedType]) return;
+        const color = assetColors[mappedType] || '#6ea8fe';
         const marker = L.marker([incident.asset.lat, incident.asset.lon], {
           icon: markerIcon(color, incident.scores.severity)
         }).bindPopup(popupHtml(incident));
@@ -845,19 +853,20 @@
         });
 
         state.markers.set(incident.id, marker);
-        if (clusterGroups[assetType]) {
-          clusterGroups[assetType].addLayer(marker);
+        if (clusterGroups[mappedType]) {
+          clusterGroups[mappedType].addLayer(marker);
         }
         mapMarkers.push(marker);
-        if (assetType === 'airport') countAir += 1;
-        if (assetType === 'harbour') countHar += 1;
+        if (mappedType === 'airport') countAir += 1;
+        if (mappedType === 'harbour') countHar += 1;
       });
 
       // Render previous period incidents with different styling (if compare mode)
       if (state.compareMode) {
         previousFiltered.forEach(incident => {
           const assetType = incident.asset.type;
-          if (!toggles[assetType]) return;
+          const mappedType = mapAssetType(assetType);
+          if (!toggles[mappedType]) return;
           const color = '#60a5fa'; // Blue for previous period
           const marker = L.marker([incident.asset.lat, incident.asset.lon], {
             icon: markerIcon(color, incident.scores.severity, true) // true = previous period
@@ -872,12 +881,12 @@
           });
 
           state.markers.set('prev-' + incident.id, marker);
-          if (clusterGroups[assetType]) {
-            clusterGroups[assetType].addLayer(marker);
+          if (clusterGroups[mappedType]) {
+            clusterGroups[mappedType].addLayer(marker);
           }
           mapMarkers.push(marker);
-          if (assetType === 'airport') countAirPrev += 1;
-          if (assetType === 'harbour') countHarPrev += 1;
+          if (mappedType === 'airport') countAirPrev += 1;
+          if (mappedType === 'harbour') countHarPrev += 1;
         });
       }
 

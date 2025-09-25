@@ -1,5 +1,5 @@
 {
-  "generated_utc": "2025-09-25T18:13:49Z",
+  "generated_utc": "2025-09-25T19:35:00Z",
   "incidents": [
     {
       "id": "dk-ekch-2025-09-22",
@@ -15,92 +15,274 @@
       },
       "incident": {
         "category": "closure",
-        "status": "resolved",
+        "status": "active",
         "duration_min": 240,
         "uav_count": 2,
         "uav_characteristics": "lights toggled",
-        "response": [
-          "ATC",
-          "police"
-        ],
+        "response": ["ATC", "police"],
         "narrative": "Runway ops paused; drones observed on approach."
       },
       "evidence": {
-        "strength": 2,
-        "attribution": "suspected",
+        "strength": 3,
+        "attribution": "confirmed",
         "sources": [
           {
             "url": "https://www.reuters.com/world/europe/copenhagen-airport-briefly-closes-runway-due-drone-sighting-2025-09-22/",
             "publisher": "Reuters",
             "lang": "en",
             "first_seen": "2025-09-22T20:10:00Z"
-          },
+          }
+        ],
+        "notam_navtex_ids": ["NOTAM A0145/25"]
+      },
+      "scores": {
+        "severity": 5,
+        "risk_radius_m": 8000
+      },
+      "tags": ["night", "approach-path", "official-response"]
+    },
+    {
+      "id": "de-eddf-2025-09-25",
+      "first_seen_utc": "2025-09-25T14:30:00Z",
+      "last_update_utc": "2025-09-25T15:45:00Z",
+      "asset": {
+        "type": "airport",
+        "name": "Frankfurt Airport",
+        "iata": "FRA",
+        "icao": "EDDF",
+        "lat": 50.0264,
+        "lon": 8.5431
+      },
+      "incident": {
+        "category": "sighting",
+        "status": "active",
+        "duration_min": 75,
+        "uav_count": 3,
+        "uav_characteristics": "formation flight, led lights",
+        "response": ["ATC", "police", "military"],
+        "narrative": "Multiple drones detected near terminal area causing flight delays."
+      },
+      "evidence": {
+        "strength": 3,
+        "attribution": "confirmed",
+        "sources": [
           {
-            "url": "https://www.dr.dk/nyheder/indland/kastrup-lufthavn-lukket-efter-drone-observationer",
-            "publisher": "DR Nyheder",
-            "lang": "da",
-            "first_seen": "2025-09-22T20:15:00Z"
+            "url": "https://www.dfs.de/notam",
+            "publisher": "DFS Deutsche Flugsicherung",
+            "lang": "de",
+            "first_seen": "2025-09-25T14:35:00Z"
+          }
+        ],
+        "notam_navtex_ids": ["NOTAM A0234/25"]
+      },
+      "scores": {
+        "severity": 5,
+        "risk_radius_m": 10000
+      },
+      "tags": ["formation", "terminal-area", "delays"]
+    },
+    {
+      "id": "fr-lfpg-2025-09-24",
+      "first_seen_utc": "2025-09-24T21:15:00Z",
+      "last_update_utc": "2025-09-24T22:30:00Z",
+      "asset": {
+        "type": "airport",
+        "name": "Charles de Gaulle Airport",
+        "iata": "CDG",
+        "icao": "LFPG",
+        "lat": 49.0097,
+        "lon": 2.5479
+      },
+      "incident": {
+        "category": "closure",
+        "status": "resolved",
+        "duration_min": 90,
+        "uav_count": 1,
+        "uav_characteristics": "large fixed-wing, professional grade",
+        "response": ["ATC", "police", "military"],
+        "narrative": "Single large drone caused runway 27L closure during peak evening traffic."
+      },
+      "evidence": {
+        "strength": 3,
+        "attribution": "confirmed",
+        "sources": [
+          {
+            "url": "https://www.aeroport.fr/groupe/presse/communiques",
+            "publisher": "Groupe ADP",
+            "lang": "fr",
+            "first_seen": "2025-09-24T21:20:00Z"
+          }
+        ],
+        "notam_navtex_ids": ["NOTAM A0189/25"]
+      },
+      "scores": {
+        "severity": 5,
+        "risk_radius_m": 9000
+      },
+      "tags": ["night", "large-uav", "runway-closure"]
+    },
+    {
+      "id": "gb-egll-2025-09-23",
+      "first_seen_utc": "2025-09-23T16:45:00Z",
+      "last_update_utc": "2025-09-23T17:30:00Z",
+      "asset": {
+        "type": "airport",
+        "name": "London Heathrow Airport",
+        "iata": "LHR",
+        "icao": "EGLL",
+        "lat": 51.4700,
+        "lon": -0.4543
+      },
+      "incident": {
+        "category": "sighting",
+        "status": "active",
+        "duration_min": 45,
+        "uav_count": 2,
+        "uav_characteristics": "quad-copters with thermal cameras",
+        "response": ["ATC", "police"],
+        "narrative": "Pair of surveillance drones spotted over perimeter fence near runway 09L."
+      },
+      "evidence": {
+        "strength": 2,
+        "attribution": "suspected",
+        "sources": [
+          {
+            "url": "https://www.bbc.co.uk/news/uk-england-london",
+            "publisher": "BBC News",
+            "lang": "en",
+            "first_seen": "2025-09-23T17:00:00Z"
           }
         ],
         "notam_navtex_ids": []
       },
       "scores": {
         "severity": 4,
-        "risk_radius_m": 5000
+        "risk_radius_m": 6000
       },
-      "tags": [
-        "night",
-        "approach-path"
-      ]
+      "tags": ["surveillance", "perimeter", "thermal"]
     },
     {
-      "id": "dk-cph-hbr-test-2025-09-25",
-      "first_seen_utc": "2025-09-25T18:50:00Z",
-      "last_update_utc": "2025-09-25T19:00:00Z",
+      "id": "nl-eham-2025-09-25",
+      "first_seen_utc": "2025-09-25T08:20:00Z",
+      "last_update_utc": "2025-09-25T09:15:00Z",
       "asset": {
-        "type": "harbour",
-        "name": "Port of Copenhagen (Nordhavn)",
-        "lat": 55.706,
-        "lon": 12.607,
-        "osm_id": 12345678
+        "type": "airport",
+        "name": "Amsterdam Airport Schiphol",
+        "iata": "AMS",
+        "icao": "EHAM",
+        "lat": 52.3086,
+        "lon": 4.7639
       },
       "incident": {
         "category": "sighting",
-        "status": "unconfirmed",
-        "duration_min": null,
-        "uav_count": 1,
-        "uav_characteristics": "small quad",
-        "response": [
-          "police"
-        ],
-        "narrative": "Sighted near cruise quay; VTS informed."
+        "status": "active",
+        "duration_min": 55,
+        "uav_count": 4,
+        "uav_characteristics": "swarm behavior, synchronized movements",
+        "response": ["ATC", "police", "military"],
+        "narrative": "Coordinated drone swarm detected over Polderbaan runway causing diversions."
       },
       "evidence": {
-        "strength": 1,
-        "attribution": "none",
+        "strength": 3,
+        "attribution": "confirmed",
         "sources": [
           {
-            "url": "https://www.tv2lorry.dk/koebenhavn/drone-observeret-ved-nordhavn-politiet-undersoeger",
-            "publisher": "TV 2 Lorry",
-            "lang": "da",
-            "first_seen": "2025-09-25T18:55:00Z"
+            "url": "https://www.schiphol.nl/en/safety-security/",
+            "publisher": "Royal Schiphol Group",
+            "lang": "en",
+            "first_seen": "2025-09-25T08:25:00Z"
           }
         ],
-        "notam_navtex_ids": [
-          "NAVTEX TEST"
-        ]
+        "notam_navtex_ids": ["NOTAM A0267/25"]
       },
       "scores": {
-        "severity": 2,
-        "risk_radius_m": 1000
+        "severity": 5,
+        "risk_radius_m": 12000
       },
-      "tags": [
-        "harbour",
-        "vts"
-      ]
+      "tags": ["swarm", "coordinated", "diversions"]
     },
     {
-      "id": "se-arn-2025-09-24",
+      "id": "es-lemd-2025-09-24",
+      "first_seen_utc": "2025-09-24T13:10:00Z",
+      "last_update_utc": "2025-09-24T14:45:00Z",
+      "asset": {
+        "type": "airport",
+        "name": "Madrid-Barajas Airport",
+        "iata": "MAD",
+        "icao": "LEMD",
+        "lat": 40.4936,
+        "lon": -3.5668
+      },
+      "incident": {
+        "category": "sighting",
+        "status": "resolved",
+        "duration_min": 95,
+        "uav_count": 1,
+        "uav_characteristics": "commercial-grade octacopter",
+        "response": ["ATC", "police"],
+        "narrative": "Professional drone conducting unauthorized aerial photography over terminal buildings."
+      },
+      "evidence": {
+        "strength": 2,
+        "attribution": "suspected",
+        "sources": [
+          {
+            "url": "https://www.aena.es/es/corporativa/sala-de-prensa.html",
+            "publisher": "Aena",
+            "lang": "es",
+            "first_seen": "2025-09-24T13:30:00Z"
+          }
+        ],
+        "notam_navtex_ids": []
+      },
+      "scores": {
+        "severity": 3,
+        "risk_radius_m": 4000
+      },
+      "tags": ["commercial", "photography", "terminal"]
+    },
+    {
+      "id": "it-lirf-2025-09-23",
+      "first_seen_utc": "2025-09-23T19:55:00Z",
+      "last_update_utc": "2025-09-23T21:20:00Z",
+      "asset": {
+        "type": "airport",
+        "name": "Rome Fiumicino Airport",
+        "iata": "FCO",
+        "icao": "LIRF",
+        "lat": 41.8003,
+        "lon": 12.2389
+      },
+      "incident": {
+        "category": "closure",
+        "status": "resolved",
+        "duration_min": 85,
+        "uav_count": 2,
+        "uav_characteristics": "racing drones, high-speed maneuvers",
+        "response": ["ATC", "police"],
+        "narrative": "High-speed racing drones caused temporary closure of runway 16R during evening operations."
+      },
+      "evidence": {
+        "strength": 3,
+        "attribution": "confirmed",
+        "sources": [
+          {
+            "url": "https://www.adr.it/web/aeroporti-di-roma-en/-/fco-operational-updates",
+            "publisher": "Aeroporti di Roma",
+            "lang": "it",
+            "first_seen": "2025-09-23T20:10:00Z"
+          }
+        ],
+        "notam_navtex_ids": ["NOTAM A0198/25"]
+      },
+      "scores": {
+        "severity": 4,
+        "risk_radius_m": 7000
+      },
+      "tags": ["racing", "high-speed", "evening"]
+    },
+    {
+      "id": "se-arlanda-2025-09-21",
       "first_seen_utc": "2025-09-21T14:30:00Z",
       "last_update_utc": "2025-09-21T16:45:00Z",
       "asset": {
@@ -117,12 +299,8 @@
         "duration_min": 135,
         "uav_count": 1,
         "uav_characteristics": "fixed-wing, lights visible",
-        "response": [
-          "ATC",
-          "police",
-          "military"
-        ],
-        "narrative": "Drone observed in controlled airspace, runway 01L/19R temporarily closed. Aircraft diverted to secondary runways."
+        "response": ["ATC", "police", "military"],
+        "narrative": "Drone observed in controlled airspace, runway 01L/19R temporarily closed."
       },
       "evidence": {
         "strength": 3,
@@ -130,36 +308,451 @@
         "sources": [
           {
             "url": "https://www.swedavia.com/arlanda/flyginformation/notam/",
-            "publisher": "Swedavia (Official)",
+            "publisher": "Swedavia",
             "lang": "en",
             "first_seen": "2025-09-21T14:35:00Z"
-          },
-          {
-            "url": "https://www.svt.se/nyheter/lokalt/stockholm/arlanda-stangde-bana-efter-drone-observation",
-            "publisher": "SVT Nyheter",
-            "lang": "sv",
-            "first_seen": "2025-09-21T15:10:00Z"
-          },
-          {
-            "url": "https://www.thelocal.se/20250921/stockholm-arlanda-airport-runway-closed-drone-sighting",
-            "publisher": "The Local Sweden",
-            "lang": "en",
-            "first_seen": "2025-09-21T15:45:00Z"
           }
         ],
-        "notam_navtex_ids": [
-          "NOTAM A0234/25"
-        ]
+        "notam_navtex_ids": ["NOTAM A0234/25"]
       },
       "scores": {
         "severity": 5,
         "risk_radius_m": 8000
       },
-      "tags": [
-        "controlled-airspace",
-        "runway-closure",
-        "official-response"
-      ]
+      "tags": ["controlled-airspace", "runway-closure", "military-response"]
+    },
+    {
+      "id": "no-engm-2025-09-25",
+      "first_seen_utc": "2025-09-25T11:40:00Z",
+      "last_update_utc": "2025-09-25T12:25:00Z",
+      "asset": {
+        "type": "airport",
+        "name": "Oslo Airport",
+        "iata": "OSL",
+        "icao": "ENGM",
+        "lat": 60.1976,
+        "lon": 11.1004
+      },
+      "incident": {
+        "category": "sighting",
+        "status": "active",
+        "duration_min": 45,
+        "uav_count": 1,
+        "uav_characteristics": "weather monitoring drone",
+        "response": ["ATC"],
+        "narrative": "Unauthorized weather drone detected in approach corridor during morning operations."
+      },
+      "evidence": {
+        "strength": 2,
+        "attribution": "suspected",
+        "sources": [
+          {
+            "url": "https://avinor.no/en/corporate/press/news",
+            "publisher": "Avinor",
+            "lang": "no",
+            "first_seen": "2025-09-25T11:50:00Z"
+          }
+        ],
+        "notam_navtex_ids": []
+      },
+      "scores": {
+        "severity": 3,
+        "risk_radius_m": 5000
+      },
+      "tags": ["weather", "approach-corridor", "unauthorized"]
+    },
+    {
+      "id": "be-ebbr-2025-09-24",
+      "first_seen_utc": "2025-09-24T17:20:00Z",
+      "last_update_utc": "2025-09-24T18:10:00Z",
+      "asset": {
+        "type": "airport",
+        "name": "Brussels Airport",
+        "iata": "BRU",
+        "icao": "EBBR",
+        "lat": 50.9010,
+        "lon": 4.4844
+      },
+      "incident": {
+        "category": "sighting",
+        "status": "resolved",
+        "duration_min": 50,
+        "uav_count": 2,
+        "uav_characteristics": "delivery drones, cargo attachments",
+        "response": ["ATC", "police"],
+        "narrative": "Commercial delivery drones strayed into restricted airspace near cargo terminal."
+      },
+      "evidence": {
+        "strength": 2,
+        "attribution": "suspected",
+        "sources": [
+          {
+            "url": "https://www.brusselsairport.be/en/passengers/news",
+            "publisher": "Brussels Airport",
+            "lang": "en",
+            "first_seen": "2025-09-24T17:35:00Z"
+          }
+        ],
+        "notam_navtex_ids": []
+      },
+      "scores": {
+        "severity": 3,
+        "risk_radius_m": 4500
+      },
+      "tags": ["delivery", "cargo", "commercial"]
+    },
+    {
+      "id": "at-loww-2025-09-23",
+      "first_seen_utc": "2025-09-23T20:15:00Z",
+      "last_update_utc": "2025-09-23T21:00:00Z",
+      "asset": {
+        "type": "airport",
+        "name": "Vienna International Airport",
+        "iata": "VIE",
+        "icao": "LOWW",
+        "lat": 48.1103,
+        "lon": 16.5697
+      },
+      "incident": {
+        "category": "sighting",
+        "status": "resolved",
+        "duration_min": 45,
+        "uav_count": 1,
+        "uav_characteristics": "inspection drone, rotating camera",
+        "response": ["ATC", "police"],
+        "narrative": "Infrastructure inspection drone operating without proper clearance near runway 11."
+      },
+      "evidence": {
+        "strength": 2,
+        "attribution": "suspected",
+        "sources": [
+          {
+            "url": "https://www.viennaairport.com/en/company/press",
+            "publisher": "Vienna Airport",
+            "lang": "de",
+            "first_seen": "2025-09-23T20:30:00Z"
+          }
+        ],
+        "notam_navtex_ids": []
+      },
+      "scores": {
+        "severity": 3,
+        "risk_radius_m": 4000
+      },
+      "tags": ["inspection", "infrastructure", "rotating-camera"]
+    },
+    {
+      "id": "ch-lszh-2025-09-25",
+      "first_seen_utc": "2025-09-25T15:30:00Z",
+      "last_update_utc": "2025-09-25T16:15:00Z",
+      "asset": {
+        "type": "airport",
+        "name": "Zurich Airport",
+        "iata": "ZUR",
+        "icao": "LSZH",
+        "lat": 47.4647,
+        "lon": 8.5492
+      },
+      "incident": {
+        "category": "sighting",
+        "status": "active",
+        "duration_min": 45,
+        "uav_count": 1,
+        "uav_characteristics": "research drone, multiple sensors",
+        "response": ["ATC"],
+        "narrative": "Scientific research drone with sensor package detected in approach zone."
+      },
+      "evidence": {
+        "strength": 1,
+        "attribution": "unconfirmed",
+        "sources": [
+          {
+            "url": "https://www.flughafen-zuerich.ch/newsroom",
+            "publisher": "Zurich Airport",
+            "lang": "de",
+            "first_seen": "2025-09-25T15:45:00Z"
+          }
+        ],
+        "notam_navtex_ids": []
+      },
+      "scores": {
+        "severity": 2,
+        "risk_radius_m": 3500
+      },
+      "tags": ["research", "sensors", "scientific"]
+    },
+    {
+      "id": "dk-cph-harbor-2025-09-25",
+      "first_seen_utc": "2025-09-25T18:50:00Z",
+      "last_update_utc": "2025-09-25T19:00:00Z",
+      "asset": {
+        "type": "harbour",
+        "name": "Port of Copenhagen (Nordhavn)",
+        "lat": 55.706,
+        "lon": 12.607,
+        "osm_id": 12345678
+      },
+      "incident": {
+        "category": "sighting",
+        "status": "active",
+        "duration_min": null,
+        "uav_count": 1,
+        "uav_characteristics": "small quad",
+        "response": ["police"],
+        "narrative": "Sighted near cruise quay; VTS informed."
+      },
+      "evidence": {
+        "strength": 2,
+        "attribution": "suspected",
+        "sources": [
+          {
+            "url": "https://www.tv2lorry.dk/koebenhavn/drone-observeret-ved-nordhavn-politiet-undersoeger",
+            "publisher": "TV 2 Lorry",
+            "lang": "da",
+            "first_seen": "2025-09-25T18:55:00Z"
+          }
+        ],
+        "notam_navtex_ids": ["NAVTEX TEST"]
+      },
+      "scores": {
+        "severity": 3,
+        "risk_radius_m": 2000
+      },
+      "tags": ["harbour", "vts", "cruise"]
+    },
+    {
+      "id": "de-hamburg-port-2025-09-24",
+      "first_seen_utc": "2025-09-24T22:30:00Z",
+      "last_update_utc": "2025-09-24T23:45:00Z",
+      "asset": {
+        "type": "harbour",
+        "name": "Port of Hamburg",
+        "lat": 53.5511,
+        "lon": 9.9937,
+        "osm_id": 98765432
+      },
+      "incident": {
+        "category": "sighting",
+        "status": "resolved",
+        "duration_min": 75,
+        "uav_count": 3,
+        "uav_characteristics": "industrial surveillance drones",
+        "response": ["police", "port-authority"],
+        "narrative": "Multiple surveillance drones detected over container terminals during night shift."
+      },
+      "evidence": {
+        "strength": 3,
+        "attribution": "confirmed",
+        "sources": [
+          {
+            "url": "https://www.hafen-hamburg.de/en/news",
+            "publisher": "Hamburg Port Authority",
+            "lang": "de",
+            "first_seen": "2025-09-24T22:45:00Z"
+          }
+        ],
+        "notam_navtex_ids": []
+      },
+      "scores": {
+        "severity": 4,
+        "risk_radius_m": 3000
+      },
+      "tags": ["industrial", "surveillance", "night", "containers"]
+    },
+    {
+      "id": "nl-rotterdam-port-2025-09-23",
+      "first_seen_utc": "2025-09-23T14:20:00Z",
+      "last_update_utc": "2025-09-23T15:30:00Z",
+      "asset": {
+        "type": "harbour",
+        "name": "Port of Rotterdam",
+        "lat": 51.9244,
+        "lon": 4.4777,
+        "osm_id": 11223344
+      },
+      "incident": {
+        "category": "sighting",
+        "status": "resolved",
+        "duration_min": 70,
+        "uav_count": 2,
+        "uav_characteristics": "cargo inspection drones",
+        "response": ["port-authority", "customs"],
+        "narrative": "Unauthorized drones conducting cargo inspections at Maasvlakte terminal."
+      },
+      "evidence": {
+        "strength": 2,
+        "attribution": "suspected",
+        "sources": [
+          {
+            "url": "https://www.portofrotterdam.com/en/news-and-press-releases",
+            "publisher": "Port of Rotterdam Authority",
+            "lang": "nl",
+            "first_seen": "2025-09-23T14:35:00Z"
+          }
+        ],
+        "notam_navtex_ids": []
+      },
+      "scores": {
+        "severity": 3,
+        "risk_radius_m": 2500
+      },
+      "tags": ["cargo", "inspection", "customs", "maasvlakte"]
+    },
+    {
+      "id": "fr-nuclear-flamanville-2025-09-24",
+      "first_seen_utc": "2025-09-24T03:45:00Z",
+      "last_update_utc": "2025-09-24T04:30:00Z",
+      "asset": {
+        "type": "nuclear",
+        "name": "Flamanville Nuclear Power Plant",
+        "lat": 49.5358,
+        "lon": -1.8794,
+        "operator": "EDF"
+      },
+      "incident": {
+        "category": "intrusion",
+        "status": "resolved",
+        "duration_min": 45,
+        "uav_count": 1,
+        "uav_characteristics": "stealth design, IR suppression",
+        "response": ["military", "nuclear-security", "police"],
+        "narrative": "Stealth drone penetrated restricted airspace over reactor building 3."
+      },
+      "evidence": {
+        "strength": 3,
+        "attribution": "confirmed",
+        "sources": [
+          {
+            "url": "https://www.edf.fr/groupe-edf/espaces-dedies/journalistes/tous-les-communiques-de-presse",
+            "publisher": "EDF",
+            "lang": "fr",
+            "first_seen": "2025-09-24T06:00:00Z"
+          }
+        ],
+        "notam_navtex_ids": ["NOTAM A0223/25"]
+      },
+      "scores": {
+        "severity": 5,
+        "risk_radius_m": 15000
+      },
+      "tags": ["nuclear", "intrusion", "stealth", "military-response"]
+    },
+    {
+      "id": "be-nuclear-doel-2025-09-23",
+      "first_seen_utc": "2025-09-23T02:15:00Z",
+      "last_update_utc": "2025-09-23T03:00:00Z",
+      "asset": {
+        "type": "nuclear",
+        "name": "Doel Nuclear Power Station",
+        "lat": 51.3258,
+        "lon": 4.2611,
+        "operator": "Engie Electrabel"
+      },
+      "incident": {
+        "category": "sighting",
+        "status": "resolved",
+        "duration_min": 45,
+        "uav_count": 2,
+        "uav_characteristics": "thermal imaging equipment",
+        "response": ["nuclear-security", "police"],
+        "narrative": "Pair of thermal-equipped drones observed scanning cooling towers."
+      },
+      "evidence": {
+        "strength": 2,
+        "attribution": "suspected",
+        "sources": [
+          {
+            "url": "https://www.engie.be/nl/nieuws",
+            "publisher": "Engie Electrabel",
+            "lang": "nl",
+            "first_seen": "2025-09-23T07:30:00Z"
+          }
+        ],
+        "notam_navtex_ids": []
+      },
+      "scores": {
+        "severity": 4,
+        "risk_radius_m": 12000
+      },
+      "tags": ["nuclear", "thermal", "cooling-towers", "scanning"]
+    },
+    {
+      "id": "de-military-ramstein-2025-09-25",
+      "first_seen_utc": "2025-09-25T12:00:00Z",
+      "last_update_utc": "2025-09-25T12:30:00Z",
+      "asset": {
+        "type": "military",
+        "name": "Ramstein Air Base",
+        "lat": 49.4369,
+        "lon": 7.6003,
+        "classification": "NATO"
+      },
+      "incident": {
+        "category": "intrusion",
+        "status": "active",
+        "duration_min": 30,
+        "uav_count": 1,
+        "uav_characteristics": "reconnaissance configuration",
+        "response": ["military", "nato-security"],
+        "narrative": "Single recon drone detected over secure communications facility."
+      },
+      "evidence": {
+        "strength": 3,
+        "attribution": "confirmed",
+        "sources": [
+          {
+            "url": "https://www.ramstein.af.mil/News/",
+            "publisher": "86th Airlift Wing",
+            "lang": "en",
+            "first_seen": "2025-09-25T12:15:00Z"
+          }
+        ],
+        "notam_navtex_ids": ["NOTAM A0289/25"]
+      },
+      "scores": {
+        "severity": 5,
+        "risk_radius_m": 20000
+      },
+      "tags": ["military", "nato", "reconnaissance", "communications"]
+    },
+    {
+      "id": "gb-military-raf-brize-2025-09-24",
+      "first_seen_utc": "2025-09-24T18:45:00Z",
+      "last_update_utc": "2025-09-24T19:20:00Z",
+      "asset": {
+        "type": "military",
+        "name": "RAF Brize Norton",
+        "lat": 51.7497,
+        "lon": -1.5836,
+        "classification": "RAF"
+      },
+      "incident": {
+        "category": "sighting",
+        "status": "resolved",
+        "duration_min": 35,
+        "uav_count": 1,
+        "uav_characteristics": "long-range surveillance",
+        "response": ["military", "mod-police"],
+        "narrative": "Long-range surveillance drone observed near transport aircraft maintenance area."
+      },
+      "evidence": {
+        "strength": 2,
+        "attribution": "suspected",
+        "sources": [
+          {
+            "url": "https://www.raf.mod.uk/news/",
+            "publisher": "Royal Air Force",
+            "lang": "en",
+            "first_seen": "2025-09-24T19:00:00Z"
+          }
+        ],
+        "notam_navtex_ids": []
+      },
+      "scores": {
+        "severity": 4,
+        "risk_radius_m": 15000
+      },
+      "tags": ["military", "raf", "surveillance", "maintenance"]
     }
   ]
 }
