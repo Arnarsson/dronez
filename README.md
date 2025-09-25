@@ -147,8 +147,8 @@ You can validate the JSON against the schema with your favourite validator (e.g.
 ## Deployment
 
 1. **GitHub Pages** – push to `main`, enable Pages → “Deploy from branch” (root). `public/` content is served from `/public/...` URLs.
-2. **Vercel** – import the repo, choose “Static Site”, build command: _none_, output directory: `.`. Auto-redeploy triggers on each push (including hourly commits from the Action).
-3. **Netlify / S3 / CloudFront** – deploy the repo as a static folder. Ensure caching allows `/public/incidents.json` to refresh regularly (e.g., set max-age low or rely on the `?_=` cache-buster).
+2. **Vercel** – import the repo, let the zero-config build run (`npm run build` is executed via `vercel.json`, emitting a `/dist` bundle with `index.html`, `incidents.json`, and supporting assets). Every push—including hourly dataset commits—triggers a fresh deploy.
+3. **Netlify / S3 / CloudFront** – run `npm run build`, deploy the generated `dist/` folder, and ensure `/incidents.json` isn’t cached too aggressively (or keep the cache-busting query parameter).
 
 ## Extending
 
