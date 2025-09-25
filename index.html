@@ -986,7 +986,7 @@
         bottom: 60px !important; /* Before bottom nav */
         display: block !important;
         width: 100% !important;
-        height: auto !important;
+        height: calc(100vh - 140px) !important; /* Full height minus header (80px) and bottom nav (60px) */
       }
 
       #map-container {
@@ -1653,6 +1653,15 @@
         return;
       }
 
+      // CRITICAL: Check if container has actual dimensions
+      const mapContainer = document.getElementById('map-container');
+      if (!mapContainer || mapContainer.offsetWidth === 0 || mapContainer.offsetHeight === 0) {
+        console.log('Map container has no dimensions yet, retrying...');
+        setTimeout(initializeMap, 200);
+        return;
+      }
+
+      console.log('Map container dimensions:', mapContainer.offsetWidth, 'x', mapContainer.offsetHeight);
       console.log('Initializing map...');
 
       const assetColors = {
