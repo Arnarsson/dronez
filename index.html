@@ -1645,6 +1645,10 @@
     const INCIDENTS_URL = 'incidents.json';
     const REFRESH_MS = 5 * 60 * 1000;
 
+    // Global state and functions for mobile access
+    window.droneState = null;
+    window.droneFocusIncident = null;
+
     // Wait for DOM to be ready before initializing map
     function initializeMap() {
       // Check if map element exists
@@ -1741,6 +1745,7 @@
 
     // Make state globally accessible for mobile handlers
     window.state = state;
+    window.droneState = state;
 
     // URL state management for shareable links
     function saveStateToURL() {
@@ -2110,6 +2115,7 @@
 
     // Make focusIncident globally accessible for mobile handlers
     window.focusIncident = focusIncident;
+    window.droneFocusIncident = focusIncident;
 
     function showProvenance(incident) {
       const modal = document.getElementById('provenanceModal');
@@ -3264,13 +3270,16 @@
 
                 // Find the corresponding incident by matching the asset name
                 const incidentName = card.querySelector('strong')?.textContent;
-                if (incidentName && window.state && window.state.allIncidents) {
+                const state = window.droneState || window.state;
+                const focusIncident = window.droneFocusIncident || window.focusIncident;
+
+                if (incidentName && state && state.allIncidents) {
                   // Find incident by asset name
-                  const incident = window.state.allIncidents.find(inc =>
+                  const incident = state.allIncidents.find(inc =>
                     inc.asset.name === incidentName
                   );
-                  if (incident && window.focusIncident) {
-                    window.focusIncident(incident);
+                  if (incident && focusIncident) {
+                    focusIncident(incident);
                   }
                 }
               });
