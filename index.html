@@ -1688,6 +1688,7 @@
       });
 
       const map = window.map; // Keep local reference
+      console.log('Map reference created, about to continue initialization');
 
       // CRITICAL: Force map to recalculate size on mobile
       setTimeout(() => {
@@ -1706,6 +1707,7 @@
         console.log('Map size invalidated again');
       }, 500);
 
+      console.log('About to create satellite layer');
       const satellite = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
         attribution: 'Basemap © Esri — Sources: Esri, i-cubed, USDA, USGS, AeroGRID, IGN, IGP'
       }).addTo(map);
@@ -1742,6 +1744,7 @@
         activityIndicatorVisible: false,
         allIncidents: [] // Track all incidents for mobile access
       };
+      console.log('State object created');
 
       // Make state globally accessible for mobile handlers
       window.state = state;
