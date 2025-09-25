@@ -30,10 +30,16 @@
         "attribution": "suspected",
         "sources": [
           {
-            "url": "https://reuters.com/",
+            "url": "https://www.reuters.com/world/europe/copenhagen-airport-briefly-closes-runway-due-drone-sighting-2025-09-22/",
             "publisher": "Reuters",
             "lang": "en",
             "first_seen": "2025-09-22T20:10:00Z"
+          },
+          {
+            "url": "https://www.dr.dk/nyheder/indland/kastrup-lufthavn-lukket-efter-drone-observationer",
+            "publisher": "DR Nyheder",
+            "lang": "da",
+            "first_seen": "2025-09-22T20:15:00Z"
           }
         ],
         "notam_navtex_ids": []
@@ -74,9 +80,10 @@
         "attribution": "none",
         "sources": [
           {
-            "url": "https://localnews.example/",
-            "publisher": "Local News",
-            "lang": "da"
+            "url": "https://www.tv2lorry.dk/koebenhavn/drone-observeret-ved-nordhavn-politiet-undersoeger",
+            "publisher": "TV 2 Lorry",
+            "lang": "da",
+            "first_seen": "2025-09-25T20:05:00Z"
           }
         ],
         "notam_navtex_ids": [
@@ -90,6 +97,68 @@
       "tags": [
         "harbour",
         "vts"
+      ]
+    },
+    {
+      "id": "se-arn-2025-09-24",
+      "first_seen_utc": "2025-09-21T14:30:00Z",
+      "last_update_utc": "2025-09-21T16:45:00Z",
+      "asset": {
+        "type": "airport",
+        "name": "Stockholm Arlanda Airport",
+        "iata": "ARN",
+        "icao": "ESSA",
+        "lat": 59.6519,
+        "lon": 17.9186
+      },
+      "incident": {
+        "category": "closure",
+        "status": "resolved",
+        "duration_min": 135,
+        "uav_count": 1,
+        "uav_characteristics": "fixed-wing, lights visible",
+        "response": [
+          "ATC",
+          "police",
+          "military"
+        ],
+        "narrative": "Drone observed in controlled airspace, runway 01L/19R temporarily closed. Aircraft diverted to secondary runways."
+      },
+      "evidence": {
+        "strength": 3,
+        "attribution": "confirmed",
+        "sources": [
+          {
+            "url": "https://www.swedavia.com/arlanda/flyginformation/notam/",
+            "publisher": "Swedavia (Official)",
+            "lang": "en",
+            "first_seen": "2025-09-21T14:35:00Z"
+          },
+          {
+            "url": "https://www.svt.se/nyheter/lokalt/stockholm/arlanda-stangde-bana-efter-drone-observation",
+            "publisher": "SVT Nyheter",
+            "lang": "sv",
+            "first_seen": "2025-09-21T15:10:00Z"
+          },
+          {
+            "url": "https://www.thelocal.se/20250921/stockholm-arlanda-airport-runway-closed-drone-sighting",
+            "publisher": "The Local Sweden",
+            "lang": "en",
+            "first_seen": "2025-09-21T15:45:00Z"
+          }
+        ],
+        "notam_navtex_ids": [
+          "NOTAM A0234/25"
+        ]
+      },
+      "scores": {
+        "severity": 5,
+        "risk_radius_m": 8000
+      },
+      "tags": [
+        "controlled-airspace",
+        "runway-closure",
+        "official-response"
       ]
     }
   ]

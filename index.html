@@ -111,14 +111,14 @@
       <div class="section">
         <h2>Time Window</h2>
         <div class="chips" role="group" aria-label="Quick time windows">
-          <button class="chip" data-window="7">7d</button>
+          <button class="chip active" data-window="7">7d</button>
           <button class="chip" data-window="30">30d</button>
           <button class="chip" data-window="90">90d</button>
-          <button class="chip active" data-window="365">365d</button>
+          <button class="chip" data-window="365">365d</button>
         </div>
         <label for="dateRange">Filter by days</label>
-        <input id="dateRange" type="range" min="1" max="365" value="365" step="1" aria-valuemin="1" aria-valuemax="365" aria-valuenow="365" />
-        <div class="muted" id="dateRangeLabel">Showing last 365 days</div>
+        <input id="dateRange" type="range" min="1" max="365" value="7" step="1" aria-valuemin="1" aria-valuemax="365" aria-valuenow="7" />
+        <div class="muted" id="dateRangeLabel">Showing last 7 days</div>
       </div>
 
       <div class="section">
@@ -165,7 +165,7 @@
         <select id="statusSelect" multiple size="3">
           <option value="active" selected>Active</option>
           <option value="resolved" selected>Resolved</option>
-          <option value="unconfirmed">Unconfirmed</option>
+          <option value="unconfirmed" selected>Unconfirmed</option>
         </select>
 
         <label style="margin-top:8px;" for="evidenceSelect">Evidence strength</label>
@@ -173,7 +173,7 @@
           <option value="3" selected>3 — Official/NOTAM/NAVTEX</option>
           <option value="2" selected>2 — Multi tier-1 reports</option>
           <option value="1" selected>1 — Single credible</option>
-          <option value="0">0 — Unconfirmed</option>
+          <option value="0" selected>0 — Unconfirmed</option>
         </select>
       </div>
 
@@ -639,7 +639,10 @@
 
       // Format sources with credibility indicators
       const sourcesList = (incident.evidence.sources || []).map((source, idx) => {
-        const publisherClass = ['Reuters', 'AP', 'BBC', 'DR', 'NRK'].includes(source.publisher) ? 'severity-3' : 'muted';
+        const tier1Sources = ['Reuters', 'AP', 'BBC', 'DR Nyheder', 'NRK', 'SVT Nyheter', 'Swedavia (Official)'];
+        const tier2Sources = ['TV 2 Lorry', 'The Local Sweden', 'The Local Denmark'];
+        const publisherClass = tier1Sources.includes(source.publisher) ? 'severity-3' :
+                              tier2Sources.includes(source.publisher) ? 'severity-2' : 'muted';
         return `
           <div style="border: 1px solid var(--border); border-radius: 8px; padding: 12px; margin: 8px 0;">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
@@ -889,7 +892,18 @@
 
       if (mapMarkers.length) {
         const group = L.featureGroup(mapMarkers);
-        map.fitBounds(group.getBounds().pad(0.2));
+        // Always fit bounds to show ALL incidents, with padding
+        if (mapMarkers.length === 1) {
+          // For single incident, use moderate zoom
+          const incident = mapMarkers[0].incident;
+          let zoomLevel = 7; // City level for single incident
+          if (incident.scores.severity >= 4) zoomLevel = 8;
+          if (incident.incident.status === 'active') zoomLevel = 9;
+          map.setView(mapMarkers[0].getLatLng(), zoomLevel);
+        } else {
+          // For multiple incidents, fit bounds to show all
+          map.fitBounds(group.getBounds().pad(0.2));
+        }
         // Remove any existing no-data overlay
         if (map._noDataOverlay) {
           map.removeControl(map._noDataOverlay);
@@ -915,18 +929,42 @@
 
     async function fetchIncidents() {
       console.log('fetchIncidents() called, fetching from:', INCIDENTS_URL);
+
+      // Show refresh indicator
+      const refreshBadge = document.getElementById('badge-refresh');
+      const originalText = refreshBadge.textContent;
+      refreshBadge.textContent = '⟳ Updating...';
+      refreshBadge.style.background = 'var(--focus)';
+
       try {
         const res = await fetch(`${INCIDENTS_URL}?_=${Date.now()}`, { cache: 'no-store' });
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
         const data = await res.json();
         console.log('fetchIncidents() received data:', data);
         state.data = data || { generated_utc: null, incidents: [] };
-        document.getElementById('badge-generated').textContent = `Generated: ${state.data.generated_utc || '—'}`;
+        document.getElementById('badge-generated').textContent = `Generated: ${new Date(state.data.generated_utc).toLocaleString() || '—'}`;
+
+        // Show success indicator briefly
+        refreshBadge.textContent = '✓ Updated';
+        refreshBadge.style.background = 'var(--severity-3)';
+        setTimeout(() => {
+          refreshBadge.textContent = originalText;
+          refreshBadge.style.background = '';
+        }, 2000);
+
       } catch (err) {
         console.error('Failed to fetch incidents.json', err);
         // Set empty state on error
         state.data = { generated_utc: null, incidents: [] };
         document.getElementById('badge-generated').textContent = 'Generated: Failed to load';
+
+        // Show error indicator
+        refreshBadge.textContent = '⚠ Error';
+        refreshBadge.style.background = 'var(--severity-4)';
+        setTimeout(() => {
+          refreshBadge.textContent = originalText;
+          refreshBadge.style.background = '';
+        }, 3000);
       }
     }
 
@@ -981,12 +1019,12 @@
       const focusLat = mostRecent.asset.lat;
       const focusLng = mostRecent.asset.lon;
 
-      // Smart zoom based on priority factors
-      let zoomLevel = 7; // European overview
-      if (mostRecent.scores.severity >= 4) zoomLevel = 9; // High severity
-      if (mostRecent.incident.status === 'active') zoomLevel = Math.max(zoomLevel, 10); // Active = closest
-      if (mostRecent.asset.type === 'airport') zoomLevel = Math.max(zoomLevel, 8); // Airports important
-      if (Date.now() - Date.parse(mostRecent.first_seen_utc) < 24 * 3600 * 1000) zoomLevel += 1; // Recent = closer
+      // Smart zoom based on priority factors - showing operational area, not street level
+      let zoomLevel = 6; // Regional overview
+      if (mostRecent.scores.severity >= 4) zoomLevel = 7; // High severity = city level
+      if (mostRecent.incident.status === 'active') zoomLevel = Math.max(zoomLevel, 8); // Active = closer but still operational
+      if (mostRecent.asset.type === 'airport') zoomLevel = Math.max(zoomLevel, 7); // Airports = show approaches
+      if (Date.now() - Date.parse(mostRecent.first_seen_utc) < 24 * 3600 * 1000) zoomLevel += 0.5; // Recent = slightly closer
 
       console.log(`Auto-focusing on: ${mostRecent.asset.name} (${mostRecent.asset.type}) | Severity: ${mostRecent.scores.severity} | Status: ${mostRecent.incident.status} | Zoom: ${zoomLevel}`);
 
@@ -1051,11 +1089,9 @@
       await fetchIncidents();
       render();
 
-      // Auto-focus on first load only
-      if (!state.hasAutoFocused) {
-        autoFocusOnRecentActivity();
-        state.hasAutoFocused = true;
-      }
+      // Auto-focus on first load only - but let render() handle the map view
+      // The render() function now properly shows ALL incidents with fitBounds
+      state.hasAutoFocused = true;
     }
 
     function setupUI() {
