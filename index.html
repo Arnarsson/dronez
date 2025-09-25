@@ -1369,7 +1369,23 @@
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
         const data = await res.json();
         console.log('fetchIncidents() received data:', data);
-        state.data = data || { generated_utc: null, incidents: [] };
+
+        // Filter out demo/simulated incidents
+        const filteredData = {
+          ...data,
+          incidents: (data.incidents || []).filter(incident => {
+            // Filter out demo data based on multiple criteria
+            return !(
+              incident.id?.startsWith('demo-') ||
+              incident.data_type === 'simulated' ||
+              incident.tags?.includes('demo-data') ||
+              incident.evidence?.sources?.some(src => src.note?.includes('SIMULATED SOURCE'))
+            );
+          })
+        };
+
+        console.log('Filtered out demo data:', data.incidents.length - filteredData.incidents.length, 'incidents removed');
+        state.data = filteredData || { generated_utc: null, incidents: [] };
         document.getElementById('badge-generated').textContent = `Generated: ${new Date(state.data.generated_utc).toLocaleString() || '—'}`;
 
         // Show success indicator briefly
