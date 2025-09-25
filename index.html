@@ -2108,6 +2108,9 @@
       }, 1500);
     }
 
+    // Make focusIncident globally accessible for mobile handlers
+    window.focusIncident = focusIncident;
+
     function showProvenance(incident) {
       const modal = document.getElementById('provenanceModal');
       const content = document.getElementById('provenanceContent');
@@ -3266,8 +3269,8 @@
                   const incident = window.state.allIncidents.find(inc =>
                     inc.asset.name === incidentName
                   );
-                  if (incident) {
-                    focusIncident(incident);
+                  if (incident && window.focusIncident) {
+                    window.focusIncident(incident);
                   }
                 }
               });
