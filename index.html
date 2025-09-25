@@ -1034,9 +1034,14 @@
         display: none !important;
       }
 
-      /* Hide right panel on mobile - access via bottom sheet instead */
-      #right {
-        display: none;
+      /* Hide BOTH side panels on mobile - access via bottom sheet instead */
+      #left, #right {
+        display: none !important;
+      }
+
+      /* Ensure only map shows on mobile */
+      aside {
+        display: none !important;
       }
 
       /* Adjust main container for mobile nav */
