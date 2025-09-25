@@ -1746,6 +1746,7 @@
     // Make state globally accessible for mobile handlers
     window.state = state;
     window.droneState = state;
+    console.log('State assigned to window:', !!window.state, !!window.droneState);
 
     // URL state management for shareable links
     function saveStateToURL() {
@@ -2116,6 +2117,7 @@
     // Make focusIncident globally accessible for mobile handlers
     window.focusIncident = focusIncident;
     window.droneFocusIncident = focusIncident;
+    console.log('FocusIncident assigned to window:', !!window.focusIncident, !!window.droneFocusIncident);
 
     function showProvenance(incident) {
       const modal = document.getElementById('provenanceModal');
