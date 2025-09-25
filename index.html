@@ -762,6 +762,157 @@
       opacity: 1;
     }
 
+    /* Phase 5: Modern Mobile-First UX Patterns */
+
+    /* Floating Action Button (FAB) */
+    .fab {
+      position: fixed;
+      bottom: var(--space-6);
+      right: var(--space-6);
+      width: 56px;
+      height: 56px;
+      background: linear-gradient(135deg, var(--accent) 0%, var(--accent-hover) 100%);
+      border: none;
+      border-radius: 50%;
+      color: white;
+      font-size: var(--font-size-xl);
+      cursor: pointer;
+      box-shadow: var(--shadow-xl);
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      z-index: 1000;
+      display: none; /* Hidden by default, shown on mobile */
+    }
+
+    .fab:hover {
+      transform: scale(1.1);
+      box-shadow: var(--shadow-xl), var(--shadow-glow);
+    }
+
+    .fab:active {
+      transform: scale(0.95);
+    }
+
+    /* Bottom Sheet Modal for Mobile */
+    .bottom-sheet {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: var(--glass-panel);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-radius: var(--space-6) var(--space-6) 0 0;
+      transform: translateY(100%);
+      transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      z-index: 1001;
+      max-height: 80vh;
+      overflow-y: auto;
+      box-shadow: var(--shadow-xl);
+    }
+
+    .bottom-sheet.open {
+      transform: translateY(0);
+    }
+
+    .bottom-sheet-handle {
+      width: 36px;
+      height: 4px;
+      background: var(--border-light);
+      border-radius: 2px;
+      margin: var(--space-3) auto var(--space-4);
+      opacity: 0.6;
+    }
+
+    /* Mobile-First Navigation Bar */
+    .mobile-nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: var(--glass-panel);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-top: 1px solid var(--border-light);
+      padding: var(--space-2) var(--space-4);
+      display: none; /* Hidden by default, shown on mobile */
+      z-index: 999;
+      box-shadow: var(--shadow-lg);
+      /* Safe area handling for iOS */
+      padding-bottom: calc(var(--space-2) + env(safe-area-inset-bottom));
+    }
+
+    .mobile-nav-items {
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      max-width: 400px;
+      margin: 0 auto;
+    }
+
+    .mobile-nav-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: var(--space-1);
+      padding: var(--space-2);
+      color: var(--text-secondary);
+      text-decoration: none;
+      border-radius: var(--space-2);
+      transition: all 0.2s ease;
+      min-width: 44px;
+      min-height: 44px;
+      justify-content: center;
+    }
+
+    .mobile-nav-item.active {
+      color: var(--accent);
+      background: var(--accent-light);
+    }
+
+    .mobile-nav-item:hover {
+      color: var(--text);
+      background: var(--glass-surface);
+    }
+
+    .mobile-nav-icon {
+      font-size: var(--font-size-lg);
+    }
+
+    .mobile-nav-label {
+      font-size: var(--font-size-xs);
+      font-weight: var(--font-weight-medium);
+    }
+
+    /* Swipe Gestures Support */
+    .swipe-container {
+      touch-action: pan-y;
+      -webkit-user-select: none;
+      user-select: none;
+    }
+
+    .swipe-indicator {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-accent);
+      font-size: var(--font-size-2xl);
+      opacity: 0;
+      transition: opacity 0.2s ease;
+      pointer-events: none;
+    }
+
+    .swipe-indicator.left {
+      left: var(--space-4);
+    }
+
+    .swipe-indicator.right {
+      right: var(--space-4);
+    }
+
+    .swipe-active .swipe-indicator {
+      opacity: 0.8;
+    }
+
     /* Enhanced responsive breakpoints */
     @media (min-width: 768px) {
       #app {
@@ -814,29 +965,72 @@
     }
 
     /* Mobile panel overlay */
+    /* Mobile-First Modern UX - 2025 */
     @media (max-width: 767px) {
-      .panels-container {
-        display: none;
+      /* Show modern mobile navigation */
+      .mobile-nav {
+        display: block;
       }
 
-      .panels-container.mobile-open {
+      .fab {
         display: flex;
-        position: fixed;
-        top: 60px;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        z-index: 999;
-        background: var(--panel);
-        animation: slideUp 0.3s ease-out;
+        align-items: center;
+        justify-content: center;
       }
 
-      .panels-container .panel:first-child {
-        border-bottom: 1px solid var(--border);
+      /* Hide traditional desktop panels on mobile */
+      .panels-container {
+        display: none !important;
       }
 
+      /* Adjust main container for mobile nav */
+      #app {
+        padding-bottom: calc(60px + env(safe-area-inset-bottom));
+      }
+
+      /* Enhanced mobile header */
+      header {
+        position: sticky;
+        top: 0;
+        z-index: 998;
+        padding-top: calc(var(--space-4) + env(safe-area-inset-top));
+      }
+
+      /* Mobile-optimized map controls */
       #right {
         height: 280px;
+        margin-bottom: var(--space-4);
+      }
+
+      /* Optimize incident cards for mobile */
+      .incident {
+        margin-bottom: var(--space-3);
+        padding: var(--space-4);
+      }
+
+      /* Mobile-optimized stats */
+      .statbar {
+        grid-template-columns: repeat(2, 1fr);
+        gap: var(--space-3);
+      }
+
+      .stat {
+        padding: var(--space-4) var(--space-3);
+      }
+
+      .stat .k {
+        font-size: var(--font-size-2xl);
+      }
+
+      /* Improve touch targets */
+      .chip {
+        min-height: 44px;
+        padding: var(--space-3) var(--space-4);
+      }
+
+      .badge {
+        min-height: 40px;
+        font-size: var(--font-size-sm);
       }
     }
 
@@ -2792,6 +2986,139 @@
     setupUI();
     refreshAll();
     setInterval(refreshAll, REFRESH_MS);
+
+    // Modern Mobile UX Controls
+    setupMobileUX();
+  </script>
+
+  <!-- Modern Mobile Navigation (2025) -->
+  <nav class="mobile-nav" id="mobile-nav">
+    <div class="mobile-nav-items">
+      <a href="#" class="mobile-nav-item active" data-tab="map">
+        <div class="mobile-nav-icon">🗺️</div>
+        <div class="mobile-nav-label">Map</div>
+      </a>
+      <a href="#" class="mobile-nav-item" data-tab="incidents">
+        <div class="mobile-nav-icon">🚨</div>
+        <div class="mobile-nav-label">Incidents</div>
+      </a>
+      <a href="#" class="mobile-nav-item" data-tab="filters">
+        <div class="mobile-nav-icon">⚙️</div>
+        <div class="mobile-nav-label">Filters</div>
+      </a>
+      <a href="#" class="mobile-nav-item" data-tab="stats">
+        <div class="mobile-nav-icon">📊</div>
+        <div class="mobile-nav-label">Stats</div>
+      </a>
+    </div>
+  </nav>
+
+  <!-- Floating Action Button -->
+  <button class="fab" id="mobile-fab" aria-label="Open mobile menu">
+    ⚡
+  </button>
+
+  <!-- Bottom Sheet Modal -->
+  <div class="bottom-sheet" id="mobile-bottom-sheet">
+    <div class="bottom-sheet-handle"></div>
+    <div id="bottom-sheet-content">
+      <!-- Content will be dynamically loaded here -->
+    </div>
+  </div>
+
+  <script>
+    // Setup Modern Mobile UX
+    function setupMobileUX() {
+      const fab = document.getElementById('mobile-fab');
+      const bottomSheet = document.getElementById('mobile-bottom-sheet');
+      const mobileNav = document.getElementById('mobile-nav');
+
+      // FAB click handler
+      if (fab) {
+        fab.addEventListener('click', () => {
+          bottomSheet.classList.toggle('open');
+        });
+      }
+
+      // Mobile navigation
+      if (mobileNav) {
+        const navItems = mobileNav.querySelectorAll('.mobile-nav-item');
+        navItems.forEach(item => {
+          item.addEventListener('click', (e) => {
+            e.preventDefault();
+
+            // Update active state
+            navItems.forEach(nav => nav.classList.remove('active'));
+            item.classList.add('active');
+
+            // Handle tab switching
+            const tab = item.dataset.tab;
+            handleMobileTabSwitch(tab);
+          });
+        });
+      }
+
+      // Close bottom sheet on backdrop click
+      bottomSheet.addEventListener('click', (e) => {
+        if (e.target === bottomSheet) {
+          bottomSheet.classList.remove('open');
+        }
+      });
+
+      // Swipe gestures for bottom sheet
+      let startY = 0;
+      let currentY = 0;
+
+      bottomSheet.addEventListener('touchstart', (e) => {
+        startY = e.touches[0].clientY;
+      });
+
+      bottomSheet.addEventListener('touchmove', (e) => {
+        currentY = e.touches[0].clientY;
+        const diff = currentY - startY;
+
+        if (diff > 50 && bottomSheet.classList.contains('open')) {
+          bottomSheet.classList.remove('open');
+        }
+      });
+    }
+
+    function handleMobileTabSwitch(tab) {
+      const bottomSheetContent = document.getElementById('bottom-sheet-content');
+      const rightPanel = document.getElementById('right');
+      const leftPanel = document.getElementById('left');
+
+      switch(tab) {
+        case 'incidents':
+          if (rightPanel) {
+            bottomSheetContent.innerHTML = rightPanel.innerHTML;
+            document.getElementById('mobile-bottom-sheet').classList.add('open');
+          }
+          break;
+        case 'filters':
+          if (leftPanel) {
+            bottomSheetContent.innerHTML = leftPanel.innerHTML;
+            document.getElementById('mobile-bottom-sheet').classList.add('open');
+          }
+          break;
+        case 'stats':
+          const statsContent = document.querySelector('.statbar');
+          if (statsContent) {
+            bottomSheetContent.innerHTML = `
+              <div style="padding: var(--space-4);">
+                <h2 style="margin-bottom: var(--space-4);">Statistics Overview</h2>
+                ${statsContent.outerHTML}
+              </div>
+            `;
+            document.getElementById('mobile-bottom-sheet').classList.add('open');
+          }
+          break;
+        case 'map':
+        default:
+          document.getElementById('mobile-bottom-sheet').classList.remove('open');
+          break;
+      }
+    }
   </script>
 </body>
 </html>
