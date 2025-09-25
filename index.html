@@ -70,8 +70,22 @@
     .no-data-overlay {
       background: var(--surface) !important;
       color: var(--text) !important;
+      border: 2px solid var(--border) !important;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.5) !important;
+    }
+    .risk-tooltip {
+      background: var(--surface) !important;
+      color: var(--text) !important;
       border: 1px solid var(--border) !important;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.3) !important;
+      font-size: 12px !important;
+    }
+    @keyframes slideInRight {
+      from { transform: translateX(100%); opacity: 0; }
+      to { transform: translateX(0); opacity: 1; }
+    }
+    @keyframes slideOutRight {
+      from { transform: translateX(0); opacity: 1; }
+      to { transform: translateX(100%); opacity: 0; }
     }
     @media (max-width: 1120px) {
       #app { grid-template-columns: 1fr; grid-template-rows: 56px 260px 1fr 320px; }
@@ -89,6 +103,8 @@
       <span class="badge">Satellite</span>
       <span class="badge" id="badge-refresh">Auto refresh</span>
       <span class="badge" id="badge-generated">Generated: —</span>
+      <span class="badge" id="badge-status" style="display: none; background: var(--severity-4); color: #fff; font-weight: 700;">NO DATA</span>
+      <button class="badge" id="btn-share" style="background: var(--focus); color: #fff; border: none; cursor: pointer; font-weight: 600;">📎 Share</button>
     </header>
 
     <aside id="left" aria-label="Filters">
@@ -114,6 +130,32 @@
           <label><input type="checkbox" id="layer-rail" /> <span class="dot" style="background:var(--rail);"></span> Rail hubs</label>
           <label><input type="checkbox" id="layer-border" /> <span class="dot" style="background:var(--border-crossing);"></span> Border crossings</label>
           <label><input type="checkbox" id="layer-military" /> <span class="dot" style="background:var(--military);"></span> Military</label>
+        </div>
+      </div>
+
+      <div class="section">
+        <h2>Risk Visualization</h2>
+        <label><input type="checkbox" id="show-risk-rings" /> Show risk rings around critical assets</label>
+        <div class="muted" style="font-size: 11px; margin-top: 4px;">2km/5km operational zones based on asset type and threat profile</div>
+      </div>
+
+      <div class="section">
+        <h2>Navigation</h2>
+        <label><input type="checkbox" id="auto-focus" checked /> Auto-focus on recent activity</label>
+        <div class="muted" style="font-size: 11px; margin-top: 4px;">Automatically center map on most recent incidents when loading</div>
+      </div>
+
+      <div class="section">
+        <h2>Compare Mode</h2>
+        <label><input type="checkbox" id="compare-mode" /> Compare periods</label>
+        <div class="muted" style="font-size: 11px; margin-top: 4px;">Show current period vs previous period for trend analysis</div>
+        <div id="compare-controls" style="display: none; margin-top: 8px;">
+          <div style="display: flex; gap: 8px; align-items: center; margin-bottom: 8px;">
+            <span style="color: var(--severity-4); font-weight: 700;">●</span>
+            <span class="muted" style="font-size: 12px;">Current</span>
+            <span style="color: var(--severity-2); font-weight: 700;">●</span>
+            <span class="muted" style="font-size: 12px;">Previous</span>
+          </div>
         </div>
       </div>
 
@@ -166,19 +208,37 @@
       </div>
     </aside>
 
-    <main id="map" role="region" aria-label="Incident map"></main>
+    <main id="map" role="region" aria-label="Incident map">
+      <div id="mapOverlay" style="display: none; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 1000; background: var(--surface); border: 3px solid var(--severity-4); border-radius: 16px; padding: 40px 60px; text-align: center; box-shadow: 0 8px 32px rgba(0,0,0,0.8);">
+        <div style="font-size: 48px; font-weight: 900; color: var(--severity-4); margin-bottom: 16px; letter-spacing: 3px;">NO DATA</div>
+        <div style="color: var(--muted); font-size: 16px; line-height: 1.4;">Europe-wide incident monitoring system<br/>No current incidents detected</div>
+      </div>
+    </main>
 
     <aside id="right" aria-label="Incident details">
       <div id="details">
         <h2>Incident feed</h2>
         <p class="muted" id="detailsIntro">Pins refresh every few minutes. Click a marker or list item for full provenance.</p>
-        <div id="noDataMessage" style="display: none; text-align: center; padding: 40px 20px; background: var(--surface); border: 1px solid var(--border); border-radius: 12px; margin: 20px 0;">
-          <div style="font-size: 24px; font-weight: 700; color: var(--muted); margin-bottom: 12px;">NO DATA</div>
-          <div class="muted" style="line-height: 1.4;">No incidents match the current filters.<br />Try expanding the time window or enabling more status options.</div>
+        <div id="noDataMessage" style="display: none; text-align: center; padding: 60px 20px; background: var(--surface); border: 2px solid var(--border); border-radius: 12px; margin: 20px 0;">
+          <div style="font-size: 32px; font-weight: 900; color: var(--text); margin-bottom: 16px; letter-spacing: 2px;">NO DATA</div>
+          <div class="muted" style="line-height: 1.5; font-size: 14px;">No incidents match the current filters.<br />Try expanding the time window or enabling more status options.</div>
         </div>
         <div id="incidentList"></div>
       </div>
     </aside>
+
+    <!-- Provenance Modal -->
+    <div id="provenanceModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 2000; overflow-y: auto;">
+      <div style="background: var(--surface); margin: 40px auto; padding: 0; border-radius: 16px; max-width: 800px; border: 2px solid var(--border); box-shadow: 0 8px 32px rgba(0,0,0,0.9);">
+        <div style="padding: 24px; border-bottom: 1px solid var(--border);">
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+            <h2 style="margin: 0; color: var(--text); font-size: 20px;">Incident Provenance</h2>
+            <button id="closeProvenance" style="background: var(--chip); border: 1px solid var(--border); border-radius: 8px; padding: 8px 12px; color: var(--text); cursor: pointer; font-size: 16px;">✕</button>
+          </div>
+        </div>
+        <div id="provenanceContent" style="padding: 24px; max-height: 60vh; overflow-y: auto;"></div>
+      </div>
+    </div>
   </div>
 
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin="anonymous"></script>
@@ -221,20 +281,149 @@
     };
     Object.values(clusterGroups).forEach(group => map.addLayer(group));
 
+    // Risk rings layer group
+    const riskRings = L.layerGroup().addTo(map);
+
     const state = {
       data: { generated_utc: null, incidents: [] },
-      markers: new Map()
+      markers: new Map(),
+      showRiskRings: false,
+      compareMode: false,
+      hasAutoFocused: false,
+      autoFocusEnabled: true
     };
+
+    // URL state management for shareable links
+    function saveStateToURL() {
+      const params = new URLSearchParams();
+
+      // Time window
+      params.set('days', document.getElementById('dateRange').value);
+
+      // Asset layers
+      if (document.getElementById('layer-airport').checked) params.append('layers', 'airport');
+      if (document.getElementById('layer-harbour').checked) params.append('layers', 'harbour');
+      if (document.getElementById('layer-energy').checked) params.append('layers', 'energy');
+      if (document.getElementById('layer-rail').checked) params.append('layers', 'rail');
+      if (document.getElementById('layer-border').checked) params.append('layers', 'border');
+      if (document.getElementById('layer-military').checked) params.append('layers', 'military');
+
+      // Status filters
+      const statusOptions = Array.from(document.getElementById('statusSelect').selectedOptions);
+      statusOptions.forEach(opt => params.append('status', opt.value));
+
+      // Evidence filters
+      const evidenceOptions = Array.from(document.getElementById('evidenceSelect').selectedOptions);
+      evidenceOptions.forEach(opt => params.append('evidence', opt.value));
+
+      // Search term
+      const searchTerm = document.getElementById('searchBox').value.trim();
+      if (searchTerm) params.set('search', searchTerm);
+
+      // Risk rings
+      if (state.showRiskRings) params.set('risks', '1');
+
+      // Compare mode
+      if (state.compareMode) params.set('compare', '1');
+
+      // Auto-focus (only save if disabled, since it's enabled by default)
+      if (!state.autoFocusEnabled) params.set('noautofocus', '1');
+
+      // Map view
+      const center = map.getCenter();
+      const zoom = map.getZoom();
+      params.set('lat', center.lat.toFixed(4));
+      params.set('lng', center.lng.toFixed(4));
+      params.set('zoom', zoom);
+
+      // Update URL without reload
+      const newUrl = window.location.pathname + '?' + params.toString();
+      window.history.replaceState({}, '', newUrl);
+    }
+
+    function loadStateFromURL() {
+      const params = new URLSearchParams(window.location.search);
+
+      // Time window
+      if (params.has('days')) {
+        const days = params.get('days');
+        document.getElementById('dateRange').value = days;
+        document.getElementById('dateRangeLabel').textContent = `Showing last ${days} days`;
+        // Update active chip
+        document.querySelectorAll('.chip[data-window]').forEach(btn => {
+          btn.classList.toggle('active', btn.dataset.window === days);
+        });
+      }
+
+      // Asset layers
+      const layers = params.getAll('layers');
+      document.getElementById('layer-airport').checked = layers.includes('airport');
+      document.getElementById('layer-harbour').checked = layers.includes('harbour');
+      document.getElementById('layer-energy').checked = layers.includes('energy');
+      document.getElementById('layer-rail').checked = layers.includes('rail');
+      document.getElementById('layer-border').checked = layers.includes('border');
+      document.getElementById('layer-military').checked = layers.includes('military');
+
+      // Status filters
+      const statuses = params.getAll('status');
+      if (statuses.length > 0) {
+        Array.from(document.getElementById('statusSelect').options).forEach(opt => {
+          opt.selected = statuses.includes(opt.value);
+        });
+      }
+
+      // Evidence filters
+      const evidences = params.getAll('evidence');
+      if (evidences.length > 0) {
+        Array.from(document.getElementById('evidenceSelect').options).forEach(opt => {
+          opt.selected = evidences.includes(opt.value);
+        });
+      }
+
+      // Search term
+      if (params.has('search')) {
+        document.getElementById('searchBox').value = params.get('search');
+      }
+
+      // Risk rings
+      if (params.has('risks')) {
+        state.showRiskRings = params.get('risks') === '1';
+        document.getElementById('show-risk-rings').checked = state.showRiskRings;
+      }
+
+      // Compare mode
+      if (params.has('compare')) {
+        state.compareMode = params.get('compare') === '1';
+        document.getElementById('compare-mode').checked = state.compareMode;
+        document.getElementById('compare-controls').style.display = state.compareMode ? 'block' : 'none';
+      }
+
+      // Auto-focus
+      if (params.has('noautofocus')) {
+        state.autoFocusEnabled = false;
+        document.getElementById('auto-focus').checked = false;
+      }
+
+      // Map view
+      if (params.has('lat') && params.has('lng') && params.has('zoom')) {
+        const lat = parseFloat(params.get('lat'));
+        const lng = parseFloat(params.get('lng'));
+        const zoom = parseInt(params.get('zoom'));
+        map.setView([lat, lng], zoom);
+      }
+    }
 
     function sevBox(score) {
       const level = Math.min(5, Math.max(1, Number(score) || 1));
       return `<span class="sev s${level}"></span>`;
     }
 
-    function markerIcon(color, severity) {
+    function markerIcon(color, severity, isPrevious = false) {
       const size = 10 + (Number(severity) || 1) * 2;
+      const borderStyle = isPrevious ? '2px dashed rgba(15,17,25,0.85)' : '2px solid rgba(15,17,25,0.85)';
+      const opacity = isPrevious ? '0.7' : '1';
       return L.divIcon({
-        html: `<div style="width:${size}px;height:${size}px;border-radius:50%;background:${color.trim()};border:2px solid rgba(15,17,25,0.85);box-shadow:0 0 0 1px rgba(0,0,0,.35);"></div>`,
+        html: `<div style="width:${size}px;height:${size}px;border-radius:50%;background:${color.trim()};border:${borderStyle};box-shadow:0 0 0 1px rgba(0,0,0,.35);opacity:${opacity};"></div>`,
         className: '',
         iconSize: [size, size]
       });
@@ -279,15 +468,29 @@
       return document.getElementById('searchBox').value.trim().toLowerCase();
     }
 
-    function filterIncidents() {
-      const cutoff = Date.now() - activeDays() * 24 * 3600 * 1000;
+    function filterIncidents(period = 'current') {
+      const days = activeDays();
+      let cutoffStart, cutoffEnd;
+
+      if (state.compareMode && period === 'previous') {
+        // Previous period: (2 * days) ago to (days) ago
+        cutoffEnd = Date.now() - days * 24 * 3600 * 1000;
+        cutoffStart = Date.now() - 2 * days * 24 * 3600 * 1000;
+      } else {
+        // Current period: (days) ago to now
+        cutoffEnd = Date.now();
+        cutoffStart = Date.now() - days * 24 * 3600 * 1000;
+      }
+
       const statuses = new Set(selectedValues(document.getElementById('statusSelect')));
       const evidences = new Set(selectedValues(document.getElementById('evidenceSelect')));
       const query = searchTerm();
 
       return state.data.incidents.filter(item => {
         const seenTs = Date.parse(item.first_seen_utc || item.last_update_utc || state.data.generated_utc || Date.now());
-        if (Number.isFinite(cutoff) && seenTs < cutoff) return false;
+
+        if (!Number.isFinite(seenTs)) return false;
+        if (seenTs < cutoffStart || seenTs > cutoffEnd) return false;
         if (!statuses.has(item.incident.status)) return false;
         if (!evidences.has(String(item.evidence.strength))) return false;
         if (query) {
@@ -314,18 +517,28 @@
         <b>Asset:</b> ${incident.asset.type} · ${sevBox(incident.scores.severity)} <b>Severity:</b> ${incident.scores.severity}<br />
         <b>Status:</b> ${incident.incident.status} · <b>Category:</b> ${incident.incident.category}<br />
         <b>Window:</b> ${fmtDate(incident.first_seen_utc)} → ${fmtDate(incident.last_update_utc)}<br />
-        <b>Evidence:</b> ${incident.evidence.strength} · ${srcLinks || '<span class="muted">no link</span>'}
+        <b>Evidence:</b> ${incident.evidence.strength} · ${srcLinks || '<span class="muted">no link</span>'}<br />
+        <div style="text-align: center; margin-top: 8px;">
+          <button class="popup-provenance-btn" style="background: var(--focus); color: #fff; border: none; border-radius: 4px; padding: 4px 8px; cursor: pointer; font-size: 11px;">
+            📋 Full Provenance
+          </button>
+        </div>
       `;
     }
 
-    function renderDetails(incidents) {
+    function renderDetails(currentIncidents, previousIncidents = []) {
       const list = document.getElementById('incidentList');
       const intro = document.getElementById('detailsIntro');
       const noDataMessage = document.getElementById('noDataMessage');
 
+      console.log('renderDetails called with', currentIncidents.length, 'current and', previousIncidents.length, 'previous incidents');
       list.innerHTML = '';
 
-      if (!incidents.length) {
+      const totalCurrent = currentIncidents.length;
+      const totalPrevious = previousIncidents.length;
+
+      if (!totalCurrent && !totalPrevious) {
+        console.log('Showing NO DATA message');
         intro.style.display = 'none';
         noDataMessage.style.display = 'block';
         return;
@@ -333,25 +546,79 @@
 
       intro.style.display = 'block';
       noDataMessage.style.display = 'none';
-      intro.textContent = 'Most recent incidents. Click to focus on the map.';
 
-      incidents.sort((a, b) => Date.parse(b.first_seen_utc) - Date.parse(a.first_seen_utc));
-      incidents.slice(0, 12).forEach(incident => {
+      if (state.compareMode) {
+        intro.innerHTML = `Current period: <strong>${totalCurrent}</strong> incidents | Previous period: <strong>${totalPrevious}</strong> incidents`;
+      } else {
+        intro.textContent = 'Most recent incidents. Click to focus on the map.';
+      }
+
+      // Show current period incidents
+      const currentSorted = currentIncidents.sort((a, b) => Date.parse(b.first_seen_utc) - Date.parse(a.first_seen_utc));
+      currentSorted.slice(0, state.compareMode ? 6 : 12).forEach(incident => {
         const card = document.createElement('div');
         card.className = 'incident';
         card.innerHTML = `
           <div style="display:flex;justify-content:space-between;gap:10px;align-items:center;">
             <strong>${incident.asset.name}</strong>
-            <span class="muted">${incident.asset.type}</span>
+            <div style="display: flex; gap: 8px; align-items: center;">
+              <span class="muted">${incident.asset.type}</span>
+              <button class="provenance-btn" style="background: var(--chip); border: 1px solid var(--border); border-radius: 4px; padding: 2px 6px; color: var(--focus); cursor: pointer; font-size: 11px;">📋 Info</button>
+            </div>
           </div>
           <div class="muted" style="margin:6px 0">${fmtDate(incident.first_seen_utc)} → ${fmtDate(incident.last_update_utc)}</div>
           <div>Category: <b>${incident.incident.category}</b> • Status: <b>${incident.incident.status}</b> • Evidence: <b>${incident.evidence.strength}</b> • Severity: <b>${incident.scores.severity}</b></div>
           <div class="muted" style="margin:6px 0">${incident.incident.narrative || ''}</div>
           <div>Sources: ${(incident.evidence.sources || []).map(src => `<a href="${src.url}" target="_blank" rel="noopener">${src.publisher || 'source'}</a>`).join(' · ') || '<span class="muted">—</span>'}</div>
         `;
-        card.addEventListener('click', () => focusIncident(incident));
+        card.addEventListener('click', (e) => {
+          if (e.target.classList.contains('provenance-btn')) {
+            e.stopPropagation();
+            showProvenance(incident);
+          } else {
+            focusIncident(incident);
+          }
+        });
         list.appendChild(card);
       });
+
+      // Show previous period incidents if in compare mode
+      if (state.compareMode && previousIncidents.length > 0) {
+        const separator = document.createElement('div');
+        separator.style.cssText = 'margin: 16px 0; padding: 8px 0; border-top: 1px solid var(--border); color: var(--severity-2); font-weight: 600; font-size: 12px; text-transform: uppercase; letter-spacing: 0.05em;';
+        separator.textContent = 'Previous Period';
+        list.appendChild(separator);
+
+        const previousSorted = previousIncidents.sort((a, b) => Date.parse(b.first_seen_utc) - Date.parse(a.first_seen_utc));
+        previousSorted.slice(0, 6).forEach(incident => {
+          const card = document.createElement('div');
+          card.className = 'incident';
+          card.style.borderColor = 'var(--severity-2)';
+          card.style.opacity = '0.8';
+          card.innerHTML = `
+            <div style="display:flex;justify-content:space-between;gap:10px;align-items:center;">
+              <strong>${incident.asset.name}</strong>
+              <div style="display: flex; gap: 8px; align-items: center;">
+                <span class="muted">${incident.asset.type}</span>
+                <button class="provenance-btn" style="background: var(--chip); border: 1px solid var(--border); border-radius: 4px; padding: 2px 6px; color: var(--focus); cursor: pointer; font-size: 11px;">📋 Info</button>
+              </div>
+            </div>
+            <div class="muted" style="margin:6px 0">${fmtDate(incident.first_seen_utc)} → ${fmtDate(incident.last_update_utc)}</div>
+            <div>Category: <b>${incident.incident.category}</b> • Status: <b>${incident.incident.status}</b> • Evidence: <b>${incident.evidence.strength}</b> • Severity: <b>${incident.scores.severity}</b></div>
+            <div class="muted" style="margin:6px 0">${incident.incident.narrative || ''}</div>
+            <div>Sources: ${(incident.evidence.sources || []).map(src => `<a href="${src.url}" target="_blank" rel="noopener">${src.publisher || 'source'}</a>`).join(' · ') || '<span class="muted">—</span>'}</div>
+          `;
+          card.addEventListener('click', (e) => {
+            if (e.target.classList.contains('provenance-btn')) {
+              e.stopPropagation();
+              showProvenance(incident);
+            } else {
+              focusIncident(incident);
+            }
+          });
+          list.appendChild(card);
+        });
+      }
     }
 
     function focusIncident(incident) {
@@ -361,23 +628,217 @@
       marker.openPopup();
     }
 
+    function showProvenance(incident) {
+      const modal = document.getElementById('provenanceModal');
+      const content = document.getElementById('provenanceContent');
+
+      // Calculate decision factors
+      const evidenceLevel = incident.evidence.strength;
+      const severityScore = incident.scores.severity;
+      const statusClass = incident.incident.status === 'active' ? 'severity-4' : 'muted';
+
+      // Format sources with credibility indicators
+      const sourcesList = (incident.evidence.sources || []).map((source, idx) => {
+        const publisherClass = ['Reuters', 'AP', 'BBC', 'DR', 'NRK'].includes(source.publisher) ? 'severity-3' : 'muted';
+        return `
+          <div style="border: 1px solid var(--border); border-radius: 8px; padding: 12px; margin: 8px 0;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+              <strong style="color: var(--${publisherClass});">${source.publisher || 'Unknown Source'}</strong>
+              <span class="muted" style="font-size: 11px;">${source.lang?.toUpperCase() || 'EN'}</span>
+            </div>
+            <div class="muted" style="font-size: 12px; margin-bottom: 8px;">
+              First seen: ${fmtDate(source.first_seen)}
+            </div>
+            <a href="${source.url}" target="_blank" rel="noopener" style="color: var(--focus); text-decoration: none; font-size: 12px;">
+              View source →
+            </a>
+          </div>
+        `;
+      }).join('');
+
+      // Decision logic explanation
+      const decisionFactors = [];
+      if (evidenceLevel >= 3) decisionFactors.push('✓ Official/NOTAM confirmation');
+      else if (evidenceLevel >= 2) decisionFactors.push('✓ Multiple credible sources');
+      else if (evidenceLevel >= 1) decisionFactors.push('⚠ Single source verification');
+      else decisionFactors.push('❌ Unverified reports');
+
+      if (severityScore >= 4) decisionFactors.push('🔴 High operational impact');
+      else if (severityScore >= 3) decisionFactors.push('🟡 Moderate impact');
+      else decisionFactors.push('🟢 Low impact');
+
+      if (incident.incident.status === 'active') decisionFactors.push('🚨 Currently active');
+      if (incident.incident.response?.length) decisionFactors.push(`👮 Response: ${incident.incident.response.join(', ')}`);
+
+      content.innerHTML = `
+        <div style="margin-bottom: 24px;">
+          <h3 style="margin: 0 0 8px; color: var(--text); font-size: 18px;">${incident.asset.name}</h3>
+          <div style="display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 16px;">
+            <span class="badge" style="background: var(--${statusClass}); color: #fff;">${incident.incident.status.toUpperCase()}</span>
+            <span class="badge">Evidence: ${evidenceLevel}/3</span>
+            <span class="badge">Severity: ${severityScore}/5</span>
+          </div>
+          <div class="muted" style="line-height: 1.4;">
+            ${incident.incident.narrative || 'No additional details available.'}
+          </div>
+        </div>
+
+        <div style="margin-bottom: 24px;">
+          <h4 style="margin: 0 0 12px; color: var(--text);">Decision Factors</h4>
+          <div style="background: var(--chip); border-radius: 8px; padding: 16px;">
+            ${decisionFactors.map(factor => `<div style="margin: 4px 0; font-size: 14px;">${factor}</div>`).join('')}
+          </div>
+        </div>
+
+        <div style="margin-bottom: 24px;">
+          <h4 style="margin: 0 0 12px; color: var(--text);">Timeline</h4>
+          <div style="font-size: 14px;">
+            <div style="margin: 8px 0;"><strong>First detected:</strong> ${fmtDate(incident.first_seen_utc)}</div>
+            <div style="margin: 8px 0;"><strong>Last updated:</strong> ${fmtDate(incident.last_update_utc)}</div>
+            ${incident.incident.duration_min ? `<div style="margin: 8px 0;"><strong>Duration:</strong> ${fmtDuration(incident.incident.duration_min)}</div>` : ''}
+          </div>
+        </div>
+
+        <div style="margin-bottom: 24px;">
+          <h4 style="margin: 0 0 12px; color: var(--text);">Asset Information</h4>
+          <div style="font-size: 14px;">
+            <div style="margin: 8px 0;"><strong>Type:</strong> ${incident.asset.type}</div>
+            ${incident.asset.iata ? `<div style="margin: 8px 0;"><strong>IATA:</strong> ${incident.asset.iata}</div>` : ''}
+            ${incident.asset.icao ? `<div style="margin: 8px 0;"><strong>ICAO:</strong> ${incident.asset.icao}</div>` : ''}
+            <div style="margin: 8px 0;"><strong>Coordinates:</strong> ${incident.asset.lat.toFixed(4)}, ${incident.asset.lon.toFixed(4)}</div>
+            ${incident.scores.risk_radius_m ? `<div style="margin: 8px 0;"><strong>Risk radius:</strong> ${(incident.scores.risk_radius_m/1000).toFixed(1)}km</div>` : ''}
+          </div>
+        </div>
+
+        <div>
+          <h4 style="margin: 0 0 12px; color: var(--text);">Sources (${incident.evidence.sources?.length || 0})</h4>
+          ${sourcesList || '<div class="muted">No sources available</div>'}
+        </div>
+      `;
+
+      modal.style.display = 'block';
+    }
+
+    function hideProvenance() {
+      document.getElementById('provenanceModal').style.display = 'none';
+    }
+
+    function renderRiskRings() {
+      riskRings.clearLayers();
+      if (!state.showRiskRings) return;
+
+      const toggles = assetToggles();
+      const processedAssets = new Set();
+
+      state.data.incidents.forEach(incident => {
+        const asset = incident.asset;
+        const assetKey = `${asset.type}-${asset.lat}-${asset.lon}`;
+
+        if (processedAssets.has(assetKey) || !toggles[asset.type]) return;
+        processedAssets.add(assetKey);
+
+        // Risk ring sizes based on asset type
+        const ringConfig = {
+          airport: { inner: 2000, outer: 5000, color: '#ef4444' },
+          harbour: { inner: 1000, outer: 3000, color: '#3b82f6' },
+          energy: { inner: 1500, outer: 4000, color: '#f97316' },
+          rail: { inner: 800, outer: 2000, color: '#22c55e' },
+          border: { inner: 500, outer: 1500, color: '#eab308' },
+          military: { inner: 3000, outer: 8000, color: '#c084fc' }
+        };
+
+        const config = ringConfig[asset.type];
+        if (!config) return;
+
+        // Outer ring (restricted zone)
+        const outerRing = L.circle([asset.lat, asset.lon], {
+          radius: config.outer,
+          fillColor: config.color,
+          fillOpacity: 0.08,
+          color: config.color,
+          weight: 1,
+          opacity: 0.3,
+          dashArray: '5, 5'
+        });
+
+        // Inner ring (critical zone)
+        const innerRing = L.circle([asset.lat, asset.lon], {
+          radius: config.inner,
+          fillColor: config.color,
+          fillOpacity: 0.15,
+          color: config.color,
+          weight: 2,
+          opacity: 0.5
+        });
+
+        outerRing.bindTooltip(`${asset.name}<br/>Restricted zone: ${(config.outer/1000)}km`, {
+          permanent: false,
+          className: 'risk-tooltip'
+        });
+
+        innerRing.bindTooltip(`${asset.name}<br/>Critical zone: ${(config.inner/1000)}km`, {
+          permanent: false,
+          className: 'risk-tooltip'
+        });
+
+        riskRings.addLayer(outerRing);
+        riskRings.addLayer(innerRing);
+      });
+    }
+
     function render() {
+      console.log('render() called, total incidents:', state.data.incidents.length);
       Object.values(clusterGroups).forEach(group => group.clearLayers());
       state.markers.clear();
-      const filtered = filterIncidents();
+
+      const currentFiltered = filterIncidents('current');
+      const previousFiltered = state.compareMode ? filterIncidents('previous') : [];
+
+      console.log('current period incidents:', currentFiltered.length);
+      if (state.compareMode) console.log('previous period incidents:', previousFiltered.length);
+
+      // Update status badge and map overlay
+      const statusBadge = document.getElementById('badge-status');
+      const mapOverlay = document.getElementById('mapOverlay');
+
+      if (state.data.incidents.length === 0) {
+        statusBadge.style.display = 'inline-block';
+        statusBadge.textContent = 'NO DATA';
+        mapOverlay.style.display = 'block';
+      } else if (currentFiltered.length === 0 && previousFiltered.length === 0) {
+        statusBadge.style.display = 'inline-block';
+        statusBadge.textContent = 'NO MATCHES';
+        mapOverlay.style.display = 'none';
+      } else {
+        statusBadge.style.display = 'none';
+        mapOverlay.style.display = 'none';
+      }
+
       const toggles = assetToggles();
       const mapMarkers = [];
       let countAir = 0;
       let countHar = 0;
+      let countAirPrev = 0;
+      let countHarPrev = 0;
 
-      filtered.forEach(incident => {
+      // Render current period incidents
+      currentFiltered.forEach(incident => {
         const assetType = incident.asset.type;
         if (!toggles[assetType]) return;
         const color = assetColors[assetType] || '#6ea8fe';
         const marker = L.marker([incident.asset.lat, incident.asset.lon], {
           icon: markerIcon(color, incident.scores.severity)
         }).bindPopup(popupHtml(incident));
+
+        marker.incident = incident;
         marker.on('click', () => renderDetails([incident]));
+        marker.on('popupopen', () => {
+          const provenanceBtn = document.querySelector('.popup-provenance-btn');
+          if (provenanceBtn) {
+            provenanceBtn.addEventListener('click', () => showProvenance(marker.incident));
+          }
+        });
+
         state.markers.set(incident.id, marker);
         if (clusterGroups[assetType]) {
           clusterGroups[assetType].addLayer(marker);
@@ -387,9 +848,44 @@
         if (assetType === 'harbour') countHar += 1;
       });
 
-      document.getElementById('stat-total').textContent = filtered.length;
-      document.getElementById('stat-air').textContent = countAir;
-      document.getElementById('stat-har').textContent = countHar;
+      // Render previous period incidents with different styling (if compare mode)
+      if (state.compareMode) {
+        previousFiltered.forEach(incident => {
+          const assetType = incident.asset.type;
+          if (!toggles[assetType]) return;
+          const color = '#60a5fa'; // Blue for previous period
+          const marker = L.marker([incident.asset.lat, incident.asset.lon], {
+            icon: markerIcon(color, incident.scores.severity, true) // true = previous period
+          }).bindPopup(`<div style="border-left: 3px solid #60a5fa; padding-left: 8px;"><strong>Previous Period</strong><br/>${popupHtml(incident)}</div>`);
+
+          marker.incident = incident;
+          marker.on('popupopen', () => {
+            const provenanceBtn = document.querySelector('.popup-provenance-btn');
+            if (provenanceBtn) {
+              provenanceBtn.addEventListener('click', () => showProvenance(marker.incident));
+            }
+          });
+
+          state.markers.set('prev-' + incident.id, marker);
+          if (clusterGroups[assetType]) {
+            clusterGroups[assetType].addLayer(marker);
+          }
+          mapMarkers.push(marker);
+          if (assetType === 'airport') countAirPrev += 1;
+          if (assetType === 'harbour') countHarPrev += 1;
+        });
+      }
+
+      // Update statistics
+      if (state.compareMode) {
+        document.getElementById('stat-total').innerHTML = `${currentFiltered.length} <span class="muted">(vs ${previousFiltered.length})</span>`;
+        document.getElementById('stat-air').innerHTML = `${countAir} <span class="muted">(vs ${countAirPrev})</span>`;
+        document.getElementById('stat-har').innerHTML = `${countHar} <span class="muted">(vs ${countHarPrev})</span>`;
+      } else {
+        document.getElementById('stat-total').textContent = currentFiltered.length;
+        document.getElementById('stat-air').textContent = countAir;
+        document.getElementById('stat-har').textContent = countHar;
+      }
 
       if (mapMarkers.length) {
         const group = L.featureGroup(mapMarkers);
@@ -405,7 +901,7 @@
           map._noDataOverlay = L.control({ position: 'topright' });
           map._noDataOverlay.onAdd = function() {
             const div = L.DomUtil.create('div', 'no-data-overlay');
-            div.style.cssText = 'padding: 12px 16px; border-radius: 8px; font-size: 14px; font-weight: 700; text-align: center;';
+            div.style.cssText = 'padding: 20px 24px; border-radius: 12px; font-size: 18px; font-weight: 900; text-align: center; letter-spacing: 1px; min-width: 120px;';
             div.innerHTML = 'NO DATA';
             return div;
           };
@@ -413,14 +909,17 @@
         }
       }
 
-      renderDetails(filtered);
+      renderDetails(currentFiltered, previousFiltered);
+      renderRiskRings();
     }
 
     async function fetchIncidents() {
+      console.log('fetchIncidents() called, fetching from:', INCIDENTS_URL);
       try {
         const res = await fetch(`${INCIDENTS_URL}?_=${Date.now()}`, { cache: 'no-store' });
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
         const data = await res.json();
+        console.log('fetchIncidents() received data:', data);
         state.data = data || { generated_utc: null, incidents: [] };
         document.getElementById('badge-generated').textContent = `Generated: ${state.data.generated_utc || '—'}`;
       } catch (err) {
@@ -431,14 +930,141 @@
       }
     }
 
+    function autoFocusOnRecentActivity() {
+      // Don't auto-focus if disabled by user
+      if (!state.autoFocusEnabled) {
+        console.log('Auto-focus disabled by user');
+        return;
+      }
+
+      // Don't auto-focus if user has manually set map position via URL
+      const params = new URLSearchParams(window.location.search);
+      if (params.has('lat') && params.has('lng')) {
+        console.log('Manual map position detected, skipping auto-focus');
+        return;
+      }
+
+      let targetIncidents = filterIncidents('current');
+
+      // Fallback 1: If no current incidents, try active incidents from any time period
+      if (targetIncidents.length === 0) {
+        targetIncidents = state.data.incidents.filter(inc => inc.incident.status === 'active');
+        console.log('No current incidents, trying active incidents:', targetIncidents.length);
+      }
+
+      // Fallback 2: If no active incidents, try high-severity incidents (4+)
+      if (targetIncidents.length === 0) {
+        targetIncidents = state.data.incidents.filter(inc => inc.scores.severity >= 4);
+        console.log('No active incidents, trying high-severity incidents:', targetIncidents.length);
+      }
+
+      // Fallback 3: If still none, use all available incidents
+      if (targetIncidents.length === 0) {
+        targetIncidents = state.data.incidents;
+        console.log('No high-severity incidents, using all incidents:', targetIncidents.length);
+      }
+
+      // Final fallback: If truly no data, stay with default European view
+      if (targetIncidents.length === 0) {
+        console.log('No incidents available for auto-focus, keeping default view');
+        return;
+      }
+
+      // Find most recent incident from available pool
+      const mostRecent = targetIncidents.reduce((latest, incident) => {
+        const incidentTime = Date.parse(incident.first_seen_utc || incident.last_update_utc);
+        const latestTime = Date.parse(latest.first_seen_utc || latest.last_update_utc);
+        return incidentTime > latestTime ? incident : latest;
+      });
+
+      // Focus on the most recent incident with intelligent zoom level
+      const focusLat = mostRecent.asset.lat;
+      const focusLng = mostRecent.asset.lon;
+
+      // Smart zoom based on priority factors
+      let zoomLevel = 7; // European overview
+      if (mostRecent.scores.severity >= 4) zoomLevel = 9; // High severity
+      if (mostRecent.incident.status === 'active') zoomLevel = Math.max(zoomLevel, 10); // Active = closest
+      if (mostRecent.asset.type === 'airport') zoomLevel = Math.max(zoomLevel, 8); // Airports important
+      if (Date.now() - Date.parse(mostRecent.first_seen_utc) < 24 * 3600 * 1000) zoomLevel += 1; // Recent = closer
+
+      console.log(`Auto-focusing on: ${mostRecent.asset.name} (${mostRecent.asset.type}) | Severity: ${mostRecent.scores.severity} | Status: ${mostRecent.incident.status} | Zoom: ${zoomLevel}`);
+
+      // Smooth animation to the location
+      map.flyTo([focusLat, focusLng], zoomLevel, {
+        animate: true,
+        duration: 2.0 // 2 second smooth animation
+      });
+
+      // Show a brief notification about the auto-focus
+      showAutoFocusNotification(mostRecent);
+
+      // Open popup after animation completes
+      setTimeout(() => {
+        const marker = state.markers.get(mostRecent.id);
+        if (marker) {
+          marker.openPopup();
+          // Auto-close popup after 4 seconds
+          setTimeout(() => marker.closePopup(), 4000);
+        }
+      }, 2500);
+    }
+
+    function showAutoFocusNotification(incident) {
+      const notification = document.createElement('div');
+      notification.style.cssText = `
+        position: fixed;
+        top: 80px;
+        right: 20px;
+        background: var(--surface);
+        border: 2px solid var(--focus);
+        border-radius: 8px;
+        padding: 12px 16px;
+        color: var(--text);
+        font-size: 14px;
+        font-weight: 600;
+        z-index: 1500;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+        animation: slideInRight 0.3s ease-out forwards;
+      `;
+
+      const ageDays = Math.floor((Date.now() - Date.parse(incident.first_seen_utc)) / (24 * 3600 * 1000));
+      const ageText = ageDays === 0 ? 'today' : ageDays === 1 ? 'yesterday' : `${ageDays} days ago`;
+
+      notification.innerHTML = `
+        📍 <strong>Focused on most recent activity</strong><br/>
+        <span style="color: var(--muted); font-size: 12px; font-weight: normal;">
+          ${incident.asset.name} • ${ageText}
+        </span>
+      `;
+
+      document.body.appendChild(notification);
+
+      // Remove notification after 5 seconds
+      setTimeout(() => {
+        notification.style.animation = 'slideOutRight 0.3s ease-in forwards';
+        setTimeout(() => document.body.removeChild(notification), 300);
+      }, 5000);
+    }
+
     async function refreshAll() {
       await fetchIncidents();
       render();
+
+      // Auto-focus on first load only
+      if (!state.hasAutoFocused) {
+        autoFocusOnRecentActivity();
+        state.hasAutoFocused = true;
+      }
     }
 
     function setupUI() {
       const dateRange = document.getElementById('dateRange');
       const dateLabel = document.getElementById('dateRangeLabel');
+
+      // Load state from URL on init
+      loadStateFromURL();
+
       document.querySelectorAll('.chip[data-window]').forEach(btn => {
         btn.addEventListener('click', () => {
           document.querySelectorAll('.chip[data-window]').forEach(b => b.classList.remove('active'));
@@ -446,8 +1072,10 @@
           dateRange.value = btn.dataset.window;
           dateLabel.textContent = `Showing last ${dateRange.value} days`;
           render();
+          saveStateToURL();
         });
       });
+
       [
         dateRange,
         document.getElementById('statusSelect'),
@@ -457,12 +1085,77 @@
         document.getElementById('layer-energy'),
         document.getElementById('layer-rail'),
         document.getElementById('layer-border'),
-        document.getElementById('layer-military')
+        document.getElementById('layer-military'),
+        document.getElementById('show-risk-rings'),
+        document.getElementById('compare-mode'),
+        document.getElementById('auto-focus')
       ].forEach(control => {
-        control.addEventListener('input', render);
-        control.addEventListener('change', render);
+        control.addEventListener('input', () => {
+          if (control.id === 'show-risk-rings') {
+            state.showRiskRings = control.checked;
+          } else if (control.id === 'compare-mode') {
+            state.compareMode = control.checked;
+            document.getElementById('compare-controls').style.display = control.checked ? 'block' : 'none';
+          } else if (control.id === 'auto-focus') {
+            state.autoFocusEnabled = control.checked;
+          }
+          render();
+          saveStateToURL();
+        });
+        control.addEventListener('change', () => {
+          if (control.id === 'show-risk-rings') {
+            state.showRiskRings = control.checked;
+          } else if (control.id === 'compare-mode') {
+            state.compareMode = control.checked;
+            document.getElementById('compare-controls').style.display = control.checked ? 'block' : 'none';
+          } else if (control.id === 'auto-focus') {
+            state.autoFocusEnabled = control.checked;
+          }
+          render();
+          saveStateToURL();
+        });
       });
-      document.getElementById('searchBox').addEventListener('input', render);
+
+      document.getElementById('searchBox').addEventListener('input', () => {
+        render();
+        saveStateToURL();
+      });
+
+      // Share button functionality
+      document.getElementById('btn-share').addEventListener('click', async () => {
+        saveStateToURL();
+        try {
+          await navigator.clipboard.writeText(window.location.href);
+          const btn = document.getElementById('btn-share');
+          const originalText = btn.innerHTML;
+          btn.innerHTML = '✓ Copied';
+          setTimeout(() => btn.innerHTML = originalText, 2000);
+        } catch (err) {
+          // Fallback for older browsers
+          const textArea = document.createElement('textarea');
+          textArea.value = window.location.href;
+          document.body.appendChild(textArea);
+          textArea.select();
+          document.execCommand('copy');
+          document.body.removeChild(textArea);
+          alert('Link copied to clipboard');
+        }
+      });
+
+      // Save state on map moves
+      map.on('moveend', saveStateToURL);
+
+      // Modal controls
+      document.getElementById('closeProvenance').addEventListener('click', hideProvenance);
+      document.getElementById('provenanceModal').addEventListener('click', (e) => {
+        if (e.target.id === 'provenanceModal') hideProvenance();
+      });
+
+      // ESC key to close modal
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') hideProvenance();
+      });
+
       dateLabel.textContent = `Showing last ${dateRange.value} days`;
     }
 

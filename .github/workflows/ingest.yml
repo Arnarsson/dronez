@@ -36,6 +36,11 @@ jobs:
           PY
       - name: Run ingestion
         run: python tools/ingest.py
+      - name: Send Slack alerts
+        run: python tools/slack_webhook.py public/incidents.json
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+        continue-on-error: true
       - name: Commit JSON
         run: |
           git config user.name "dronez-bot"
