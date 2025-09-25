@@ -1,0 +1,74 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "DroneSightingsIncidents",
+  "type": "object",
+  "properties": {
+    "generated_utc": { "type": "string", "format": "date-time" },
+    "incidents": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "first_seen_utc", "asset", "incident", "evidence", "scores"],
+        "properties": {
+          "id": { "type": "string" },
+          "first_seen_utc": { "type": "string", "format": "date-time" },
+          "last_update_utc": { "type": "string", "format": "date-time" },
+          "asset": {
+            "type": "object",
+            "required": ["type", "name", "lat", "lon"],
+            "properties": {
+              "type": { "enum": ["airport", "harbour", "energy", "rail", "border", "military"] },
+              "name": { "type": "string" },
+              "iata": { "type": ["string", "null"] },
+              "icao": { "type": ["string", "null"] },
+              "osm_id": { "type": ["integer", "null"] },
+              "lat": { "type": "number" },
+              "lon": { "type": "number" }
+            }
+          },
+          "incident": {
+            "type": "object",
+            "properties": {
+              "category": { "enum": ["closure", "diversion", "lockdown", "sighting", "navwarn"] },
+              "status": { "enum": ["active", "resolved", "unconfirmed"] },
+              "duration_min": { "type": ["integer", "null"] },
+              "uav_count": { "type": ["integer", "null"] },
+              "uav_characteristics": { "type": ["string", "null"] },
+              "response": { "type": "array", "items": { "type": "string" } },
+              "narrative": { "type": ["string", "null"] }
+            }
+          },
+          "evidence": {
+            "type": "object",
+            "properties": {
+              "strength": { "type": "integer", "minimum": 0, "maximum": 3 },
+              "attribution": { "enum": ["none", "suspected", "claimed"] },
+              "sources": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "url": { "type": "string" },
+                    "publisher": { "type": "string" },
+                    "lang": { "type": ["string", "null"] },
+                    "first_seen": { "type": ["string", "null"], "format": "date-time" }
+                  }
+                }
+              },
+              "notam_navtex_ids": { "type": "array", "items": { "type": "string" } }
+            }
+          },
+          "scores": {
+            "type": "object",
+            "properties": {
+              "severity": { "type": "integer", "minimum": 1, "maximum": 5 },
+              "risk_radius_m": { "type": "integer" }
+            }
+          },
+          "tags": { "type": "array", "items": { "type": "string" } }
+        }
+      }
+    }
+  },
+  "required": ["generated_utc", "incidents"]
+}

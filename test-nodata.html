@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>NO DATA Test</title>
+    <style>
+        body { font-family: Arial, sans-serif; background: #0f1115; color: #eef2ff; padding: 20px; }
+        .no-data {
+            text-align: center;
+            padding: 60px 20px;
+            background: #0f1322;
+            border: 2px solid #2a2f45;
+            border-radius: 12px;
+            margin: 20px 0;
+        }
+        .no-data h1 {
+            font-size: 32px;
+            font-weight: 900;
+            color: #eef2ff;
+            margin-bottom: 16px;
+            letter-spacing: 2px;
+        }
+        .description {
+            color: #8a90a2;
+            line-height: 1.5;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <h2>Testing NO DATA Display</h2>
+
+    <div class="no-data">
+        <h1>NO DATA</h1>
+        <div class="description">
+            No incidents match the current filters.<br />
+            Try expanding the time window or enabling more status options.
+        </div>
+    </div>
+
+    <p>This should look similar to what appears in the main application.</p>
+
+    <script>
+        console.log('Test page loaded');
+
+        // Simulate the same test that the main app does
+        const incidents = []; // Empty like our current data
+        console.log('Testing with', incidents.length, 'incidents');
+
+        if (!incidents.length) {
+            console.log('This would show NO DATA message');
+            document.body.style.border = '3px solid red';
+            document.title = 'NO DATA DETECTED';
+        }
+    </script>
+</body>
+</html>
