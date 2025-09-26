@@ -1750,55 +1750,54 @@
       window.state = state;
       window.droneState = state;
       console.log('State assigned to window:', !!window.state, !!window.droneState);
-    }
 
-    // URL state management for shareable links
-    function saveStateToURL() {
-      const params = new URLSearchParams();
+      // URL state management for shareable links
+      function saveStateToURL() {
+        const params = new URLSearchParams();
 
-      // Time window
-      params.set('days', document.getElementById('dateRange').value);
+        // Time window
+        params.set('days', document.getElementById('dateRange').value);
 
-      // Asset layers
-      if (document.getElementById('layer-airport').checked) params.append('layers', 'airport');
-      if (document.getElementById('layer-harbour').checked) params.append('layers', 'harbour');
-      if (document.getElementById('layer-energy').checked) params.append('layers', 'energy');
-      if (document.getElementById('layer-rail').checked) params.append('layers', 'rail');
-      if (document.getElementById('layer-border').checked) params.append('layers', 'border');
-      if (document.getElementById('layer-military').checked) params.append('layers', 'military');
+        // Asset layers
+        if (document.getElementById('layer-airport').checked) params.append('layers', 'airport');
+        if (document.getElementById('layer-harbour').checked) params.append('layers', 'harbour');
+        if (document.getElementById('layer-energy').checked) params.append('layers', 'energy');
+        if (document.getElementById('layer-rail').checked) params.append('layers', 'rail');
+        if (document.getElementById('layer-border').checked) params.append('layers', 'border');
+        if (document.getElementById('layer-military').checked) params.append('layers', 'military');
 
-      // Status filters
-      const statusOptions = Array.from(document.getElementById('statusSelect').selectedOptions);
-      statusOptions.forEach(opt => params.append('status', opt.value));
+        // Status filters
+        const statusOptions = Array.from(document.getElementById('statusSelect').selectedOptions);
+        statusOptions.forEach(opt => params.append('status', opt.value));
 
-      // Evidence filters
-      const evidenceOptions = Array.from(document.getElementById('evidenceSelect').selectedOptions);
-      evidenceOptions.forEach(opt => params.append('evidence', opt.value));
+        // Evidence filters
+        const evidenceOptions = Array.from(document.getElementById('evidenceSelect').selectedOptions);
+        evidenceOptions.forEach(opt => params.append('evidence', opt.value));
 
-      // Search term
-      const searchTerm = document.getElementById('searchBox').value.trim();
-      if (searchTerm) params.set('search', searchTerm);
+        // Search term
+        const searchTerm = document.getElementById('searchBox').value.trim();
+        if (searchTerm) params.set('search', searchTerm);
 
-      // Risk rings
-      if (state.showRiskRings) params.set('risks', '1');
+        // Risk rings
+        if (state.showRiskRings) params.set('risks', '1');
 
-      // Compare mode
-      if (state.compareMode) params.set('compare', '1');
+        // Compare mode
+        if (state.compareMode) params.set('compare', '1');
 
-      // Auto-focus (only save if disabled, since it's enabled by default)
-      if (!state.autoFocusEnabled) params.set('noautofocus', '1');
+        // Auto-focus (only save if disabled, since it's enabled by default)
+        if (!state.autoFocusEnabled) params.set('noautofocus', '1');
 
-      // Map view
-      const center = map.getCenter();
-      const zoom = map.getZoom();
-      params.set('lat', center.lat.toFixed(4));
-      params.set('lng', center.lng.toFixed(4));
-      params.set('zoom', zoom);
+        // Map view
+        const center = map.getCenter();
+        const zoom = map.getZoom();
+        params.set('lat', center.lat.toFixed(4));
+        params.set('lng', center.lng.toFixed(4));
+        params.set('zoom', zoom);
 
-      // Update URL without reload
-      const newUrl = window.location.pathname + '?' + params.toString();
-      window.history.replaceState({}, '', newUrl);
-    }
+        // Update URL without reload
+        const newUrl = window.location.pathname + '?' + params.toString();
+        window.history.replaceState({}, '', newUrl);
+      }
 
     function loadStateFromURL() {
       const params = new URLSearchParams(window.location.search);
