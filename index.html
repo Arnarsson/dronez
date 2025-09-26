@@ -1226,9 +1226,9 @@
         z-index: 100 !important;
       }
 
-      /* Show modern mobile navigation */
+      /* Show modern mobile navigation ONLY on mobile */
       .mobile-nav {
-        display: block;
+        display: block !important;
       }
 
       .fab {
@@ -2141,16 +2141,24 @@
         flex-direction: column;
         overflow: hidden;
         min-height: 0;
+        bottom: 0 !important; /* No bottom spacing on tablets */
+        height: 100% !important;
       }
 
       .panels-container {
         display: none !important; /* Hide panels on tablet/mobile - access via mobile UI */
       }
 
+      /* Ensure mobile nav is hidden on tablets */
+      .mobile-nav {
+        display: none !important;
+      }
+
       #map-container {
         flex: 1;
         min-height: 400px;
         position: relative;
+        height: 100%;
       }
 
       #map {
