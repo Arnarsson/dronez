@@ -262,6 +262,62 @@
       box-shadow: 0 0 20px var(--success-light);
     }
 
+    /* Share button styling */
+    .share-btn {
+      display: flex;
+      align-items: center;
+      gap: var(--space-2);
+      padding: var(--space-2) var(--space-4);
+      background: var(--accent);
+      color: white;
+      border: none;
+      border-radius: 9999px;
+      font-size: var(--font-size-sm);
+      font-weight: var(--font-weight-semibold);
+      cursor: pointer;
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+      min-height: 44px;
+      white-space: nowrap;
+    }
+
+    .share-btn:hover {
+      background: var(--accent-hover);
+      transform: translateY(-1px);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .share-btn:active {
+      transform: translateY(0);
+    }
+
+    .share-btn svg {
+      width: 16px;
+      height: 16px;
+      flex-shrink: 0;
+    }
+
+    .header-title-europe {
+      opacity: 0.8;
+      font-weight: var(--font-weight-medium);
+    }
+
+    @media (max-width: 480px) {
+      .header-title-europe {
+        display: none;
+      }
+
+      .share-text {
+        display: none;
+      }
+
+      .share-btn {
+        padding: var(--space-2);
+        min-width: 44px;
+        min-height: 44px;
+        justify-content: center;
+      }
+    }
+
 
     /* Main content area */
     .main-container {
@@ -834,23 +890,23 @@
       bottom: 0;
       left: 0;
       right: 0;
-      background: var(--glass-panel);
+      background: var(--panel);
       backdrop-filter: blur(20px);
       -webkit-backdrop-filter: blur(20px);
-      border-top: 1px solid var(--border-light);
-      padding: var(--space-2) var(--space-4);
+      border-top: 1px solid var(--border);
+      padding: var(--space-1) var(--space-2);
       display: none; /* Hidden by default, shown on mobile */
       z-index: 999;
-      box-shadow: var(--shadow-lg);
+      box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.3);
       /* Safe area handling for iOS */
-      padding-bottom: calc(var(--space-2) + env(safe-area-inset-bottom));
+      padding-bottom: calc(var(--space-1) + env(safe-area-inset-bottom));
     }
 
     .mobile-nav-items {
       display: flex;
       justify-content: space-around;
       align-items: center;
-      max-width: 400px;
+      max-width: 100%;
       margin: 0 auto;
     }
 
@@ -858,34 +914,56 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: var(--space-1);
-      padding: var(--space-2);
-      color: var(--text-secondary);
+      gap: 2px;
+      padding: var(--space-2) var(--space-3);
+      color: var(--text-muted);
       text-decoration: none;
-      border-radius: var(--space-2);
+      border-radius: 12px;
       transition: all 0.2s ease;
-      min-width: 44px;
-      min-height: 44px;
+      min-width: 60px;
+      min-height: 50px;
       justify-content: center;
+      flex: 1;
+      position: relative;
+    }
+
+    .mobile-nav-item::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 24px;
+      height: 3px;
+      background: var(--accent);
+      border-radius: 2px;
+      opacity: 0;
+      transition: opacity 0.2s ease;
     }
 
     .mobile-nav-item.active {
       color: var(--accent);
-      background: var(--accent-light);
+      background: rgba(59, 130, 246, 0.1);
     }
 
-    .mobile-nav-item:hover {
-      color: var(--text);
-      background: var(--glass-surface);
+    .mobile-nav-item.active::before {
+      opacity: 1;
+    }
+
+    .mobile-nav-item:active {
+      transform: scale(0.95);
     }
 
     .mobile-nav-icon {
-      font-size: var(--font-size-lg);
+      font-size: 20px;
+      line-height: 1;
     }
 
     .mobile-nav-label {
-      font-size: var(--font-size-xs);
-      font-weight: var(--font-weight-medium);
+      font-size: 10px;
+      font-weight: var(--font-weight-semibold);
+      line-height: 1;
+      margin-top: 2px;
     }
 
     /* Swipe Gestures Support */
@@ -970,6 +1048,88 @@
     }
 
     /* Mobile panel overlay */
+    /* Mobile-specific header fixes */
+    @media (max-width: 767px) {
+      header {
+        padding: var(--space-3) var(--space-3);
+        gap: var(--space-2);
+      }
+
+      .header-top {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
+        gap: var(--space-2);
+      }
+
+      header h1 {
+        font-size: var(--font-size-lg);
+        line-height: 1.2;
+        flex: 1;
+        min-width: 0;
+        display: flex;
+        align-items: center;
+        gap: var(--space-1);
+      }
+
+      /* Hide emoji on very small screens */
+      @media (max-width: 375px) {
+        header h1::before {
+          content: '';
+        }
+      }
+
+      /* Ensure share button stays visible and properly sized */
+      .share-btn {
+        flex-shrink: 0;
+      }
+
+      .header-badges {
+        display: flex;
+        gap: var(--space-1);
+        width: 100%;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        padding-bottom: var(--space-1);
+        scrollbar-width: none;
+      }
+
+      .header-badges::-webkit-scrollbar {
+        display: none;
+      }
+
+      /* Mobile badge sizing */
+      .header-badges .badge {
+        padding: var(--space-1) var(--space-2);
+        font-size: 11px;
+        min-height: 28px;
+        flex-shrink: 0;
+        gap: var(--space-1);
+      }
+
+      /* Special mobile badge adjustments */
+      .badge.live {
+        animation: pulse 2s infinite;
+      }
+
+      @keyframes pulse {
+        0%, 100% {
+          opacity: 1;
+        }
+        50% {
+          opacity: 0.8;
+        }
+      }
+
+      /* Hide less important badges on mobile */
+      @media (max-width: 375px) {
+        #badge-generated {
+          display: none !important;
+        }
+      }
+    }
+
     /* Mobile-First Modern UX - 2025 */
     @media (max-width: 767px) {
       /* AGGRESSIVE FIX: Force map to display on mobile */
@@ -985,13 +1145,13 @@
       /* Override everything for mobile */
       .main-container {
         position: fixed !important;
-        top: 160px !important; /* After header and stats dashboard */
+        top: 120px !important; /* After compact header */
         left: 0 !important;
         right: 0 !important;
-        bottom: 60px !important; /* Before bottom nav */
+        bottom: 56px !important; /* Before bottom nav */
         display: block !important;
         width: 100% !important;
-        height: calc(100vh - 140px) !important; /* Full height minus header (80px) and bottom nav (60px) */
+        height: calc(100vh - 176px) !important; /* Full height minus header and nav */
       }
 
       #map-container {
@@ -1654,38 +1814,48 @@
     /* Mobile adjustments for stats dashboard */
     @media (max-width: 767px) {
       .stats-dashboard {
-        padding: var(--space-2);
-        position: sticky;
-        top: 80px;
+        padding: var(--space-2) var(--space-2);
+        position: relative;
         z-index: 90;
         background: var(--panel);
+        border-bottom: 1px solid var(--border);
+        display: none; /* Hide stats on mobile for now - takes too much space */
       }
 
       .stats-container {
         gap: var(--space-2);
         overflow-x: auto;
         padding-bottom: var(--space-1);
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+      }
+
+      .stats-container::-webkit-scrollbar {
+        display: none;
       }
 
       .stat-card {
-        min-width: 100px;
+        min-width: 90px;
         padding: var(--space-2);
+        background: var(--surface);
+        border: 1px solid var(--border);
       }
 
       .stat-value {
-        font-size: var(--font-size-xl);
+        font-size: var(--font-size-lg);
       }
 
       .stat-label {
-        font-size: 10px;
+        font-size: 9px;
+        letter-spacing: 0;
       }
 
       .stat-change {
-        font-size: var(--font-size-xs);
+        font-size: 10px;
       }
 
       .stat-trend {
-        min-width: 120px;
+        min-width: 100px;
       }
     }
 
@@ -1979,8 +2149,15 @@
   <div id="app" role="application" aria-label="Drone Sightings interactive map">
     <header>
       <div class="header-top">
-        <h1>🛡️ DroneWatch Europe</h1>
-        <button class="badge" id="btn-share" style="background: var(--accent); color: #fff; border: none;">🔗 Share</button>
+        <h1>🛡️ <span class="header-title-text">DroneWatch</span> <span class="header-title-europe">Europe</span></h1>
+        <button class="share-btn" id="btn-share">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"></path>
+            <polyline points="16 6 12 2 8 6"></polyline>
+            <line x1="12" y1="2" x2="12" y2="15"></line>
+          </svg>
+          <span class="share-text">Share</span>
+        </button>
       </div>
       <div class="header-badges">
         <span class="badge live" style="background: linear-gradient(135deg, var(--success) 0%, #059669 100%); color: white;">🔴 LIVE</span>
