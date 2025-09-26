@@ -1,7 +1,7 @@
 // Real-time Monitoring Module
 // Integrates with FlightRadar24, MarineTraffic, social media, and NOTAM/NAVTEX
 
-import fetch from 'node-fetch';
+import fetch from '../utils/fetch.js';
 import WebSocket from 'ws';
 import { EventEmitter } from 'events';
 

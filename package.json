@@ -25,9 +25,7 @@
   "dependencies": {
     "@tensorflow/tfjs": "^4.22.0",
     "@tensorflow/tfjs-node": "^4.22.0",
-    "data-uri-to-buffer": "^6.0.2",
     "node-cron": "^3.0.3",
-    "node-fetch": "^3.3.2",
     "playwright": "^1.55.1",
     "xml2js": "^0.6.2"
   },

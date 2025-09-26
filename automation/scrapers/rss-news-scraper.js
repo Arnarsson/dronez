@@ -1,4 +1,4 @@
-import fetch from 'node-fetch';
+import fetch from '../utils/fetch.js';
 import { parseStringPromise } from 'xml2js';
 import { europeanInfrastructure } from '../data/european-infrastructure.js';
 import { europeanNewsSources } from '../data/european-news-sources.js';
