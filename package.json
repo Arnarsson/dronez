@@ -34,5 +34,8 @@
     "europe",
     "security",
     "aviation"
-  ]
+  ],
+  "devDependencies": {
+    "@playwright/test": "^1.55.1"
+  }
 }
