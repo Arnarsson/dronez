@@ -21,6 +21,43 @@ export class RSSNewsScraper {
       'The Local Denmark': 'https://www.thelocal.dk/rss/',
       'The Local Germany': 'https://www.thelocal.de/rss/',
       'The Local Sweden': 'https://www.thelocal.se/rss/',
+      'The Local Norway': 'https://www.thelocal.no/rss/',
+      'The Local France': 'https://www.thelocal.fr/rss/',
+      'The Local Italy': 'https://www.thelocal.it/rss/',
+      'The Local Spain': 'https://www.thelocal.es/rss/',
+      'The Local Netherlands': 'https://www.thelocal.nl/rss/',
+
+      // Danish National News Sources
+      'DR News Denmark': 'https://www.dr.dk/nyheder/service/feeds/allenyheder',
+      'TV2 Denmark': 'https://feeds.tv2.dk/nyheder/rss',
+      'Berlingske': 'https://www.berlingske.dk/content/rss',
+      'Jyllands-Posten': 'https://jyllands-posten.dk/service/rss',
+      'Politiken': 'https://politiken.dk/rss/',
+      'Information.dk': 'https://www.information.dk/feed',
+
+      // Swedish National News
+      'SVT Sweden': 'https://www.svt.se/nyheter/rss.xml',
+      'Aftonbladet': 'https://rss.aftonbladet.se/rss2/small/pages/sections/senastenytt/',
+      'Dagens Nyheter': 'https://www.dn.se/rss/',
+
+      // Norwegian National News
+      'NRK Norway': 'https://www.nrk.no/toppsaker.rss',
+      'VG Norway': 'https://www.vg.no/rss/feed',
+      'Aftenposten': 'https://www.aftenposten.no/rss',
+
+      // German National News
+      'Der Spiegel': 'https://www.spiegel.de/schlagzeilen/tops/index.rss',
+      'Die Zeit': 'https://newsfeed.zeit.de/index',
+      'FAZ': 'https://www.faz.net/rss/aktuell/',
+
+      // Dutch National News
+      'NOS Netherlands': 'https://feeds.nos.nl/nosnieuwsalgemeen',
+      'NRC': 'https://www.nrc.nl/rss/',
+      'Telegraaf': 'https://www.telegraaf.nl/rss/',
+
+      // Finnish National News
+      'YLE Finland': 'https://feeds.yle.fi/uutiset/v1/recent.rss?publisherIds=YLE_UUTISET',
+      'Helsingin Sanomat': 'https://www.hs.fi/rss/tuoreimmat.xml',
 
       // Aviation-Specific Sources
       'Aviation Week': 'https://aviationweek.com/rss.xml',
@@ -44,7 +81,9 @@ export class RSSNewsScraper {
       'airport', 'airfield', 'airspace', 'runway', 'flight', 'aviation',
       'closed', 'closure', 'shutdown', 'disruption', 'suspended', 'grounded',
       'security', 'threat', 'incident', 'breach', 'violation', 'unauthorized',
-      'sighting', 'spotted', 'detected', 'intercepted', 'emergency'
+      'sighting', 'spotted', 'detected', 'intercepted', 'emergency',
+      'harbor', 'harbour', 'port', 'seaport', 'naval', 'maritime',
+      'military', 'base', 'defense', 'defence', 'infrastructure'
     ];
 
     this.europeanAirports = {
@@ -71,7 +110,25 @@ export class RSSNewsScraper {
       'zagreb': { icao: 'LDZA', iata: 'ZAG', name: 'Zagreb Airport', country: 'Croatia' },
       'tallinn': { icao: 'EETN', iata: 'TLL', name: 'Tallinn Airport', country: 'Estonia' },
       'riga': { icao: 'EVRA', iata: 'RIX', name: 'Riga Airport', country: 'Latvia' },
-      'vilnius': { icao: 'EYVI', iata: 'VNO', name: 'Vilnius Airport', country: 'Lithuania' }
+      'vilnius': { icao: 'EYVI', iata: 'VNO', name: 'Vilnius Airport', country: 'Lithuania' },
+
+      // Additional Danish airports
+      'aalborg': { icao: 'EKYT', iata: 'AAL', name: 'Aalborg Airport', country: 'Denmark' },
+      'billund': { icao: 'EKBI', iata: 'BLL', name: 'Billund Airport', country: 'Denmark' },
+      'skrydstrup': { icao: 'EKSP', iata: 'SKS', name: 'Skrydstrup Air Base', country: 'Denmark' },
+      'roskilde': { icao: 'EKRK', iata: 'RKE', name: 'Roskilde Airport', country: 'Denmark' },
+      'odense': { icao: 'EKOD', iata: 'ODE', name: 'Odense Airport', country: 'Denmark' },
+      'aarhus': { icao: 'EKAH', iata: 'AAR', name: 'Aarhus Airport', country: 'Denmark' },
+
+      // Swedish additional airports
+      'gothenburg': { icao: 'ESGG', iata: 'GOT', name: 'Gothenburg Airport', country: 'Sweden' },
+      'malmo': { icao: 'ESMS', iata: 'MMX', name: 'Malmö Airport', country: 'Sweden' },
+      'bromma': { icao: 'ESSB', iata: 'BMA', name: 'Stockholm Bromma Airport', country: 'Sweden' },
+
+      // Norwegian additional airports
+      'bergen': { icao: 'ENBR', iata: 'BGO', name: 'Bergen Airport', country: 'Norway' },
+      'trondheim': { icao: 'ENVA', iata: 'TRD', name: 'Trondheim Airport', country: 'Norway' },
+      'stavanger': { icao: 'ENZV', iata: 'SVG', name: 'Stavanger Airport', country: 'Norway' }
     };
   }
 
@@ -173,17 +230,33 @@ export class RSSNewsScraper {
       const hasIncidentKeyword = this.incidentKeywords.some(keyword => text.includes(keyword));
       if (!hasIncidentKeyword) return false;
 
-      // VALIDATION: Exclude articles that are clearly not about drone incidents
+      // VALIDATION: Exclude simulations, exercises, and unrelated content
       const excludeKeywords = [
+        'simulation', 'exercise', 'drill', 'training', 'test', 'testing',
+        'hypothetical', 'scenario', 'demonstration', 'demo', 'mock',
         'sarkozy', 'libya', 'trial', 'verdict', 'prison', 'guilty',
         'election', 'politics', 'parliament', 'minister',
         'movie', 'film', 'entertainment', 'celebrity',
-        'stock', 'market', 'trading', 'finance'
+        'stock', 'market', 'trading', 'finance',
+        'review', 'preview', 'opinion', 'analysis', 'could', 'would', 'should'
       ];
 
       const hasExcludedContent = excludeKeywords.some(keyword => text.includes(keyword));
-      if (hasExcludedContent && !text.includes('drone incident')) {
-        console.log(`⚠️ Excluding unrelated article: ${article.title.substring(0, 60)}...`);
+      if (hasExcludedContent && !text.includes('real incident') && !text.includes('actual incident')) {
+        console.log(`⚠️ Excluding simulation/unrelated article: ${article.title.substring(0, 60)}...`);
+        return false;
+      }
+
+      // VALIDATION: Ensure it's about REAL incidents
+      const realIncidentIndicators = [
+        'reported', 'spotted', 'detected', 'sighted', 'caused', 'forced',
+        'closed', 'suspended', 'investigated', 'responded', 'intercepted',
+        'authorities', 'police', 'security'
+      ];
+
+      const hasRealIndicator = realIncidentIndicators.some(keyword => text.includes(keyword));
+      if (!hasRealIndicator) {
+        console.log(`⚠️ No real incident indicators found: ${article.title.substring(0, 60)}...`);
         return false;
       }
 
