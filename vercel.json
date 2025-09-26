@@ -1,5 +1,10 @@
 {
   "framework": null,
-  "buildCommand": "",
-  "outputDirectory": "."
+  "buildCommand": "npm ci && npm run build-assets && npm run build",
+  "outputDirectory": "dist",
+  "functions": {
+    "api/**/*.js": {
+      "runtime": "nodejs20.x"
+    }
+  }
 }
