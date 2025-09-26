@@ -1707,15 +1707,21 @@
         console.log('Map size invalidated again');
       }, 500);
 
-      console.log('About to create satellite layer');
-      const satellite = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
-        attribution: 'Basemap © Esri — Sources: Esri, i-cubed, USDA, USGS, AeroGRID, IGN, IGP'
-      }).addTo(map);
-      const streets = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '© OpenStreetMap contributors'
-      });
-      L.control.layers({ 'Satellite': satellite, 'Streets': streets }, null, { collapsed: true }).addTo(map);
+      try {
+        console.log('About to create satellite layer');
+        const satellite = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+          attribution: 'Basemap © Esri — Sources: Esri, i-cubed, USDA, USGS, AeroGRID, IGN, IGP'
+        }).addTo(map);
+        const streets = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+          attribution: '© OpenStreetMap contributors'
+        });
+        L.control.layers({ 'Satellite': satellite, 'Streets': streets }, null, { collapsed: true }).addTo(map);
+        console.log('Layers created successfully');
+      } catch (error) {
+        console.error('Error creating layers:', error);
+      }
 
+      console.log('Creating cluster groups');
       const clusterGroups = {
         airport: L.markerClusterGroup({ disableClusteringAtZoom: 10 }),
         harbour: L.markerClusterGroup({ disableClusteringAtZoom: 10 }),
@@ -1725,6 +1731,7 @@
         military: L.markerClusterGroup({ disableClusteringAtZoom: 8 })
       };
       Object.values(clusterGroups).forEach(group => map.addLayer(group));
+      console.log('Cluster groups created');
 
       // Risk rings layer group
       const riskRings = L.layerGroup().addTo(map);
