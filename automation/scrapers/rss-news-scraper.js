@@ -1,80 +1,31 @@
 import fetch from 'node-fetch';
 import { parseStringPromise } from 'xml2js';
+import { europeanInfrastructure } from '../data/european-infrastructure.js';
+import { europeanNewsSources } from '../data/european-news-sources.js';
+import { criticalInfrastructure } from '../data/critical-infrastructure.js';
 
 export class RSSNewsScraper {
   constructor() {
-    this.rssSources = {
-      // Major International News
-      'CNN': 'http://rss.cnn.com/rss/edition.rss',
-      'BBC World': 'http://feeds.bbci.co.uk/news/world/rss.xml',
-      'BBC Europe': 'http://feeds.bbci.co.uk/news/world/europe/rss.xml',
-      'Reuters': 'https://www.reuters.com/rssfeed/worldNews',
-      'Al Jazeera': 'https://www.aljazeera.com/xml/rss/all.xml',
-      'AP News': 'https://feeds.apnews.com/rss/apf-topnews',
-      'The Guardian': 'https://www.theguardian.com/world/rss',
+    this.rssSources = europeanNewsSources;
 
-      // European News Sources
-      'Deutsche Welle': 'https://rss.dw.com/xml/rss-en-all',
-      'France24': 'https://www.france24.com/en/rss',
-      'Euronews': 'https://feeds.feedburner.com/euronews/en/news',
-      'POLITICO Europe': 'https://www.politico.eu/feed/',
-      'The Local Denmark': 'https://www.thelocal.dk/rss/',
-      'The Local Germany': 'https://www.thelocal.de/rss/',
-      'The Local Sweden': 'https://www.thelocal.se/rss/',
-      'The Local Norway': 'https://www.thelocal.no/rss/',
-      'The Local France': 'https://www.thelocal.fr/rss/',
-      'The Local Italy': 'https://www.thelocal.it/rss/',
-      'The Local Spain': 'https://www.thelocal.es/rss/',
-      'The Local Netherlands': 'https://www.thelocal.nl/rss/',
-
-      // Danish National News Sources
-      'DR News Denmark': 'https://www.dr.dk/nyheder/service/feeds/allenyheder',
-      'TV2 Denmark': 'https://feeds.tv2.dk/nyheder/rss',
-      'Berlingske': 'https://www.berlingske.dk/content/rss',
-      'Jyllands-Posten': 'https://jyllands-posten.dk/service/rss',
-      'Politiken': 'https://politiken.dk/rss/',
-      'Information.dk': 'https://www.information.dk/feed',
-
-      // Swedish National News
-      'SVT Sweden': 'https://www.svt.se/nyheter/rss.xml',
-      'Aftonbladet': 'https://rss.aftonbladet.se/rss2/small/pages/sections/senastenytt/',
-      'Dagens Nyheter': 'https://www.dn.se/rss/',
-
-      // Norwegian National News
-      'NRK Norway': 'https://www.nrk.no/toppsaker.rss',
-      'VG Norway': 'https://www.vg.no/rss/feed',
-      'Aftenposten': 'https://www.aftenposten.no/rss',
-
-      // German National News
-      'Der Spiegel': 'https://www.spiegel.de/schlagzeilen/tops/index.rss',
-      'Die Zeit': 'https://newsfeed.zeit.de/index',
-      'FAZ': 'https://www.faz.net/rss/aktuell/',
-
-      // Dutch National News
-      'NOS Netherlands': 'https://feeds.nos.nl/nosnieuwsalgemeen',
-      'NRC': 'https://www.nrc.nl/rss/',
-      'Telegraaf': 'https://www.telegraaf.nl/rss/',
-
-      // Finnish National News
-      'YLE Finland': 'https://feeds.yle.fi/uutiset/v1/recent.rss?publisherIds=YLE_UUTISET',
-      'Helsingin Sanomat': 'https://www.hs.fi/rss/tuoreimmat.xml',
-
-      // Aviation-Specific Sources
-      'Aviation Week': 'https://aviationweek.com/rss.xml',
-      'Flight Global': 'https://www.flightglobal.com/rss/articles',
-      'Air Transport World': 'https://atwonline.com/rss.xml',
-      'Aviation International News': 'https://www.ainonline.com/rss.xml',
-
-      // Security/Defense Sources
-      'Defense News': 'https://www.defensenews.com/arc/outboundfeeds/rss/category/global/?outputType=xml',
-      'Jane\'s Defence': 'https://www.janes.com/feeds/all',
-      'Security Affairs': 'https://securityaffairs.co/wordpress/feed'
+    // Combine all infrastructure
+    this.allAssets = {
+      ...europeanInfrastructure.airports,
+      ...europeanInfrastructure.harbors,
+      ...europeanInfrastructure.militaryBases,
+      ...europeanInfrastructure.energyInfrastructure,
+      ...criticalInfrastructure.transportHubs,
+      ...criticalInfrastructure.governmentFacilities,
+      ...criticalInfrastructure.telecomInfrastructure,
+      ...criticalInfrastructure.financialCenters,
+      ...criticalInfrastructure.researchFacilities
     };
 
     // Keywords for drone incident detection
     this.droneKeywords = [
       'drone', 'drones', 'UAV', 'UAS', 'unmanned aircraft', 'unmanned aerial',
-      'quadcopter', 'multirotor', 'RPAS', 'remotely piloted'
+      'quadcopter', 'multirotor', 'RPAS', 'remotely piloted', 'unmanned system',
+      'aerial vehicle', 'flying object'
     ];
 
     this.incidentKeywords = [
@@ -82,131 +33,116 @@ export class RSSNewsScraper {
       'closed', 'closure', 'shutdown', 'disruption', 'suspended', 'grounded',
       'security', 'threat', 'incident', 'breach', 'violation', 'unauthorized',
       'sighting', 'spotted', 'detected', 'intercepted', 'emergency',
-      'harbor', 'harbour', 'port', 'seaport', 'naval', 'maritime',
-      'military', 'base', 'defense', 'defence', 'infrastructure'
+      'harbor', 'harbour', 'port', 'seaport', 'naval', 'maritime', 'vessel',
+      'military', 'base', 'defense', 'defence', 'infrastructure',
+      'power plant', 'nuclear', 'energy', 'LNG', 'terminal',
+      'airbase', 'air force', 'navy', 'army', 'NATO'
     ];
 
-    this.europeanAirports = {
-      // Major European airports with ICAO codes
-      'copenhagen': { icao: 'EKCH', iata: 'CPH', name: 'Copenhagen Airport', country: 'Denmark' },
-      'schiphol': { icao: 'EHAM', iata: 'AMS', name: 'Amsterdam Schiphol Airport', country: 'Netherlands' },
-      'frankfurt': { icao: 'EDDF', iata: 'FRA', name: 'Frankfurt Airport', country: 'Germany' },
-      'heathrow': { icao: 'EGLL', iata: 'LHR', name: 'London Heathrow Airport', country: 'United Kingdom' },
-      'charles de gaulle': { icao: 'LFPG', iata: 'CDG', name: 'Paris Charles de Gaulle Airport', country: 'France' },
-      'barajas': { icao: 'LEMD', iata: 'MAD', name: 'Madrid Barajas Airport', country: 'Spain' },
-      'fiumicino': { icao: 'LIRF', iata: 'FCO', name: 'Rome Fiumicino Airport', country: 'Italy' },
-      'munich': { icao: 'EDDM', iata: 'MUC', name: 'Munich Airport', country: 'Germany' },
-      'zurich': { icao: 'LSZH', iata: 'ZUR', name: 'Zurich Airport', country: 'Switzerland' },
-      'vienna': { icao: 'LOWW', iata: 'VIE', name: 'Vienna Airport', country: 'Austria' },
-      'brussels': { icao: 'EBBR', iata: 'BRU', name: 'Brussels Airport', country: 'Belgium' },
-      'oslo': { icao: 'ENGM', iata: 'OSL', name: 'Oslo Airport', country: 'Norway' },
-      'stockholm': { icao: 'ESSA', iata: 'ARN', name: 'Stockholm Arlanda Airport', country: 'Sweden' },
-      'helsinki': { icao: 'EFHK', iata: 'HEL', name: 'Helsinki Airport', country: 'Finland' },
-      'warsaw': { icao: 'EPWA', iata: 'WAW', name: 'Warsaw Chopin Airport', country: 'Poland' },
-      'prague': { icao: 'LKPR', iata: 'PRG', name: 'Prague Airport', country: 'Czech Republic' },
-      'budapest': { icao: 'LHBP', iata: 'BUD', name: 'Budapest Airport', country: 'Hungary' },
-      'bucharest': { icao: 'LROP', iata: 'OTP', name: 'Bucharest Airport', country: 'Romania' },
-      'sofia': { icao: 'LBSF', iata: 'SOF', name: 'Sofia Airport', country: 'Bulgaria' },
-      'zagreb': { icao: 'LDZA', iata: 'ZAG', name: 'Zagreb Airport', country: 'Croatia' },
-      'tallinn': { icao: 'EETN', iata: 'TLL', name: 'Tallinn Airport', country: 'Estonia' },
-      'riga': { icao: 'EVRA', iata: 'RIX', name: 'Riga Airport', country: 'Latvia' },
-      'vilnius': { icao: 'EYVI', iata: 'VNO', name: 'Vilnius Airport', country: 'Lithuania' },
+    // Enhanced exclusion for simulations
+    this.simulationKeywords = [
+      'simulation', 'simulated', 'exercise', 'drill', 'training', 'test', 'testing',
+      'hypothetical', 'scenario', 'demonstration', 'demo', 'mock', 'practice',
+      'rehearsal', 'war game', 'wargame', 'tabletop', 'planned', 'scheduled',
+      'routine', 'annual', 'quarterly', 'monthly', 'preparedness', 'readiness',
+      'capability', 'assessment', 'evaluation', 'certification'
+    ];
 
-      // Additional Danish airports
-      'aalborg': { icao: 'EKYT', iata: 'AAL', name: 'Aalborg Airport', country: 'Denmark' },
-      'billund': { icao: 'EKBI', iata: 'BLL', name: 'Billund Airport', country: 'Denmark' },
-      'skrydstrup': { icao: 'EKSP', iata: 'SKS', name: 'Skrydstrup Air Base', country: 'Denmark' },
-      'roskilde': { icao: 'EKRK', iata: 'RKE', name: 'Roskilde Airport', country: 'Denmark' },
-      'odense': { icao: 'EKOD', iata: 'ODE', name: 'Odense Airport', country: 'Denmark' },
-      'aarhus': { icao: 'EKAH', iata: 'AAR', name: 'Aarhus Airport', country: 'Denmark' },
+    // Real incident indicators
+    this.realIncidentIndicators = [
+      'reported', 'spotted', 'detected', 'sighted', 'caused', 'forced',
+      'closed', 'suspended', 'investigated', 'responded', 'intercepted',
+      'authorities', 'police', 'security', 'military', 'emergency',
+      'confirmed', 'witnessed', 'observed', 'disrupted', 'halted',
+      'evacuated', 'diverted', 'delayed', 'grounded', 'scrambled',
+      'arrested', 'detained', 'shot down', 'neutralized'
+    ];
 
-      // Swedish additional airports
-      'gothenburg': { icao: 'ESGG', iata: 'GOT', name: 'Gothenburg Airport', country: 'Sweden' },
-      'malmo': { icao: 'ESMS', iata: 'MMX', name: 'Malmö Airport', country: 'Sweden' },
-      'bromma': { icao: 'ESSB', iata: 'BMA', name: 'Stockholm Bromma Airport', country: 'Sweden' },
+    // Credibility scoring for sources
+    this.sourceCredibility = {
+      // National broadcasters - highest credibility
+      'BBC': 5, 'CNN': 5, 'Reuters': 5, 'AP News': 5, 'Bloomberg': 5,
+      'RTE': 5, 'RAI News': 5, 'RTVE': 5, 'ARD': 5, 'France24': 5,
+      'NOS Netherlands': 5, 'ERR Estonia': 5, 'YLE Finland': 5,
 
-      // Norwegian additional airports
-      'bergen': { icao: 'ENBR', iata: 'BGO', name: 'Bergen Airport', country: 'Norway' },
-      'trondheim': { icao: 'ENVA', iata: 'TRD', name: 'Trondheim Airport', country: 'Norway' },
-      'stavanger': { icao: 'ENZV', iata: 'SVG', name: 'Stavanger Airport', country: 'Norway' }
-    };
+      // Major newspapers - high credibility
+      'The Guardian': 4, 'Financial Times': 4, 'The Times': 4,
+      'Le Monde': 4, 'El País': 4, 'Corriere della Sera': 4,
+      'Der Spiegel': 4, 'Die Zeit': 4, 'NRC': 4,
 
-    // Major European harbors and ports
-    this.europeanHarbors = {
-      // Danish Harbors
-      'copenhagen harbor': { lat: 55.6761, lon: 12.5683, name: 'Port of Copenhagen', country: 'Denmark' },
-      'aarhus harbor': { lat: 56.1572, lon: 10.2107, name: 'Port of Aarhus', country: 'Denmark' },
-      'frederikshavn': { lat: 57.4407, lon: 10.5366, name: 'Port of Frederikshavn', country: 'Denmark' },
-      'esbjerg': { lat: 55.4670, lon: 8.4520, name: 'Port of Esbjerg', country: 'Denmark' },
-      'aalborg harbor': { lat: 57.0488, lon: 9.9217, name: 'Port of Aalborg', country: 'Denmark' },
-      'odense harbor': { lat: 55.4038, lon: 10.3711, name: 'Port of Odense', country: 'Denmark' },
-      'helsingor': { lat: 56.0361, lon: 12.6139, name: 'Port of Helsing\u00f8r', country: 'Denmark' },
-      'ronne': { lat: 55.0983, lon: 14.7024, name: 'Port of R\u00f8nne (Bornholm)', country: 'Denmark' },
+      // Aviation/Defense specific - very high for relevant news
+      'Aviation Herald': 5, 'Defense News': 5, 'Jane\'s Defence': 5,
+      'FlightGlobal': 5, 'NATO News': 5,
 
-      // Swedish Harbors
-      'gothenburg harbor': { lat: 57.7089, lon: 11.9746, name: 'Port of Gothenburg', country: 'Sweden' },
-      'stockholm harbor': { lat: 59.3293, lon: 18.0686, name: 'Port of Stockholm', country: 'Sweden' },
-      'malmo harbor': { lat: 55.6050, lon: 13.0002, name: 'Port of Malm\u00f6', country: 'Sweden' },
-      'helsingborg': { lat: 56.0465, lon: 12.6945, name: 'Port of Helsingborg', country: 'Sweden' },
+      // Regional/Local - medium credibility
+      'The Local': 3, 'Regional': 3,
 
-      // Norwegian Harbors
-      'oslo harbor': { lat: 59.9065, lon: 10.7577, name: 'Port of Oslo', country: 'Norway' },
-      'bergen harbor': { lat: 60.3913, lon: 5.3221, name: 'Port of Bergen', country: 'Norway' },
-      'stavanger harbor': { lat: 58.9700, lon: 5.7331, name: 'Port of Stavanger', country: 'Norway' },
-      'trondheim harbor': { lat: 63.4305, lon: 10.3951, name: 'Port of Trondheim', country: 'Norway' },
-
-      // German Harbors
-      'hamburg': { lat: 53.5511, lon: 9.9937, name: 'Port of Hamburg', country: 'Germany' },
-      'bremerhaven': { lat: 53.5396, lon: 8.5809, name: 'Port of Bremerhaven', country: 'Germany' },
-      'rostock': { lat: 54.0834, lon: 12.1004, name: 'Port of Rostock', country: 'Germany' },
-      'kiel': { lat: 54.3213, lon: 10.1394, name: 'Port of Kiel', country: 'Germany' },
-
-      // Dutch Harbors
-      'rotterdam': { lat: 51.9244, lon: 4.4777, name: 'Port of Rotterdam', country: 'Netherlands' },
-      'amsterdam harbor': { lat: 52.3702, lon: 4.8952, name: 'Port of Amsterdam', country: 'Netherlands' },
-
-      // Finnish Harbors
-      'helsinki harbor': { lat: 60.1699, lon: 24.9384, name: 'Port of Helsinki', country: 'Finland' },
-      'turku': { lat: 60.4518, lon: 22.2666, name: 'Port of Turku', country: 'Finland' }
+      // Default credibility
+      'default': 3
     };
   }
 
   async scrapeIncidents(daysBack = 7) {
-    console.log(`🗞️ RSSNewsScraper: Collecting REAL incidents from ${Object.keys(this.rssSources).length} news sources`);
+    console.log(`🗞️ Enhanced RSS Scraper: Collecting REAL incidents from ${Object.keys(this.rssSources).length} news sources`);
+    console.log(`📍 Monitoring ${Object.keys(this.allAssets).length} assets across Europe`);
 
     const incidents = [];
     const cutoffDate = new Date(Date.now() - daysBack * 24 * 60 * 60 * 1000);
+    const processedUrls = new Set(); // Avoid duplicate articles
 
-    for (const [sourceName, rssUrl] of Object.entries(this.rssSources)) {
-      try {
-        console.log(`📡 Scraping ${sourceName}...`);
-        const articles = await this.fetchRSSFeed(rssUrl, sourceName);
+    // Process sources in batches for better performance
+    const batchSize = 10;
+    const sourceEntries = Object.entries(this.rssSources);
 
-        // Filter articles for drone incidents
-        const droneArticles = this.filterDroneIncidents(articles, cutoffDate);
+    for (let i = 0; i < sourceEntries.length; i += batchSize) {
+      const batch = sourceEntries.slice(i, i + batchSize);
 
-        // Convert articles to incident objects
-        const sourceIncidents = await this.processArticles(droneArticles, sourceName);
-        incidents.push(...sourceIncidents);
+      const batchPromises = batch.map(async ([sourceName, rssUrl]) => {
+        try {
+          console.log(`📡 Scraping ${sourceName}...`);
+          const articles = await this.fetchRSSFeed(rssUrl, sourceName);
 
-        // Rate limiting - be respectful
-        await this.sleep(1000);
+          // Filter for drone incidents
+          const droneArticles = this.filterDroneIncidents(articles, cutoffDate);
 
-      } catch (error) {
-        console.error(`❌ Error scraping ${sourceName}:`, error.message);
+          // Validate against simulations
+          const realIncidents = droneArticles.filter(article => {
+            if (!article.link || processedUrls.has(article.link)) return false;
+            processedUrls.add(article.link);
+            return this.validateRealIncident(article);
+          });
+
+          // Convert to incident objects
+          const sourceIncidents = await this.processArticles(realIncidents, sourceName);
+          return sourceIncidents;
+        } catch (error) {
+          console.error(`❌ Error scraping ${sourceName}:`, error.message);
+          return [];
+        }
+      });
+
+      const batchResults = await Promise.all(batchPromises);
+      batchResults.forEach(results => incidents.push(...results));
+
+      // Rate limiting
+      if (i + batchSize < sourceEntries.length) {
+        await this.sleep(500); // Shorter delay between batches
       }
     }
 
-    console.log(`📊 RSSNewsScraper: Found ${incidents.length} REAL incidents from news sources`);
-    return incidents;
+    // De-duplicate and merge similar incidents
+    const mergedIncidents = this.mergeIncidents(incidents);
+
+    console.log(`📊 Enhanced Scraper: Found ${mergedIncidents.length} unique REAL incidents from ${incidents.length} total reports`);
+    return mergedIncidents;
   }
 
   async fetchRSSFeed(url, sourceName) {
     try {
       const response = await fetch(url, {
         headers: {
-          'User-Agent': 'DroneWatch-Europe/1.0 (Security Research)',
-          'Accept': 'application/rss+xml, application/xml, text/xml'
+          'User-Agent': 'DroneWatch-Europe/2.0 (Security Monitoring)',
+          'Accept': 'application/rss+xml, application/xml, text/xml, */*'
         },
         timeout: 10000
       });
@@ -221,14 +157,15 @@ export class RSSNewsScraper {
       // Handle different RSS formats
       const items = parsedFeed?.rss?.channel?.[0]?.item ||
                    parsedFeed?.feed?.entry ||
+                   parsedFeed?.rdf?.item ||
                    [];
 
       return items.map(item => ({
         title: this.extractText(item.title),
-        description: this.extractText(item.description || item.summary),
-        link: this.extractText(item.link || item.id),
-        pubDate: this.extractDate(item.pubDate || item.published),
-        guid: this.extractText(item.guid),
+        description: this.extractText(item.description || item.summary || item.content),
+        link: this.extractLink(item),
+        pubDate: this.extractDate(item.pubDate || item.published || item.date || item.updated),
+        guid: this.extractText(item.guid || item.id),
         source: sourceName
       }));
 
@@ -238,12 +175,27 @@ export class RSSNewsScraper {
     }
   }
 
+  extractLink(item) {
+    if (!item) return '';
+    if (typeof item.link === 'string') return item.link;
+    if (Array.isArray(item.link)) {
+      const link = item.link[0];
+      if (typeof link === 'string') return link;
+      if (link.$ && link.$.href) return link.$.href;
+      if (link._) return link._;
+    }
+    if (item.link && item.link.$) return item.link.$.href || '';
+    if (item.guid && typeof item.guid === 'string' && item.guid.startsWith('http')) return item.guid;
+    return '';
+  }
+
   extractText(field) {
     if (!field) return '';
     if (typeof field === 'string') return field;
-    if (Array.isArray(field)) return field[0] || '';
+    if (Array.isArray(field)) return this.extractText(field[0]);
     if (field._) return field._;
     if (field.$?.href) return field.$.href;
+    if (field.$ && field.$.type === 'html') return field._ || '';
     return String(field);
   }
 
@@ -262,58 +214,74 @@ export class RSSNewsScraper {
       const text = (article.title + ' ' + article.description).toLowerCase();
 
       // Must contain drone keywords
-      const hasDroneKeyword = this.droneKeywords.some(keyword => text.includes(keyword));
+      const hasDroneKeyword = this.droneKeywords.some(keyword =>
+        text.includes(keyword.toLowerCase())
+      );
       if (!hasDroneKeyword) return false;
 
       // Must contain incident keywords
-      const hasIncidentKeyword = this.incidentKeywords.some(keyword => text.includes(keyword));
+      const hasIncidentKeyword = this.incidentKeywords.some(keyword =>
+        text.includes(keyword.toLowerCase())
+      );
       if (!hasIncidentKeyword) return false;
-
-      // VALIDATION: Exclude simulations, exercises, and unrelated content
-      const excludeKeywords = [
-        'simulation', 'exercise', 'drill', 'training', 'test', 'testing',
-        'hypothetical', 'scenario', 'demonstration', 'demo', 'mock',
-        'sarkozy', 'libya', 'trial', 'verdict', 'prison', 'guilty',
-        'election', 'politics', 'parliament', 'minister',
-        'movie', 'film', 'entertainment', 'celebrity',
-        'stock', 'market', 'trading', 'finance',
-        'review', 'preview', 'opinion', 'analysis', 'could', 'would', 'should'
-      ];
-
-      const hasExcludedContent = excludeKeywords.some(keyword => text.includes(keyword));
-      if (hasExcludedContent && !text.includes('real incident') && !text.includes('actual incident')) {
-        console.log(`⚠️ Excluding simulation/unrelated article: ${article.title.substring(0, 60)}...`);
-        return false;
-      }
-
-      // VALIDATION: Ensure it's about REAL incidents
-      const realIncidentIndicators = [
-        'reported', 'spotted', 'detected', 'sighted', 'caused', 'forced',
-        'closed', 'suspended', 'investigated', 'responded', 'intercepted',
-        'authorities', 'police', 'security'
-      ];
-
-      const hasRealIndicator = realIncidentIndicators.some(keyword => text.includes(keyword));
-      if (!hasRealIndicator) {
-        console.log(`⚠️ No real incident indicators found: ${article.title.substring(0, 60)}...`);
-        return false;
-      }
-
-      // VALIDATION: Must have both drone AND location in close proximity
-      const droneIndex = text.search(/drone|uav|unmanned/);
-      const locationIndex = text.search(/airport|port|harbour|airfield|runway/);
-
-      if (droneIndex !== -1 && locationIndex !== -1) {
-        const distance = Math.abs(droneIndex - locationIndex);
-        // Words should be within ~200 characters of each other for relevance
-        if (distance > 200) {
-          console.log(`⚠️ Drone and location too far apart in text: ${article.title.substring(0, 60)}...`);
-          return false;
-        }
-      }
 
       return true;
     });
+  }
+
+  validateRealIncident(article) {
+    const text = (article.title + ' ' + article.description).toLowerCase();
+
+    // Check for simulation keywords
+    const isSimulation = this.simulationKeywords.some(keyword =>
+      text.includes(keyword.toLowerCase())
+    );
+
+    // If it contains simulation keywords, check if it's explicitly marked as real
+    if (isSimulation) {
+      const explicitlyReal = text.includes('real incident') ||
+                            text.includes('actual incident') ||
+                            text.includes('not a drill') ||
+                            text.includes('not an exercise');
+
+      if (!explicitlyReal) {
+        console.log(`⚠️ Excluding simulation/exercise: ${article.title.substring(0, 60)}...`);
+        return false;
+      }
+    }
+
+    // Must have real incident indicators
+    const hasRealIndicator = this.realIncidentIndicators.some(keyword =>
+      text.includes(keyword.toLowerCase())
+    );
+
+    if (!hasRealIndicator) {
+      console.log(`⚠️ No real incident indicators found: ${article.title.substring(0, 60)}...`);
+      return false;
+    }
+
+    // Additional validation: Check for future dates (scheduled exercises)
+    const futureIndicators = ['will be', 'to be held', 'scheduled for', 'planning to',
+                             'next week', 'next month', 'upcoming', 'future'];
+    const isFuture = futureIndicators.some(indicator => text.includes(indicator));
+
+    if (isFuture && !text.includes('was scheduled')) {
+      console.log(`⚠️ Excluding future/planned event: ${article.title.substring(0, 60)}...`);
+      return false;
+    }
+
+    // Check for press release about capabilities/products
+    const isPR = ['unveils', 'announces', 'launches', 'introduces', 'presents',
+                  'showcases', 'demonstrates new', 'reveals'].some(keyword =>
+      text.includes(keyword)
+    );
+
+    if (isPR && !text.includes('incident')) {
+      console.log(`⚠️ Excluding product announcement: ${article.title.substring(0, 60)}...`);
+      return false;
+    }
+
+    return true;
   }
 
   async processArticles(articles, sourceName) {
@@ -322,11 +290,9 @@ export class RSSNewsScraper {
     for (const article of articles) {
       try {
         const incident = await this.createIncidentFromArticle(article, sourceName);
-        if (incident) {
-          incidents.push(incident);
-        }
+        if (incident) incidents.push(incident);
       } catch (error) {
-        console.error('Error processing article:', error.message);
+        console.error(`Error processing article: ${error.message}`);
       }
     }
 
@@ -338,56 +304,63 @@ export class RSSNewsScraper {
 
     // Extract location information
     const location = this.extractLocationInfo(text);
-    if (!location) return null; // Skip if no location found
+    if (!location) return null;
 
     // Generate incident ID
     const incidentId = this.generateIncidentId(article, location);
 
     // Determine incident category and severity
     const category = this.categorizeIncident(text);
-    const severity = this.assessSeverity(text, category);
+    const severity = this.assessSeverity(text, category, location);
+
+    // Calculate credibility
+    const credibility = this.sourceCredibility[sourceName] || this.sourceCredibility['default'];
 
     const incident = {
       id: incidentId,
       first_seen_utc: article.pubDate.toISOString(),
       last_update_utc: article.pubDate.toISOString(),
       asset: {
-        type: location.type || 'airport',
+        type: location.type || 'unknown',
         name: location.name,
-        iata: location.iata,
-        icao: location.icao,
+        iata: location.iata || null,
+        icao: location.icao || null,
         lat: location.lat || 0,
-        lon: location.lon || 0
+        lon: location.lon || 0,
+        country: location.country || 'Unknown'
       },
       incident: {
         category: category,
-        status: 'resolved', // News articles typically report resolved incidents
+        status: this.determineStatus(text),
         duration_min: this.estimateDuration(text),
         uav_count: this.estimateUAVCount(text),
         uav_characteristics: this.extractUAVCharacteristics(text),
         response: this.extractResponseTeams(text),
-        narrative: this.createNarrative(article.title, location.name)
+        narrative: this.createNarrative(article.title, location.name, text)
       },
       evidence: {
-        strength: 2, // News articles are typically "suspected" level
-        attribution: 'suspected',
+        strength: Math.min(3, Math.floor(credibility / 2)),
+        attribution: this.determineAttribution(text),
         sources: [{
           url: article.link,
           publisher: sourceName,
           title: article.title,
-          snippet: article.description?.substring(0, 200) + '...',
+          snippet: (article.description || '').substring(0, 300) + '...',
           first_seen: article.pubDate.toISOString(),
-          note: 'Real news article'
+          credibility: credibility,
+          note: 'Real news article - validated'
         }]
       },
       scores: {
         severity: severity,
-        risk_radius_m: severity * 1500
+        risk_radius_m: this.calculateRiskRadius(severity, location.type),
+        credibility: credibility
       },
       tags: this.generateTags(text, category, location),
-      keywords_matched: this.extractKeywords(text),
-      data_type: 'real', // Mark as real data
+      keywords_matched: this.extractMatchedKeywords(text),
+      data_type: 'real',
       source_type: 'news',
+      validation_status: 'verified',
       collection_timestamp: new Date().toISOString()
     };
 
@@ -396,146 +369,176 @@ export class RSSNewsScraper {
 
   extractLocationInfo(text) {
     const lowerText = text.toLowerCase();
+    let bestMatch = null;
+    let bestScore = 0;
 
-    // Check harbors first if text explicitly mentions "port", "harbor", or "harbour"
-    if (lowerText.includes('port of') || lowerText.includes('harbor') || lowerText.includes('harbour')) {
-      for (const [keyword, harbor] of Object.entries(this.europeanHarbors)) {
-        if (lowerText.includes(keyword) ||
-            lowerText.includes(harbor.name?.toLowerCase()) ||
-            (lowerText.includes('port') && lowerText.includes(keyword.split(' ')[0])) ||
-            (lowerText.includes('harbor') && lowerText.includes(keyword.split(' ')[0])) ||
-            (lowerText.includes('harbour') && lowerText.includes(keyword.split(' ')[0]))) {
-          return {
-            ...harbor,
-            type: 'harbour',
-            icao: null,
-            iata: null
-          };
-        }
+    // Search through all assets
+    for (const [key, asset] of Object.entries(this.allAssets)) {
+      let score = 0;
+
+      // Check for name match
+      if (asset.name && lowerText.includes(asset.name.toLowerCase())) {
+        score += 10;
+      }
+
+      // Check for IATA/ICAO codes (for airports)
+      if (asset.iata && lowerText.includes(asset.iata.toLowerCase())) {
+        score += 8;
+      }
+      if (asset.icao && text.includes(asset.icao)) {
+        score += 8;
+      }
+
+      // Check for city name (derived from key)
+      const cityName = key.replace(/_/g, ' ').replace(/\d+/g, '').trim();
+      if (lowerText.includes(cityName)) {
+        score += 5;
+      }
+
+      // Check for country mention
+      if (asset.country && lowerText.includes(asset.country.toLowerCase())) {
+        score += 2;
+      }
+
+      // Type-specific checks
+      if (asset.type === 'nuclear' && lowerText.includes('nuclear')) {
+        score += 3;
+      }
+      if (asset.type === 'lng' && (lowerText.includes('lng') || lowerText.includes('gas terminal'))) {
+        score += 3;
+      }
+      if ((key.includes('harbor') || key.includes('port')) &&
+          (lowerText.includes('port') || lowerText.includes('harbor') || lowerText.includes('harbour'))) {
+        score += 3;
+      }
+
+      if (score > bestScore) {
+        bestScore = score;
+        bestMatch = { ...asset, matchScore: score };
       }
     }
 
-    // Try to match known airports
-    for (const [keyword, airport] of Object.entries(this.europeanAirports)) {
-      if (lowerText.includes(keyword) ||
-          lowerText.includes(airport.iata?.toLowerCase()) ||
-          lowerText.includes(airport.icao?.toLowerCase()) ||
-          lowerText.includes(airport.name?.toLowerCase())) {
-        return {
-          ...airport,
-          type: 'airport',
-          lat: this.getAirportCoordinates(airport.icao).lat,
-          lon: this.getAirportCoordinates(airport.icao).lon
-        };
-      }
-    }
-
-    // Try to extract ICAO codes
-    const icaoMatch = text.match(/\b([A-Z]{4})\b/g);
-    if (icaoMatch) {
-      for (const icao of icaoMatch) {
-        const airport = Object.values(this.europeanAirports).find(a => a.icao === icao);
-        if (airport) {
-          return {
-            ...airport,
-            type: 'airport',
-            lat: this.getAirportCoordinates(icao).lat,
-            lon: this.getAirportCoordinates(icao).lon
-          };
-        }
-      }
-    }
-
-    return null; // No location found
-  }
-
-  getAirportCoordinates(icao) {
-    const coordinates = {
-      'EKCH': { lat: 55.6181, lon: 12.6561 }, // Copenhagen
-      'EHAM': { lat: 52.3086, lon: 4.7639 },  // Amsterdam
-      'EDDF': { lat: 50.0264, lon: 8.5431 },  // Frankfurt
-      'EGLL': { lat: 51.4700, lon: -0.4543 }, // Heathrow
-      'LFPG': { lat: 49.0097, lon: 2.5479 },  // Paris CDG
-      'LEMD': { lat: 40.4719, lon: -3.5626 }, // Madrid
-      'LIRF': { lat: 41.8003, lon: 12.2389 }, // Rome
-      'EDDM': { lat: 48.3538, lon: 11.7861 }, // Munich
-      'LSZH': { lat: 47.4647, lon: 8.5492 },  // Zurich
-      'LOWW': { lat: 48.1103, lon: 16.5697 }, // Vienna
-      'ENGM': { lat: 60.1939, lon: 11.1004 }, // Oslo
-      'ESSA': { lat: 59.6519, lon: 17.9186 }, // Stockholm
-      'EFHK': { lat: 60.3172, lon: 24.9633 }, // Helsinki
-      'EPWA': { lat: 52.1657, lon: 20.9671 }, // Warsaw
-      'LKPR': { lat: 50.1008, lon: 14.2632 }, // Prague
-      'LHBP': { lat: 47.4299, lon: 19.2611 }, // Budapest
-      'EETN': { lat: 59.4133, lon: 24.8328 }, // Tallinn
-      // Danish airports
-      'EKYT': { lat: 57.0927, lon: 9.8492 },  // Aalborg
-      'EKBI': { lat: 55.7404, lon: 9.1518 },  // Billund
-      'EKSP': { lat: 55.2206, lon: 9.2639 },  // Skrydstrup
-      'EKRK': { lat: 55.5856, lon: 12.1314 }, // Roskilde
-      'EKOD': { lat: 55.4764, lon: 10.3306 }, // Odense
-      'EKAH': { lat: 56.3000, lon: 10.6192 }, // Aarhus
-      // Swedish airports
-      'ESGG': { lat: 57.6628, lon: 12.2798 }, // Gothenburg
-      'ESMS': { lat: 55.5363, lon: 13.3762 }, // Malmo
-      'ESSB': { lat: 59.3544, lon: 17.9416 }, // Bromma
-      // Norwegian airports
-      'ENBR': { lat: 60.2934, lon: 5.2181 },  // Bergen
-      'ENVA': { lat: 63.4578, lon: 10.9239 }, // Trondheim
-      'ENZV': { lat: 58.8767, lon: 5.6378 }   // Stavanger
-    };
-
-    return coordinates[icao] || { lat: 0, lon: 0 };
+    // Require minimum score for match
+    return bestScore >= 5 ? bestMatch : null;
   }
 
   categorizeIncident(text) {
     const lowerText = text.toLowerCase();
 
-    if (lowerText.includes('closed') || lowerText.includes('shutdown') || lowerText.includes('suspended')) {
+    if (lowerText.includes('closed') || lowerText.includes('shutdown') ||
+        lowerText.includes('suspended') || lowerText.includes('halted')) {
       return 'closure';
-    } else if (lowerText.includes('disruption') || lowerText.includes('delay')) {
+    } else if (lowerText.includes('disruption') || lowerText.includes('delay') ||
+               lowerText.includes('diverted')) {
       return 'disruption';
-    } else if (lowerText.includes('breach') || lowerText.includes('violation') || lowerText.includes('unauthorized')) {
+    } else if (lowerText.includes('breach') || lowerText.includes('violation') ||
+               lowerText.includes('unauthorized') || lowerText.includes('intrusion')) {
       return 'breach';
+    } else if (lowerText.includes('threat') || lowerText.includes('hostile') ||
+               lowerText.includes('attack')) {
+      return 'threat';
     } else {
       return 'sighting';
     }
   }
 
-  assessSeverity(text, category) {
+  determineStatus(text) {
+    const lowerText = text.toLowerCase();
+
+    if (lowerText.includes('resolved') || lowerText.includes('reopened') ||
+        lowerText.includes('resumed') || lowerText.includes('cleared')) {
+      return 'resolved';
+    } else if (lowerText.includes('ongoing') || lowerText.includes('continuing') ||
+               lowerText.includes('active')) {
+      return 'active';
+    } else {
+      return 'resolved'; // Default for past incidents
+    }
+  }
+
+  determineAttribution(text) {
+    const lowerText = text.toLowerCase();
+
+    if (lowerText.includes('claimed responsibility') || lowerText.includes('took credit')) {
+      return 'claimed';
+    } else if (lowerText.includes('suspected') || lowerText.includes('believed to be') ||
+               lowerText.includes('attributed to')) {
+      return 'suspected';
+    } else {
+      return 'none';
+    }
+  }
+
+  assessSeverity(text, category, location) {
     const lowerText = text.toLowerCase();
     let severity = 3; // Base severity
 
+    // Category-based severity
     if (category === 'closure') severity += 3;
+    if (category === 'breach') severity += 2;
+    if (category === 'threat') severity += 2;
+    if (category === 'disruption') severity += 1;
+
+    // Location type severity modifiers
+    if (location.type === 'nuclear') severity += 3;
+    if (location.type === 'military' || location.type?.includes('USAF') || location.type?.includes('NATO')) severity += 2;
+    if (location.type === 'lng') severity += 2;
+    if (location.type === 'airport' && location.name?.includes('International')) severity += 1;
+
+    // Incident characteristics
     if (lowerText.includes('emergency')) severity += 2;
-    if (lowerText.includes('military') || lowerText.includes('fighter')) severity += 2;
-    if (lowerText.includes('multiple')) severity += 1;
+    if (lowerText.includes('evacuat')) severity += 2;
+    if (lowerText.includes('military') || lowerText.includes('fighter') || lowerText.includes('scrambl')) severity += 2;
+    if (lowerText.includes('multiple') || lowerText.includes('swarm')) severity += 1;
+    if (lowerText.includes('shot down') || lowerText.includes('neutraliz')) severity += 1;
+    if (lowerText.includes('arrest') || lowerText.includes('detain')) severity += 1;
 
     return Math.min(10, severity);
+  }
+
+  calculateRiskRadius(severity, assetType) {
+    let baseRadius = severity * 1000;
+
+    // Adjust based on asset type
+    if (assetType === 'nuclear') baseRadius *= 3;
+    if (assetType === 'military') baseRadius *= 2;
+    if (assetType === 'airport') baseRadius *= 1.5;
+    if (assetType === 'lng') baseRadius *= 2;
+    if (assetType === 'harbour') baseRadius *= 1.2;
+
+    return Math.min(50000, baseRadius); // Cap at 50km
   }
 
   estimateDuration(text) {
     const lowerText = text.toLowerCase();
 
-    if (lowerText.includes('hour')) {
-      const hourMatch = text.match(/(\d+)\s*hour/i);
-      return hourMatch ? parseInt(hourMatch[1]) * 60 : 120;
-    } else if (lowerText.includes('minute')) {
-      const minMatch = text.match(/(\d+)\s*minute/i);
-      return minMatch ? parseInt(minMatch[1]) : 30;
-    }
+    // Look for specific duration mentions
+    const hourMatch = text.match(/(\d+)\s*hour/i);
+    if (hourMatch) return parseInt(hourMatch[1]) * 60;
 
-    return Math.floor(Math.random() * 120) + 15; // 15-135 minutes
+    const minuteMatch = text.match(/(\d+)\s*minute/i);
+    if (minuteMatch) return parseInt(minuteMatch[1]);
+
+    // Estimate based on incident type
+    if (lowerText.includes('brief')) return 30;
+    if (lowerText.includes('closed')) return 120;
+    if (lowerText.includes('suspended')) return 90;
+    if (lowerText.includes('disrupted')) return 60;
+
+    return 60; // Default 1 hour
   }
 
   estimateUAVCount(text) {
     const lowerText = text.toLowerCase();
 
+    const match = text.match(/(\d+)\s*(drone|uav)/i);
+    if (match) return parseInt(match[1]);
+
     if (lowerText.includes('multiple') || lowerText.includes('several')) return 3;
+    if (lowerText.includes('swarm')) return 5;
     if (lowerText.includes('two') || lowerText.includes('pair')) return 2;
 
-    const numberMatch = text.match(/(\d+)\s*(drone|uav)/i);
-    return numberMatch ? parseInt(numberMatch[1]) : 1;
+    return 1;
   }
 
   extractUAVCharacteristics(text) {
@@ -544,11 +547,14 @@ export class RSSNewsScraper {
 
     if (lowerText.includes('large')) characteristics.push('large');
     if (lowerText.includes('small')) characteristics.push('small');
-    if (lowerText.includes('commercial')) characteristics.push('commercial-grade');
-    if (lowerText.includes('military')) characteristics.push('military-style');
-    if (lowerText.includes('lights')) characteristics.push('with lights');
+    if (lowerText.includes('commercial')) characteristics.push('commercial');
+    if (lowerText.includes('military-grade')) characteristics.push('military-grade');
+    if (lowerText.includes('fixed-wing')) characteristics.push('fixed-wing');
+    if (lowerText.includes('quadcopter') || lowerText.includes('multirotor')) characteristics.push('multirotor');
+    if (lowerText.includes('light')) characteristics.push('lights visible');
+    if (lowerText.includes('silent') || lowerText.includes('quiet')) characteristics.push('low noise');
 
-    return characteristics.length > 0 ? characteristics.join(', ') : 'unidentified drone';
+    return characteristics.join(', ') || 'unidentified drone';
   }
 
   extractResponseTeams(text) {
@@ -556,77 +562,152 @@ export class RSSNewsScraper {
     const lowerText = text.toLowerCase();
 
     if (lowerText.includes('police')) teams.push('police');
-    if (lowerText.includes('military') || lowerText.includes('air force')) teams.push('military');
+    if (lowerText.includes('military')) teams.push('military');
+    if (lowerText.includes('air force')) teams.push('air force');
+    if (lowerText.includes('navy')) teams.push('navy');
+    if (lowerText.includes('coast guard')) teams.push('coast guard');
     if (lowerText.includes('security')) teams.push('security');
-    if (lowerText.includes('atc') || lowerText.includes('air traffic')) teams.push('ATC');
+    if (lowerText.includes('emergency')) teams.push('emergency services');
+    if (lowerText.includes('fighter') || lowerText.includes('scrambl')) teams.push('fighter jets');
+    if (lowerText.includes('air traffic') || lowerText.includes('atc')) teams.push('ATC');
 
     return teams.length > 0 ? teams : ['security'];
   }
 
-  createNarrative(title, locationName) {
-    // Clean up the title and create a proper narrative
-    const cleanTitle = title.replace(/['"]/g, '').replace(/\s+/g, ' ').trim();
+  createNarrative(title, locationName, fullText) {
+    const lowerText = fullText.toLowerCase();
 
-    // Extract only drone-related content from title
-    const droneMatch = cleanTitle.match(/.*?(drone|uav|unmanned aerial).*?(?:at|near|over|around|closed|disrupted|spotted|detected).*?/i);
+    // Extract key action from text
+    let action = 'reported';
+    if (lowerText.includes('closed')) action = 'forced closure';
+    if (lowerText.includes('suspended')) action = 'suspended operations';
+    if (lowerText.includes('disrupted')) action = 'disrupted';
+    if (lowerText.includes('intercepted')) action = 'intercepted';
+    if (lowerText.includes('shot down')) action = 'neutralized';
 
-    if (droneMatch) {
-      return `${droneMatch[0]} at ${locationName}.`;
+    // Extract outcome
+    let outcome = '';
+    if (lowerText.includes('resolved')) outcome = ' Incident has been resolved.';
+    if (lowerText.includes('ongoing')) outcome = ' Situation ongoing.';
+    if (lowerText.includes('investigation')) outcome = ' Under investigation.';
+
+    // Build narrative
+    const cleanTitle = title.replace(/\s+/g, ' ').trim();
+    if (cleanTitle.length < 120) {
+      return cleanTitle + outcome;
     }
 
-    // Fallback: Create a generic but accurate narrative
-    if (cleanTitle.toLowerCase().includes('closure') || cleanTitle.toLowerCase().includes('closed')) {
-      return `Drone activity caused temporary closure at ${locationName}. Operations resumed after security assessment.`;
-    } else if (cleanTitle.toLowerCase().includes('sighting') || cleanTitle.toLowerCase().includes('spotted')) {
-      return `Drone sighting reported near ${locationName}. Security protocols activated as precaution.`;
-    } else {
-      return `Drone incident reported at ${locationName}. Authorities responded and situation resolved.`;
-    }
+    return `Drone incident ${action} at ${locationName}.${outcome}`;
   }
 
   generateTags(text, category, location) {
-    const tags = [category, location.country.toLowerCase().replace(' ', '-'), 'real-news'];
+    const tags = [];
     const lowerText = text.toLowerCase();
 
-    if (lowerText.includes('night')) tags.push('night-time');
+    // Category tag
+    tags.push(category);
+
+    // Location type tag
+    if (location.type) tags.push(location.type);
+
+    // Country tag
+    if (location.country) tags.push(location.country.toLowerCase().replace(/ /g, '-'));
+
+    // Time of day
+    if (lowerText.includes('night') || lowerText.includes('evening')) tags.push('night');
+    if (lowerText.includes('morning')) tags.push('morning');
+    if (lowerText.includes('afternoon')) tags.push('afternoon');
+
+    // Severity indicators
     if (lowerText.includes('emergency')) tags.push('emergency');
     if (lowerText.includes('military')) tags.push('military-response');
-    if (location.type) tags.push(location.type);
+
+    // Verification status
+    tags.push('real-incident');
+    tags.push('verified');
 
     return tags;
   }
 
-  extractKeywords(text) {
-    const keywords = [];
+  extractMatchedKeywords(text) {
+    const matched = [];
     const lowerText = text.toLowerCase();
 
     this.droneKeywords.forEach(keyword => {
-      if (lowerText.includes(keyword)) keywords.push(keyword);
+      if (lowerText.includes(keyword.toLowerCase())) {
+        matched.push(keyword);
+      }
     });
 
-    this.incidentKeywords.forEach(keyword => {
-      if (lowerText.includes(keyword)) keywords.push(keyword);
-    });
-
-    return keywords;
+    // Limit to 10 most relevant
+    return matched.slice(0, 10);
   }
 
   generateIncidentId(article, location) {
-    const date = article.pubDate.toISOString().split('T')[0];
-    const locationCode = location.icao || location.iata || 'unknown';
-    const hash = this.simpleHash(article.title + article.link);
-
-    return `rss-${locationCode.toLowerCase()}-${date}-${hash}`;
+    const date = article.pubDate.toISOString().slice(0, 10);
+    const locationCode = location.icao || location.iata || location.name.substring(0, 4).toUpperCase();
+    const hash = this.hashCode(article.link || article.title);
+    return `rss-${locationCode}-${date}-${hash}`.toLowerCase();
   }
 
-  simpleHash(str) {
+  hashCode(str) {
     let hash = 0;
     for (let i = 0; i < str.length; i++) {
       const char = str.charCodeAt(i);
       hash = ((hash << 5) - hash) + char;
-      hash = hash & hash;
+      hash = hash & hash; // Convert to 32-bit integer
     }
     return Math.abs(hash).toString(36).substring(0, 6);
+  }
+
+  mergeIncidents(incidents) {
+    const incidentMap = new Map();
+
+    incidents.forEach(incident => {
+      const key = `${incident.asset.name}-${incident.incident.category}-${incident.first_seen_utc.slice(0, 10)}`;
+
+      if (incidentMap.has(key)) {
+        const existing = incidentMap.get(key);
+
+        // Merge sources
+        incident.evidence.sources.forEach(source => {
+          const isDuplicate = existing.evidence.sources.some(s =>
+            s.url === source.url || s.title === source.title
+          );
+          if (!isDuplicate) {
+            existing.evidence.sources.push(source);
+          }
+        });
+
+        // Update credibility if higher
+        if (incident.scores.credibility > existing.scores.credibility) {
+          existing.scores.credibility = incident.scores.credibility;
+          existing.evidence.strength = incident.evidence.strength;
+        }
+
+        // Update severity if higher
+        if (incident.scores.severity > existing.scores.severity) {
+          existing.scores.severity = incident.scores.severity;
+          existing.scores.risk_radius_m = incident.scores.risk_radius_m;
+        }
+
+        // Merge tags
+        incident.tags.forEach(tag => {
+          if (!existing.tags.includes(tag)) {
+            existing.tags.push(tag);
+          }
+        });
+
+        // Update last seen time
+        if (incident.last_update_utc > existing.last_update_utc) {
+          existing.last_update_utc = incident.last_update_utc;
+        }
+      } else {
+        incidentMap.set(key, incident);
+      }
+    });
+
+    return Array.from(incidentMap.values());
   }
 
   sleep(ms) {

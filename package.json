@@ -18,6 +18,8 @@
     "collect": "npm run automation && npm run build"
   },
   "dependencies": {
+    "@tensorflow/tfjs": "^4.22.0",
+    "@tensorflow/tfjs-node": "^4.22.0",
     "data-uri-to-buffer": "^6.0.2",
     "node-cron": "^3.0.3",
     "node-fetch": "^3.3.2",
