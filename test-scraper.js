@@ -27,9 +27,9 @@ async function testScraper() {
     console.log('');
   });
 
-  console.log('\nNumber of news sources configured:', Object.keys(scraper.rssSources).length);
-  console.log('Number of airports configured:', Object.keys(scraper.europeanAirports).length);
-  console.log('Number of harbors configured:', Object.keys(scraper.europeanHarbors).length);
+  console.log('\nNumber of news sources configured:', scraper.rssSources ? Object.keys(scraper.rssSources).length : 0);
+  console.log('Number of airports configured:', scraper.europeanAirports ? Object.keys(scraper.europeanAirports).length : 0);
+  console.log('Number of harbors configured:', scraper.europeanHarbors ? Object.keys(scraper.europeanHarbors).length : 0);
 }
 
 testScraper().catch(console.error);

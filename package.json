@@ -15,7 +15,12 @@
     "automation:test": "node automation/index.js test",
     "automation:audit": "node automation/index.js audit",
     "automation:status": "node automation/index.js status",
-    "collect": "npm run automation && npm run build"
+    "collect": "npm run automation && npm run build",
+    "test": "npm run test:scraper && npm run test:enhanced && npm run test:final && npm run test:playwright && npm run automation:test",
+    "test:scraper": "node test-scraper.js",
+    "test:enhanced": "node test-enhanced-scraper.js",
+    "test:final": "node test-final-coverage.js",
+    "test:playwright": "npx playwright test"
   },
   "dependencies": {
     "@tensorflow/tfjs": "^4.22.0",
