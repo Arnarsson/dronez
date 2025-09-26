@@ -21,6 +21,43 @@ export class RSSNewsScraper {
       'The Local Denmark': 'https://www.thelocal.dk/rss/',
       'The Local Germany': 'https://www.thelocal.de/rss/',
       'The Local Sweden': 'https://www.thelocal.se/rss/',
+      'The Local Norway': 'https://www.thelocal.no/rss/',
+      'The Local France': 'https://www.thelocal.fr/rss/',
+      'The Local Italy': 'https://www.thelocal.it/rss/',
+      'The Local Spain': 'https://www.thelocal.es/rss/',
+      'The Local Netherlands': 'https://www.thelocal.nl/rss/',
+
+      // Danish National News Sources
+      'DR News Denmark': 'https://www.dr.dk/nyheder/service/feeds/allenyheder',
+      'TV2 Denmark': 'https://feeds.tv2.dk/nyheder/rss',
+      'Berlingske': 'https://www.berlingske.dk/content/rss',
+      'Jyllands-Posten': 'https://jyllands-posten.dk/service/rss',
+      'Politiken': 'https://politiken.dk/rss/',
+      'Information.dk': 'https://www.information.dk/feed',
+
+      // Swedish National News
+      'SVT Sweden': 'https://www.svt.se/nyheter/rss.xml',
+      'Aftonbladet': 'https://rss.aftonbladet.se/rss2/small/pages/sections/senastenytt/',
+      'Dagens Nyheter': 'https://www.dn.se/rss/',
+
+      // Norwegian National News
+      'NRK Norway': 'https://www.nrk.no/toppsaker.rss',
+      'VG Norway': 'https://www.vg.no/rss/feed',
+      'Aftenposten': 'https://www.aftenposten.no/rss',
+
+      // German National News
+      'Der Spiegel': 'https://www.spiegel.de/schlagzeilen/tops/index.rss',
+      'Die Zeit': 'https://newsfeed.zeit.de/index',
+      'FAZ': 'https://www.faz.net/rss/aktuell/',
+
+      // Dutch National News
+      'NOS Netherlands': 'https://feeds.nos.nl/nosnieuwsalgemeen',
+      'NRC': 'https://www.nrc.nl/rss/',
+      'Telegraaf': 'https://www.telegraaf.nl/rss/',
+
+      // Finnish National News
+      'YLE Finland': 'https://feeds.yle.fi/uutiset/v1/recent.rss?publisherIds=YLE_UUTISET',
+      'Helsingin Sanomat': 'https://www.hs.fi/rss/tuoreimmat.xml',
 
       // Aviation-Specific Sources
       'Aviation Week': 'https://aviationweek.com/rss.xml',
@@ -44,7 +81,9 @@ export class RSSNewsScraper {
       'airport', 'airfield', 'airspace', 'runway', 'flight', 'aviation',
       'closed', 'closure', 'shutdown', 'disruption', 'suspended', 'grounded',
       'security', 'threat', 'incident', 'breach', 'violation', 'unauthorized',
-      'sighting', 'spotted', 'detected', 'intercepted', 'emergency'
+      'sighting', 'spotted', 'detected', 'intercepted', 'emergency',
+      'harbor', 'harbour', 'port', 'seaport', 'naval', 'maritime',
+      'military', 'base', 'defense', 'defence', 'infrastructure'
     ];
 
     this.europeanAirports = {
@@ -71,7 +110,64 @@ export class RSSNewsScraper {
       'zagreb': { icao: 'LDZA', iata: 'ZAG', name: 'Zagreb Airport', country: 'Croatia' },
       'tallinn': { icao: 'EETN', iata: 'TLL', name: 'Tallinn Airport', country: 'Estonia' },
       'riga': { icao: 'EVRA', iata: 'RIX', name: 'Riga Airport', country: 'Latvia' },
-      'vilnius': { icao: 'EYVI', iata: 'VNO', name: 'Vilnius Airport', country: 'Lithuania' }
+      'vilnius': { icao: 'EYVI', iata: 'VNO', name: 'Vilnius Airport', country: 'Lithuania' },
+
+      // Additional Danish airports
+      'aalborg': { icao: 'EKYT', iata: 'AAL', name: 'Aalborg Airport', country: 'Denmark' },
+      'billund': { icao: 'EKBI', iata: 'BLL', name: 'Billund Airport', country: 'Denmark' },
+      'skrydstrup': { icao: 'EKSP', iata: 'SKS', name: 'Skrydstrup Air Base', country: 'Denmark' },
+      'roskilde': { icao: 'EKRK', iata: 'RKE', name: 'Roskilde Airport', country: 'Denmark' },
+      'odense': { icao: 'EKOD', iata: 'ODE', name: 'Odense Airport', country: 'Denmark' },
+      'aarhus': { icao: 'EKAH', iata: 'AAR', name: 'Aarhus Airport', country: 'Denmark' },
+
+      // Swedish additional airports
+      'gothenburg': { icao: 'ESGG', iata: 'GOT', name: 'Gothenburg Airport', country: 'Sweden' },
+      'malmo': { icao: 'ESMS', iata: 'MMX', name: 'Malmö Airport', country: 'Sweden' },
+      'bromma': { icao: 'ESSB', iata: 'BMA', name: 'Stockholm Bromma Airport', country: 'Sweden' },
+
+      // Norwegian additional airports
+      'bergen': { icao: 'ENBR', iata: 'BGO', name: 'Bergen Airport', country: 'Norway' },
+      'trondheim': { icao: 'ENVA', iata: 'TRD', name: 'Trondheim Airport', country: 'Norway' },
+      'stavanger': { icao: 'ENZV', iata: 'SVG', name: 'Stavanger Airport', country: 'Norway' }
+    };
+
+    // Major European harbors and ports
+    this.europeanHarbors = {
+      // Danish Harbors
+      'copenhagen harbor': { lat: 55.6761, lon: 12.5683, name: 'Port of Copenhagen', country: 'Denmark' },
+      'aarhus harbor': { lat: 56.1572, lon: 10.2107, name: 'Port of Aarhus', country: 'Denmark' },
+      'frederikshavn': { lat: 57.4407, lon: 10.5366, name: 'Port of Frederikshavn', country: 'Denmark' },
+      'esbjerg': { lat: 55.4670, lon: 8.4520, name: 'Port of Esbjerg', country: 'Denmark' },
+      'aalborg harbor': { lat: 57.0488, lon: 9.9217, name: 'Port of Aalborg', country: 'Denmark' },
+      'odense harbor': { lat: 55.4038, lon: 10.3711, name: 'Port of Odense', country: 'Denmark' },
+      'helsingor': { lat: 56.0361, lon: 12.6139, name: 'Port of Helsing\u00f8r', country: 'Denmark' },
+      'ronne': { lat: 55.0983, lon: 14.7024, name: 'Port of R\u00f8nne (Bornholm)', country: 'Denmark' },
+
+      // Swedish Harbors
+      'gothenburg harbor': { lat: 57.7089, lon: 11.9746, name: 'Port of Gothenburg', country: 'Sweden' },
+      'stockholm harbor': { lat: 59.3293, lon: 18.0686, name: 'Port of Stockholm', country: 'Sweden' },
+      'malmo harbor': { lat: 55.6050, lon: 13.0002, name: 'Port of Malm\u00f6', country: 'Sweden' },
+      'helsingborg': { lat: 56.0465, lon: 12.6945, name: 'Port of Helsingborg', country: 'Sweden' },
+
+      // Norwegian Harbors
+      'oslo harbor': { lat: 59.9065, lon: 10.7577, name: 'Port of Oslo', country: 'Norway' },
+      'bergen harbor': { lat: 60.3913, lon: 5.3221, name: 'Port of Bergen', country: 'Norway' },
+      'stavanger harbor': { lat: 58.9700, lon: 5.7331, name: 'Port of Stavanger', country: 'Norway' },
+      'trondheim harbor': { lat: 63.4305, lon: 10.3951, name: 'Port of Trondheim', country: 'Norway' },
+
+      // German Harbors
+      'hamburg': { lat: 53.5511, lon: 9.9937, name: 'Port of Hamburg', country: 'Germany' },
+      'bremerhaven': { lat: 53.5396, lon: 8.5809, name: 'Port of Bremerhaven', country: 'Germany' },
+      'rostock': { lat: 54.0834, lon: 12.1004, name: 'Port of Rostock', country: 'Germany' },
+      'kiel': { lat: 54.3213, lon: 10.1394, name: 'Port of Kiel', country: 'Germany' },
+
+      // Dutch Harbors
+      'rotterdam': { lat: 51.9244, lon: 4.4777, name: 'Port of Rotterdam', country: 'Netherlands' },
+      'amsterdam harbor': { lat: 52.3702, lon: 4.8952, name: 'Port of Amsterdam', country: 'Netherlands' },
+
+      // Finnish Harbors
+      'helsinki harbor': { lat: 60.1699, lon: 24.9384, name: 'Port of Helsinki', country: 'Finland' },
+      'turku': { lat: 60.4518, lon: 22.2666, name: 'Port of Turku', country: 'Finland' }
     };
   }
 
@@ -173,17 +269,33 @@ export class RSSNewsScraper {
       const hasIncidentKeyword = this.incidentKeywords.some(keyword => text.includes(keyword));
       if (!hasIncidentKeyword) return false;
 
-      // VALIDATION: Exclude articles that are clearly not about drone incidents
+      // VALIDATION: Exclude simulations, exercises, and unrelated content
       const excludeKeywords = [
+        'simulation', 'exercise', 'drill', 'training', 'test', 'testing',
+        'hypothetical', 'scenario', 'demonstration', 'demo', 'mock',
         'sarkozy', 'libya', 'trial', 'verdict', 'prison', 'guilty',
         'election', 'politics', 'parliament', 'minister',
         'movie', 'film', 'entertainment', 'celebrity',
-        'stock', 'market', 'trading', 'finance'
+        'stock', 'market', 'trading', 'finance',
+        'review', 'preview', 'opinion', 'analysis', 'could', 'would', 'should'
       ];
 
       const hasExcludedContent = excludeKeywords.some(keyword => text.includes(keyword));
-      if (hasExcludedContent && !text.includes('drone incident')) {
-        console.log(`⚠️ Excluding unrelated article: ${article.title.substring(0, 60)}...`);
+      if (hasExcludedContent && !text.includes('real incident') && !text.includes('actual incident')) {
+        console.log(`⚠️ Excluding simulation/unrelated article: ${article.title.substring(0, 60)}...`);
+        return false;
+      }
+
+      // VALIDATION: Ensure it's about REAL incidents
+      const realIncidentIndicators = [
+        'reported', 'spotted', 'detected', 'sighted', 'caused', 'forced',
+        'closed', 'suspended', 'investigated', 'responded', 'intercepted',
+        'authorities', 'police', 'security'
+      ];
+
+      const hasRealIndicator = realIncidentIndicators.some(keyword => text.includes(keyword));
+      if (!hasRealIndicator) {
+        console.log(`⚠️ No real incident indicators found: ${article.title.substring(0, 60)}...`);
         return false;
       }
 
@@ -285,11 +397,30 @@ export class RSSNewsScraper {
   extractLocationInfo(text) {
     const lowerText = text.toLowerCase();
 
+    // Check harbors first if text explicitly mentions "port", "harbor", or "harbour"
+    if (lowerText.includes('port of') || lowerText.includes('harbor') || lowerText.includes('harbour')) {
+      for (const [keyword, harbor] of Object.entries(this.europeanHarbors)) {
+        if (lowerText.includes(keyword) ||
+            lowerText.includes(harbor.name?.toLowerCase()) ||
+            (lowerText.includes('port') && lowerText.includes(keyword.split(' ')[0])) ||
+            (lowerText.includes('harbor') && lowerText.includes(keyword.split(' ')[0])) ||
+            (lowerText.includes('harbour') && lowerText.includes(keyword.split(' ')[0]))) {
+          return {
+            ...harbor,
+            type: 'harbour',
+            icao: null,
+            iata: null
+          };
+        }
+      }
+    }
+
     // Try to match known airports
     for (const [keyword, airport] of Object.entries(this.europeanAirports)) {
       if (lowerText.includes(keyword) ||
-          lowerText.includes(airport.iata.toLowerCase()) ||
-          lowerText.includes(airport.icao.toLowerCase())) {
+          lowerText.includes(airport.iata?.toLowerCase()) ||
+          lowerText.includes(airport.icao?.toLowerCase()) ||
+          lowerText.includes(airport.name?.toLowerCase())) {
         return {
           ...airport,
           type: 'airport',
@@ -337,6 +468,21 @@ export class RSSNewsScraper {
       'LKPR': { lat: 50.1008, lon: 14.2632 }, // Prague
       'LHBP': { lat: 47.4299, lon: 19.2611 }, // Budapest
       'EETN': { lat: 59.4133, lon: 24.8328 }, // Tallinn
+      // Danish airports
+      'EKYT': { lat: 57.0927, lon: 9.8492 },  // Aalborg
+      'EKBI': { lat: 55.7404, lon: 9.1518 },  // Billund
+      'EKSP': { lat: 55.2206, lon: 9.2639 },  // Skrydstrup
+      'EKRK': { lat: 55.5856, lon: 12.1314 }, // Roskilde
+      'EKOD': { lat: 55.4764, lon: 10.3306 }, // Odense
+      'EKAH': { lat: 56.3000, lon: 10.6192 }, // Aarhus
+      // Swedish airports
+      'ESGG': { lat: 57.6628, lon: 12.2798 }, // Gothenburg
+      'ESMS': { lat: 55.5363, lon: 13.3762 }, // Malmo
+      'ESSB': { lat: 59.3544, lon: 17.9416 }, // Bromma
+      // Norwegian airports
+      'ENBR': { lat: 60.2934, lon: 5.2181 },  // Bergen
+      'ENVA': { lat: 63.4578, lon: 10.9239 }, // Trondheim
+      'ENZV': { lat: 58.8767, lon: 5.6378 }   // Stavanger
     };
 
     return coordinates[icao] || { lat: 0, lon: 0 };
