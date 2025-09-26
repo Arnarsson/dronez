@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mobile View Test - 375x667</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 20px;
+      font-family: system-ui, -apple-system, sans-serif;
+      background: #1a1a1a;
+      color: white;
+    }
+    .device-frame {
+      width: 375px;
+      height: 667px;
+      border: 2px solid #444;
+      border-radius: 20px;
+      overflow: hidden;
+      margin: 0 auto;
+      position: relative;
+      background: white;
+    }
+    iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+    .controls {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    button {
+      padding: 10px 20px;
+      margin: 0 5px;
+      background: #3b82f6;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #2563eb;
+    }
+  </style>
+</head>
+<body>
+  <div class="controls">
+    <h2>Mobile Device Preview</h2>
+    <button onclick="setDevice(375, 667)">iPhone 8 (375×667)</button>
+    <button onclick="setDevice(414, 896)">iPhone 11 (414×896)</button>
+    <button onclick="setDevice(360, 640)">Android (360×640)</button>
+  </div>
+  <div class="device-frame" id="device">
+    <iframe src="index.html"></iframe>
+  </div>
+
+  <script>
+    function setDevice(width, height) {
+      const device = document.getElementById('device');
+      device.style.width = width + 'px';
+      device.style.height = height + 'px';
+    }
+  </script>
+</body>
+</html>
