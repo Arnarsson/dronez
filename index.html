@@ -1393,6 +1393,234 @@
       from { transform: translateX(0); opacity: 1; }
       to { transform: translateX(100%); opacity: 0; }
     }
+
+    /* Enhanced Provenance Modal Styles */
+    .provenance-modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.85);
+      z-index: 2000;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .provenance-modal-content {
+      background: var(--panel);
+      margin: 20px auto;
+      padding: 0;
+      border-radius: 16px;
+      max-width: 800px;
+      width: 95%;
+      max-height: 90vh;
+      display: flex;
+      flex-direction: column;
+      border: 1px solid var(--border);
+      box-shadow: 0 12px 48px rgba(0, 0, 0, 0.5);
+    }
+
+    .provenance-modal-header {
+      padding: 20px 24px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: var(--surface);
+      border-radius: 16px 16px 0 0;
+      flex-shrink: 0;
+    }
+
+    .provenance-modal-title {
+      margin: 0;
+      color: var(--text);
+      font-size: 18px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      line-height: 1.2;
+    }
+
+    .provenance-modal-close {
+      background: var(--chip);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 8px 12px;
+      color: var(--text);
+      cursor: pointer;
+      font-size: 18px;
+      transition: all 0.2s ease;
+      line-height: 1;
+      min-width: 40px;
+      min-height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .provenance-modal-close:hover {
+      background: var(--accent);
+      transform: scale(1.05);
+    }
+
+    .provenance-modal-body {
+      padding: 24px;
+      overflow-y: auto;
+      flex: 1;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    /* Enhanced mobile styles for provenance content */
+    .provenance-modal-body h3 {
+      font-size: 20px;
+      margin-bottom: 12px;
+      color: var(--text);
+      font-weight: 600;
+    }
+
+    .provenance-modal-body h4 {
+      font-size: 16px;
+      margin-top: 24px;
+      margin-bottom: 12px;
+      color: var(--text);
+      font-weight: 600;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 8px;
+    }
+
+    .provenance-modal-body .badge {
+      padding: 6px 12px;
+      border-radius: 6px;
+      font-size: 13px;
+      font-weight: 600;
+      display: inline-block;
+      margin-right: 8px;
+      margin-bottom: 8px;
+    }
+
+    /* Provenance content structure styles */
+    .provenance-section {
+      margin-bottom: 24px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid var(--border-light);
+    }
+
+    .provenance-section:last-child {
+      border-bottom: none;
+      padding-bottom: 0;
+    }
+
+    .provenance-badges {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 16px;
+    }
+
+    .provenance-narrative {
+      line-height: 1.6;
+      font-size: 15px;
+      color: var(--text-secondary);
+    }
+
+    .provenance-factors {
+      background: var(--chip);
+      border-radius: 8px;
+      padding: 16px;
+    }
+
+    .provenance-factor {
+      margin: 8px 0;
+      font-size: 14px;
+      line-height: 1.5;
+      color: var(--text);
+    }
+
+    .provenance-timeline,
+    .provenance-asset {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .timeline-item,
+    .asset-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 14px;
+      padding: 8px 0;
+      border-bottom: 1px solid var(--border-light);
+    }
+
+    .timeline-item:last-child,
+    .asset-item:last-child {
+      border-bottom: none;
+    }
+
+    .timeline-label,
+    .asset-label {
+      font-weight: 600;
+      color: var(--text-muted);
+      flex: 0 0 140px;
+    }
+
+    .timeline-value,
+    .asset-value {
+      color: var(--text);
+      text-align: right;
+      flex: 1;
+    }
+
+    /* Mobile-specific adjustments for provenance modal */
+    @media (max-width: 767px) {
+      .provenance-modal-content {
+        margin: 0;
+        width: 100%;
+        height: 100%;
+        max-height: 100%;
+        border-radius: 0;
+      }
+
+      .provenance-modal-header {
+        padding: 16px 20px;
+        border-radius: 0;
+        position: sticky;
+        top: 0;
+        z-index: 10;
+        backdrop-filter: blur(10px);
+      }
+
+      .provenance-modal-title {
+        font-size: 16px;
+        max-width: 70%;
+      }
+
+      .provenance-modal-body {
+        padding: 20px;
+        padding-bottom: 40px;
+      }
+
+      .provenance-modal-body h3 {
+        font-size: 18px;
+      }
+
+      .provenance-modal-body h4 {
+        font-size: 15px;
+      }
+
+      /* Improve readability on mobile */
+      .provenance-modal-body div {
+        line-height: 1.6;
+      }
+
+      .provenance-modal-body .muted {
+        color: var(--text-secondary);
+        font-size: 14px;
+        line-height: 1.5;
+      }
+    }
+
     @media (max-width: 1120px) and (min-width: 768px) {
       /* Tablet layout - keep panels visible but stacked */
       #app {
@@ -1625,16 +1853,14 @@
       </aside>
     </div> <!-- End of main-container - CRITICAL FIX -->
 
-    <!-- Provenance Modal -->
-    <div id="provenanceModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 2000; overflow-y: auto;">
-      <div style="background: var(--surface); margin: 40px auto; padding: 0; border-radius: 16px; max-width: 800px; border: 2px solid var(--border); box-shadow: 0 8px 32px rgba(0,0,0,0.9);">
-        <div style="padding: 24px; border-bottom: 1px solid var(--border);">
-          <div style="display: flex; justify-content: space-between; align-items: center;">
-            <h2 style="margin: 0; color: var(--text); font-size: 20px;">Incident Provenance</h2>
-            <button id="closeProvenance" style="background: var(--chip); border: 1px solid var(--border); border-radius: 8px; padding: 8px 12px; color: var(--text); cursor: pointer; font-size: 16px;">✕</button>
-          </div>
+    <!-- Provenance Modal - Enhanced for Mobile -->
+    <div id="provenanceModal" class="provenance-modal" style="display: none;">
+      <div class="provenance-modal-content">
+        <div class="provenance-modal-header">
+          <h2 class="provenance-modal-title">INCIDENT PROVENANCE</h2>
+          <button id="closeProvenance" class="provenance-modal-close">✕</button>
         </div>
-        <div id="provenanceContent" style="padding: 24px; max-height: 60vh; overflow-y: auto;"></div>
+        <div id="provenanceContent" class="provenance-modal-body"></div>
       </div>
     </div>
   </div>
@@ -2175,47 +2401,75 @@
       if (incident.incident.response?.length) decisionFactors.push(`👮 Response: ${incident.incident.response.join(', ')}`);
 
       content.innerHTML = `
-        <div style="margin-bottom: 24px;">
-          <h3 style="margin: 0 0 8px; color: var(--text); font-size: 18px;">${incident.asset.name}</h3>
-          <div style="display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 16px;">
+        <div class="provenance-section">
+          <h3>${incident.asset.name}</h3>
+          <div class="provenance-badges">
             <span class="badge" style="background: var(--${statusClass}); color: #fff;">${incident.incident.status.toUpperCase()}</span>
-            <span class="badge">Evidence: ${evidenceLevel}/3</span>
-            <span class="badge">Severity: ${severityScore}/5</span>
+            <span class="badge" style="background: var(--chip); color: var(--text);">Evidence: ${evidenceLevel}/3</span>
+            <span class="badge" style="background: var(--chip); color: var(--text);">Severity: ${severityScore}/5</span>
           </div>
-          <div class="muted" style="line-height: 1.4;">
+          <div class="muted provenance-narrative">
             ${incident.incident.narrative || 'No additional details available.'}
           </div>
         </div>
 
-        <div style="margin-bottom: 24px;">
-          <h4 style="margin: 0 0 12px; color: var(--text);">Decision Factors</h4>
-          <div style="background: var(--chip); border-radius: 8px; padding: 16px;">
-            ${decisionFactors.map(factor => `<div style="margin: 4px 0; font-size: 14px;">${factor}</div>`).join('')}
+        <div class="provenance-section">
+          <h4>Decision Factors</h4>
+          <div class="provenance-factors">
+            ${decisionFactors.map(factor => `<div class="provenance-factor">${factor}</div>`).join('')}
           </div>
         </div>
 
-        <div style="margin-bottom: 24px;">
-          <h4 style="margin: 0 0 12px; color: var(--text);">Timeline</h4>
-          <div style="font-size: 14px;">
-            <div style="margin: 8px 0;"><strong>First detected:</strong> ${fmtDate(incident.first_seen_utc)}</div>
-            <div style="margin: 8px 0;"><strong>Last updated:</strong> ${fmtDate(incident.last_update_utc)}</div>
-            ${incident.incident.duration_min ? `<div style="margin: 8px 0;"><strong>Duration:</strong> ${fmtDuration(incident.incident.duration_min)}</div>` : ''}
+        <div class="provenance-section">
+          <h4>Timeline</h4>
+          <div class="provenance-timeline">
+            <div class="timeline-item">
+              <span class="timeline-label">First detected:</span>
+              <span class="timeline-value">${fmtDate(incident.first_seen_utc)}</span>
+            </div>
+            <div class="timeline-item">
+              <span class="timeline-label">Last updated:</span>
+              <span class="timeline-value">${fmtDate(incident.last_update_utc)}</span>
+            </div>
+            ${incident.incident.duration_min ? `
+            <div class="timeline-item">
+              <span class="timeline-label">Duration:</span>
+              <span class="timeline-value">${fmtDuration(incident.incident.duration_min)}</span>
+            </div>` : ''}
           </div>
         </div>
 
-        <div style="margin-bottom: 24px;">
-          <h4 style="margin: 0 0 12px; color: var(--text);">Asset Information</h4>
-          <div style="font-size: 14px;">
-            <div style="margin: 8px 0;"><strong>Type:</strong> ${incident.asset.type}</div>
-            ${incident.asset.iata ? `<div style="margin: 8px 0;"><strong>IATA:</strong> ${incident.asset.iata}</div>` : ''}
-            ${incident.asset.icao ? `<div style="margin: 8px 0;"><strong>ICAO:</strong> ${incident.asset.icao}</div>` : ''}
-            <div style="margin: 8px 0;"><strong>Coordinates:</strong> ${incident.asset.lat.toFixed(4)}, ${incident.asset.lon.toFixed(4)}</div>
-            ${incident.scores.risk_radius_m ? `<div style="margin: 8px 0;"><strong>Risk radius:</strong> ${(incident.scores.risk_radius_m/1000).toFixed(1)}km</div>` : ''}
+        <div class="provenance-section">
+          <h4>Asset Information</h4>
+          <div class="provenance-asset">
+            <div class="asset-item">
+              <span class="asset-label">Type:</span>
+              <span class="asset-value">${incident.asset.type}</span>
+            </div>
+            ${incident.asset.iata ? `
+            <div class="asset-item">
+              <span class="asset-label">IATA:</span>
+              <span class="asset-value">${incident.asset.iata}</span>
+            </div>` : ''}
+            ${incident.asset.icao ? `
+            <div class="asset-item">
+              <span class="asset-label">ICAO:</span>
+              <span class="asset-value">${incident.asset.icao}</span>
+            </div>` : ''}
+            <div class="asset-item">
+              <span class="asset-label">Coordinates:</span>
+              <span class="asset-value">${incident.asset.lat.toFixed(4)}, ${incident.asset.lon.toFixed(4)}</span>
+            </div>
+            ${incident.scores.risk_radius_m ? `
+            <div class="asset-item">
+              <span class="asset-label">Risk radius:</span>
+              <span class="asset-value">${(incident.scores.risk_radius_m/1000).toFixed(1)}km</span>
+            </div>` : ''}
           </div>
         </div>
 
-        <div>
-          <h4 style="margin: 0 0 12px; color: var(--text);">Sources (${incident.evidence.sources?.length || 0})</h4>
+        <div class="provenance-section">
+          <h4>Sources (${incident.evidence.sources?.length || 0})</h4>
           ${sourcesList || '<div class="muted">No sources available</div>'}
         </div>
       `;
