@@ -1,4 +1,4 @@
-import fetch from 'node-fetch';
+import fetch from './utils/fetch.js';
 import { CONFIG } from './config.js';
 
 export class GeographicIntelligence {
