@@ -2624,8 +2624,65 @@
 
     function mapAssetType(assetType) {
       // Map asset types to filter categories
-      if (assetType === 'nuclear') return 'energy';
-      return assetType;
+      const typeMapping = {
+        // Energy infrastructure
+        'nuclear': 'energy',
+        'nuclear_plant': 'energy',
+        'nuclear_facility': 'energy',
+        'power_plant': 'energy',
+        'power_station': 'energy',
+        'gas_facility': 'energy',
+        'gas_terminal': 'energy',
+        'lng_terminal': 'energy',
+        'oil_facility': 'energy',
+        'oil_refinery': 'energy',
+        'oil_terminal': 'energy',
+        'pipeline': 'energy',
+        'substation': 'energy',
+        'grid_infrastructure': 'energy',
+
+        // Maritime infrastructure
+        'port': 'harbour',
+        'harbor': 'harbour',
+        'harbour': 'harbour',
+        'seaport': 'harbour',
+        'naval_base': 'harbour',
+        'naval_facility': 'harbour',
+        'maritime': 'harbour',
+        'shipyard': 'harbour',
+        'dock': 'harbour',
+
+        // Military installations
+        'military': 'military',
+        'military_base': 'military',
+        'military_facility': 'military',
+        'army_base': 'military',
+        'air_base': 'military',
+        'airbase': 'military',
+        'defense_facility': 'military',
+        'defense_installation': 'military',
+        'barracks': 'military',
+        'ammunition_depot': 'military',
+
+        // Rail infrastructure
+        'railway': 'rail',
+        'railroad': 'rail',
+        'train_station': 'rail',
+        'rail_yard': 'rail',
+        'rail_terminal': 'rail',
+        'metro': 'rail',
+        'subway': 'rail',
+
+        // Border infrastructure
+        'border': 'border',
+        'border_crossing': 'border',
+        'checkpoint': 'border',
+        'customs': 'border',
+        'border_post': 'border'
+      };
+
+      // Return mapped type or original if no mapping exists
+      return typeMapping[assetType.toLowerCase()] || assetType.toLowerCase();
     }
 
     function searchTerm() {
