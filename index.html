@@ -1001,17 +1001,23 @@
       #app {
         display: grid;
         grid-template-columns: 320px 1fr 360px;
-        grid-template-rows: 60px 1fr;
+        grid-template-rows: 60px auto 1fr;
       }
 
       header {
         grid-column: 1 / 4;
+        grid-row: 1;
         overflow-x: visible;
+      }
+
+      .stats-dashboard {
+        grid-column: 1 / 4;
+        grid-row: 2;
       }
 
       .main-container {
         grid-column: 1 / 4;
-        grid-row: 2;
+        grid-row: 3;
         display: grid;
         grid-template-columns: 320px 1fr 360px;
       }
@@ -1040,6 +1046,7 @@
     @media (min-width: 1200px) {
       #app {
         grid-template-columns: 380px 1fr 400px;
+        grid-template-rows: 60px auto 1fr;
       }
 
       .main-container {
