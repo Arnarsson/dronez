@@ -331,9 +331,10 @@
       background: var(--panel);
       border-right: 1px solid var(--border);
       overflow-y: auto;
-      z-index: 100;
+      z-index: 1000;
       transform: translateX(-100%);
       transition: transform 0.3s ease;
+      padding: var(--space-4);
     }
 
     #left.open {
@@ -346,23 +347,23 @@
       position: fixed;
       top: 60px;
       left: 12px;
-      width: 36px;
-      height: 36px;
-      background: var(--panel);
-      border: 1px solid var(--border);
-      border-radius: 4px;
+      width: 40px;
+      height: 40px;
+      background: var(--accent);
+      border: none;
+      border-radius: 8px;
       display: flex;
       align-items: center;
       justify-content: center;
       cursor: pointer;
-      z-index: 101;
-      transition: all 0.2s ease;
-      color: var(--text-secondary);
+      z-index: 1001;
+      color: white;
+      font-size: 20px;
+      box-shadow: var(--shadow-md);
     }
 
     .sidebar-toggle:hover {
-      background: var(--card);
-      color: var(--text);
+      background: var(--accent-hover);
     }
 
     /* Floating right panel */
@@ -2110,11 +2111,6 @@
       </div>
     </div>
 
-    <!-- Sidebar Toggle Button -->
-    <button class="sidebar-toggle" id="sidebar-toggle" aria-label="Toggle filters sidebar">
-      ☰
-    </button>
-
     <aside id="left" aria-label="Filters">
       <div class="section" style="background: var(--chip); border: 1px solid var(--border); border-radius: 8px; padding: 12px; margin-bottom: 16px;">
         <h2 style="color: var(--severity-4); margin-top: 0;">🔴 Live Monitoring</h2>
@@ -2260,6 +2256,11 @@
         </div>
       </aside>
     </div> <!-- End of main-container - CRITICAL FIX -->
+
+    <!-- Sidebar Toggle Button -->
+    <button class="sidebar-toggle" id="sidebar-toggle" aria-label="Toggle filters sidebar">
+      ☰
+    </button>
 
     <!-- Provenance Modal - Enhanced for Mobile -->
     <div id="provenanceModal" class="provenance-modal" style="display: none;">
