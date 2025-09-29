@@ -12,6 +12,7 @@
   <link rel="manifest" href="/manifest.json" />
   <link rel="apple-touch-icon" href="/icon-192.png" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <meta name="theme-color" content="#3b82f6" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -2069,9 +2070,16 @@
     </div>
 
     <div id="main-container" class="main-container">
-      <!-- Left Panel - Filters & Controls -->
-      <div class="panels-container" id="panels">
-        <div class="panel" id="left-panel">
+      <!-- Map Container -->
+      <div id="map-container">
+        <main id="map" role="region" aria-label="Incident map">
+          <div id="mapOverlay" style="display: none; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 1000; background: var(--surface); border: 3px solid var(--border); border-radius: 16px; padding: 40px 60px; text-align: center; box-shadow: 0 8px 32px rgba(0,0,0,0.8);">
+            <div style="font-size: 48px; font-weight: 900; color: var(--text); margin-bottom: 16px; letter-spacing: 3px;">NO DATA</div>
+            <div style="color: var(--muted); font-size: 16px; line-height: 1.4;">Europe-wide incident monitoring system<br/>No current incidents detected</div>
+          </div>
+        </main>
+      </div>
+    </div> <!-- End of main-container -->
 
     <!-- Live Activity Indicator -->
     <div id="activity-indicator" class="activity-indicator">
@@ -2213,16 +2221,7 @@
         </div> <!-- Close left-panel -->
       </div> <!-- Close panels-container -->
 
-      <!-- Map Container - NOW PROPERLY INSIDE main-container -->
-      <div id="map-container">
-        <main id="map" role="region" aria-label="Incident map">
-          <div id="mapOverlay" style="display: none; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 1000; background: var(--surface); border: 3px solid var(--severity-4); border-radius: 16px; padding: 40px 60px; text-align: center; box-shadow: 0 8px 32px rgba(0,0,0,0.8);">
-            <div style="font-size: 48px; font-weight: 900; color: var(--severity-4); margin-bottom: 16px; letter-spacing: 3px;">NO DATA</div>
-            <div style="color: var(--muted); font-size: 16px; line-height: 1.4;">Europe-wide incident monitoring system<br/>No current incidents detected</div>
-          </div>
-        </main>
-      </div>
-
+      <!-- Right Panel - Incidents -->
       <aside id="right" aria-label="Incident details">
         <div class="panel-header" id="right-panel-header">
           <h2 style="margin: 0; font-size: var(--font-size-base);">Incident Feed</h2>
@@ -2237,7 +2236,6 @@
         <div id="incidentList"></div>
         </div>
       </aside>
-    </div> <!-- End of main-container - CRITICAL FIX -->
 
     <!-- Sidebar Toggle Button -->
     <button class="sidebar-toggle" id="sidebar-toggle" aria-label="Toggle filters sidebar">

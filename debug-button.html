@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+body { margin: 0; font-family: Arial; }
+
+/* Show all element boundaries */
+* {
+  outline: 1px dashed rgba(255,0,0,0.2);
+}
+
+#app {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  background: #f0f0f0;
+}
+
+header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 48px;
+  background: black;
+  color: white;
+  z-index: 3000;
+  display: flex;
+  align-items: center;
+  padding: 0 20px;
+}
+
+.main-container {
+  position: fixed;
+  top: 48px;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0,100,200,0.1);
+  border: 2px solid blue;
+}
+
+#map-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0,200,0,0.1);
+  border: 2px solid green;
+}
+
+/* THE BUTTON - SUPER VISIBLE */
+.sidebar-toggle {
+  position: fixed !important;
+  top: 56px !important;
+  left: 12px !important;
+  width: 80px !important;
+  height: 80px !important;
+  background: red !important;
+  border: 5px solid yellow !important;
+  border-radius: 50% !important;
+  z-index: 999999 !important;
+  font-size: 40px !important;
+  color: white !important;
+  cursor: pointer !important;
+  box-shadow: 0 0 50px rgba(255,0,0,0.8) !important;
+  animation: pulse 1s infinite !important;
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+  100% { transform: scale(1); }
+}
+
+/* Debug panel */
+.debug {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background: white;
+  border: 2px solid black;
+  padding: 20px;
+  z-index: 999999;
+  max-width: 300px;
+}
+
+.found { color: green; font-weight: bold; }
+.not-found { color: red; font-weight: bold; }
+</style>
+</head>
+<body>
+<div id="app">
+  <header>Header (z-index: 3000)</header>
+
+  <div class="main-container">
+    <div id="map-container">
+      Map Container - If button is hidden, this might be covering it
+    </div>
+  </div>
+
+  <!-- THE BUTTON THAT SHOULD BE VISIBLE -->
+  <button class="sidebar-toggle" id="sidebar-toggle" onclick="alert('Button clicked!')">
+    ☰
+  </button>
+</div>
+
+<div class="debug">
+  <h3>Debug Info:</h3>
+  <div id="button-check">Checking button...</div>
+  <div id="button-position"></div>
+  <div id="button-computed"></div>
+  <div id="button-parent"></div>
+</div>
+
+<script>
+window.onload = function() {
+  const btn = document.getElementById('sidebar-toggle');
+  const check = document.getElementById('button-check');
+  const pos = document.getElementById('button-position');
+  const comp = document.getElementById('button-computed');
+  const parent = document.getElementById('button-parent');
+
+  if (btn) {
+    check.innerHTML = '<span class="found">✓ Button found in DOM</span>';
+
+    const rect = btn.getBoundingClientRect();
+    pos.innerHTML = `Position: top=${rect.top}, left=${rect.left}<br>
+                     Size: ${rect.width}x${rect.height}`;
+
+    const styles = window.getComputedStyle(btn);
+    comp.innerHTML = `Display: ${styles.display}<br>
+                      Visibility: ${styles.visibility}<br>
+                      Opacity: ${styles.opacity}<br>
+                      Z-index: ${styles.zIndex}`;
+
+    parent.innerHTML = `Parent: ${btn.parentElement.tagName} (id="${btn.parentElement.id}")`;
+
+    // Check if button is actually visible
+    const isVisible = rect.width > 0 && rect.height > 0 &&
+                      styles.display !== 'none' &&
+                      styles.visibility !== 'hidden' &&
+                      styles.opacity !== '0';
+
+    if (!isVisible) {
+      check.innerHTML += '<br><span class="not-found">⚠ Button exists but is not visible!</span>';
+    }
+  } else {
+    check.innerHTML = '<span class="not-found">✗ Button NOT found in DOM!</span>';
+  }
+};
+</script>
+</body>
+</html>
