@@ -335,22 +335,22 @@
 
     /* Sidebar toggle button */
     .sidebar-toggle {
-      position: fixed;
-      top: 56px;
-      left: 12px;
-      width: 40px;
-      height: 40px;
-      background: var(--accent);
-      border: none;
-      border-radius: 8px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      z-index: 2001;
-      color: white;
-      font-size: 20px;
-      box-shadow: var(--shadow-lg);
+      position: fixed !important;
+      top: 56px !important;
+      left: 12px !important;
+      width: 40px !important;
+      height: 40px !important;
+      background: #3b82f6 !important;
+      border: 2px solid white !important;
+      border-radius: 8px !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      cursor: pointer !important;
+      z-index: 9999 !important;
+      color: white !important;
+      font-size: 20px !important;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.5) !important;
     }
 
     .sidebar-toggle:hover {
@@ -989,15 +989,7 @@
       header {
         padding: 10px 12px 8px 12px;
         gap: 4px;
-        background: #0f1419;
-        border-bottom: 1px solid rgba(255,255,255,0.1);
-        position: fixed;
-        top: 0;
-        left: 0;
-        right: 0;
-        z-index: 1000;
-        height: auto;
-        max-height: 60px;
+        height: 48px;
       }
 
       .header-top {
@@ -1112,16 +1104,10 @@
         position: relative;
       }
 
-      /* Override everything for mobile */
+      /* Mobile main container adjustment */
       .main-container {
-        position: fixed !important;
-        top: 60px !important; /* After minimal header */
-        left: 0 !important;
-        right: 0 !important;
+        top: 48px !important;
         bottom: 56px !important; /* Before bottom nav */
-        display: block !important;
-        width: 100% !important;
-        height: calc(100vh - 116px) !important; /* Full height minus header and nav */
       }
 
       #map-container {
@@ -1178,8 +1164,13 @@
         display: none !important;
       }
 
-      /* Hide BOTH side panels on mobile - access via bottom sheet instead */
-      #left, #right {
+      /* Mobile panels */
+      #left {
+        width: 85%;
+        max-width: 320px;
+      }
+
+      #right {
         display: none !important;
       }
 
