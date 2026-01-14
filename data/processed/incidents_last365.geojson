@@ -396,42 +396,6 @@
         "duration_hours": 4.5,
         "status_display": "Closure"
       }
-    },
-    {
-      "type": "Feature",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          23.9718,
-          56.9236
-        ]
-      },
-      "properties": {
-        "id": "lv-rix-2025-01-13",
-        "date_start_utc": "2025-01-13T19:20:00Z",
-        "date_end_utc": "2025-01-13T19:50:00Z",
-        "country": "Latvia",
-        "airport_name": "Riga International",
-        "iata": "RIX",
-        "icao": "EVRA",
-        "lat": 56.9236,
-        "lon": 23.9718,
-        "airport_category": "primary",
-        "incident_type": "lockdown",
-        "uav_count": 1,
-        "uav_characteristics": "Drone on approach path",
-        "response": "ATC",
-        "source_primary_url": "https://eng.lsm.lv/article/economy/transport/14.01.2025-planes-redirected-from-riga-monday-due-to-drone-presence.a538579/",
-        "source_secondary_url": "https://bnn-news.com/air-traffic-briefly-halted-at-riga-airport-due-to-suspected-drone-241073",
-        "evidence_strength": 2,
-        "attribution": "none",
-        "notes": "Lockdown ~30 min; three diversions; restrictions repeated",
-        "duration_min": 30,
-        "severity": 3,
-        "severity_label": "medium",
-        "duration_hours": 0.5,
-        "status_display": "Lockdown"
-      }
     }
   ]
 }
