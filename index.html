@@ -12,6 +12,7 @@
   <link rel="manifest" href="/manifest.json" />
   <link rel="apple-touch-icon" href="/icon-192.png" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <meta name="theme-color" content="#3b82f6" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -22,37 +23,31 @@
   <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css" crossorigin="anonymous" />
   <style>
     :root {
-      /* Modern 2025 Color System */
-      --bg: #0a0d14;
-      --bg-gradient: linear-gradient(135deg, #0a0d14 0%, #0f1419 100%);
+      /* Minimalist Color System */
+      --bg: #0f0f0f;
+      --bg-secondary: #141414;
 
-      /* Glassmorphism surfaces */
-      --glass-panel: rgba(19, 22, 31, 0.8);
-      --glass-surface: rgba(26, 31, 43, 0.6);
-      --glass-card: rgba(36, 41, 54, 0.7);
-      --glass-backdrop: rgba(255, 255, 255, 0.03);
+      /* Simplified surfaces - no glassmorphism */
+      --panel: #181818;
+      --surface: #1a1a1a;
+      --card: #202020;
+      --overlay: rgba(0, 0, 0, 0.95);
 
-      /* Traditional surfaces for fallback */
-      --panel: #13161f;
-      --surface: #1a1f2b;
-      --card: #242936;
+      /* Simplified text colors */
+      --text: #ffffff;
+      --text-secondary: #999999;
+      --text-muted: #666666;
+      --text-accent: #3b82f6;
 
-      /* Enhanced text colors */
-      --text: #f8fafc;
-      --text-secondary: #cbd5e1;
-      --text-muted: #94a3b8;
-      --text-accent: #60a5fa;
+      /* Minimal borders */
+      --border: rgba(255, 255, 255, 0.1);
+      --border-light: rgba(255, 255, 255, 0.05);
+      --border-focus: #3b82f6;
 
-      /* Modern border system */
-      --border: rgba(51, 65, 85, 0.6);
-      --border-light: rgba(148, 163, 184, 0.2);
-      --border-focus: rgba(59, 130, 246, 0.5);
-
-      /* Vibrant accent system */
+      /* Simple accent */
       --accent: #3b82f6;
-      --accent-hover: #60a5fa;
+      --accent-hover: #2563eb;
       --accent-light: rgba(59, 130, 246, 0.1);
-      --accent-glow: rgba(59, 130, 246, 0.3);
 
       /* Status colors with improved contrast */
       --success: #10b981;
@@ -64,13 +59,11 @@
       --purple: #8b5cf6;
       --purple-light: rgba(139, 92, 246, 0.1);
 
-      /* Modern shadow system */
-      --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-      --shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1);
-      --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
-      --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
-      --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
-      --shadow-glow: 0 0 20px rgba(59, 130, 246, 0.15);
+      /* Minimal shadows */
+      --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
+      --shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.4);
+      --shadow-md: 0 4px 16px 0 rgba(0, 0, 0, 0.4);
+      --shadow-lg: 0 8px 24px 0 rgba(0, 0, 0, 0.5);
 
       /* Typography Scale - Modern 2025 system */
       --font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
@@ -129,40 +122,32 @@
       -moz-osx-font-smoothing: grayscale;
     }
 
-    /* Mobile-first responsive layout */
+    /* Minimalist fullscreen layout */
     #app {
+      position: relative;
+      width: 100%;
+      height: 100vh;
+      height: 100dvh;
+      overflow: hidden;
       display: flex;
       flex-direction: column;
-      height: 100vh;
-      height: 100dvh; /* Dynamic viewport height for mobile */
     }
 
-    /* Header - Modern 2025 Glassmorphism */
+    /* Minimalist Header */
     header {
       display: flex;
-      flex-direction: column;
-      gap: var(--space-3);
-      padding: var(--space-4) var(--space-4);
-      background: var(--glass-panel);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      border-bottom: 1px solid var(--border-light);
-      box-shadow: var(--shadow-md);
+      align-items: center;
+      justify-content: space-between;
+      padding: var(--space-2) var(--space-4);
+      background: var(--bg);
+      border-bottom: 1px solid var(--border);
       flex-shrink: 0;
-      position: relative;
-    }
-
-    /* Glassmorphism backdrop effect */
-    header::before {
-      content: '';
-      position: absolute;
+      position: fixed;
       top: 0;
       left: 0;
       right: 0;
-      bottom: 0;
-      background: var(--bg-gradient);
-      opacity: 0.8;
-      z-index: -1;
+      height: 48px;
+      z-index: 3000;
     }
 
     .header-top {
@@ -172,16 +157,45 @@
       gap: var(--space-3);
     }
 
+    /* Header hamburger button */
+    .header-sidebar-toggle {
+      display: none;
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--text);
+      width: 36px;
+      height: 36px;
+      border-radius: 6px;
+      font-size: 20px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .header-sidebar-toggle:hover {
+      background: var(--accent);
+      color: white;
+      border-color: var(--accent);
+    }
+
+    @media (max-width: 767px) {
+      .header-sidebar-toggle {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      /* Hide floating sidebar toggle on mobile since header has hamburger */
+      .sidebar-toggle:not(.header-sidebar-toggle) {
+        display: none !important;
+      }
+    }
+
     header h1 {
-      font-size: var(--font-size-2xl);
-      font-weight: var(--font-weight-extrabold);
+      font-size: var(--font-size-lg);
+      font-weight: var(--font-weight-semibold);
       margin: 0;
-      letter-spacing: -0.025em;
-      background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      line-height: var(--line-height-tight);
+      color: var(--text);
+      line-height: 1;
     }
 
     .header-badges {
@@ -191,17 +205,14 @@
       align-items: center;
     }
 
-    /* Responsive header scaling */
+    /* Responsive header */
     @media (min-width: 640px) {
       header {
-        flex-direction: row;
-        align-items: center;
-        justify-content: space-between;
-        padding: var(--space-4) var(--space-6);
+        padding: var(--space-2) var(--space-6);
       }
 
       header h1 {
-        font-size: var(--font-size-3xl);
+        font-size: var(--font-size-xl);
       }
 
       .header-badges {
@@ -220,38 +231,18 @@
       }
     }
 
-    /* Modern Glassmorphism Badge System */
+    /* Minimal badges */
     .badge {
-      padding: var(--space-2) var(--space-4);
-      background: var(--glass-card);
-      backdrop-filter: blur(8px);
-      -webkit-backdrop-filter: blur(8px);
-      border: 1px solid var(--border-light);
-      border-radius: 9999px;
+      padding: var(--space-1) var(--space-2);
+      background: var(--card);
+      border-radius: 4px;
       color: var(--text-secondary);
-      font-size: var(--font-size-sm);
-      font-weight: var(--font-weight-semibold);
+      font-size: var(--font-size-xs);
+      font-weight: var(--font-weight-medium);
       white-space: nowrap;
-      display: flex;
+      display: inline-flex;
       align-items: center;
-      gap: var(--space-2);
-      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-      min-height: 44px;
-      cursor: pointer;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .badge:hover {
-      transform: translateY(-1px);
-      box-shadow: var(--shadow-lg), var(--shadow-glow);
-      border-color: var(--border-focus);
-      background: var(--glass-surface);
-      color: var(--text);
-    }
-
-    .badge:active {
-      transform: translateY(0);
+      gap: var(--space-1);
     }
 
     /* Special badge variants */
@@ -319,49 +310,128 @@
     }
 
 
-    /* Main content area */
+    /* Fullscreen map container */
     .main-container {
-      display: flex;
-      flex: 1;
+      position: fixed;
+      top: 48px;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      width: 100%;
       overflow: hidden;
     }
 
-    /* Mobile: Stack layout */
-    /* Modern Glassmorphism Panels */
+    /* Hide old panels structure */
     .panels-container {
-      display: none; /* Hidden on mobile by default */
-      flex-direction: column;
-      width: 100%;
-      background: var(--glass-panel);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      border-right: 1px solid var(--border-light);
-      overflow-y: auto;
-      position: relative;
+      display: none !important;
     }
 
-    .panels-container::before {
-      content: '';
+    #left-panel {
+      display: none !important;
+    }
+
+    #map-container {
       position: absolute;
       top: 0;
       left: 0;
       right: 0;
       bottom: 0;
-      background: var(--bg-gradient);
-      opacity: 0.6;
-      z-index: -1;
-    }
-
-    #map-container {
-      flex: 1;
-      position: relative;
-      background: var(--surface);
+      background: var(--bg);
     }
 
     #map {
       width: 100%;
       height: 100%;
       border-radius: 0;
+    }
+
+    /* Floating left sidebar */
+    #left {
+      position: fixed;
+      top: 56px;
+      left: 0;
+      bottom: 0;
+      width: 280px;
+      background: var(--panel);
+      border-right: 1px solid var(--border);
+      overflow-y: auto;
+      z-index: 2000;
+      transform: translateX(-100%);
+      transition: transform 0.3s ease;
+      padding: var(--space-4);
+      box-shadow: var(--shadow-lg);
+    }
+
+    #left.open {
+      transform: translateX(0);
+      box-shadow: var(--shadow-lg);
+    }
+
+    /* Sidebar toggle button - hidden on mobile since we use header hamburger */
+    .sidebar-toggle {
+      position: fixed !important;
+      top: 56px !important;
+      left: 12px !important;
+      width: 40px !important;
+      height: 40px !important;
+      background: #3b82f6 !important;
+      border: 2px solid white !important;
+      border-radius: 8px !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      cursor: pointer !important;
+      z-index: 9999 !important;
+      color: white !important;
+      font-size: 20px !important;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.5) !important;
+    }
+
+    .sidebar-toggle:hover {
+      background: var(--accent-hover);
+    }
+
+    /* Floating right panel */
+    #right {
+      position: fixed;
+      top: 56px;
+      right: 12px;
+      bottom: 12px;
+      width: 320px;
+      max-height: calc(100vh - 80px);
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      overflow: hidden;
+      z-index: 2000;
+      display: flex;
+      flex-direction: column;
+      box-shadow: var(--shadow-lg);
+    }
+
+    #right.minimized {
+      height: 48px;
+      bottom: auto;
+    }
+
+    .panel-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: var(--space-3) var(--space-4);
+      border-bottom: 1px solid var(--border);
+      background: var(--bg-secondary);
+      cursor: pointer;
+    }
+
+    .panel-content {
+      flex: 1;
+      overflow-y: auto;
+      padding: var(--space-4);
+    }
+
+    #right.minimized .panel-content {
+      display: none;
     }
 
     /* Mobile panels toggle */
@@ -391,52 +461,33 @@
       box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4);
     }
 
-    /* Panel sections */
+    /* Simplified panel */
     .panel {
-      padding: var(--space-6);
-      max-height: 50vh;
+      padding: var(--space-4);
       overflow-y: auto;
-      background: var(--glass-backdrop);
-      border-radius: var(--space-3);
-      margin: var(--space-2);
-      backdrop-filter: blur(4px);
-      -webkit-backdrop-filter: blur(4px);
     }
 
-    /* Modern Typography for Headings */
+    /* Simple headings */
     h2 {
       font-size: var(--font-size-sm);
-      font-weight: var(--font-weight-bold);
-      text-transform: uppercase;
-      color: var(--text-accent);
-      letter-spacing: 0.05em;
-      margin: 0 0 var(--space-4) 0;
-      display: flex;
-      align-items: center;
-      gap: var(--space-2);
-      line-height: var(--line-height-tight);
+      font-weight: var(--font-weight-medium);
+      color: var(--text-secondary);
+      margin: 0 0 var(--space-3) 0;
+      line-height: 1;
     }
 
-    /* Modern Glassmorphism Section Cards */
+    /* Minimal sections */
     .section {
-      margin-bottom: var(--space-6);
-      background: var(--glass-card);
-      backdrop-filter: blur(8px);
-      -webkit-backdrop-filter: blur(8px);
-      border: 1px solid var(--border-light);
-      border-radius: var(--space-3);
-      padding: var(--space-5);
-      box-shadow: var(--shadow-sm);
-      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+      margin-bottom: var(--space-4);
+      padding: var(--space-4) 0;
+      border-bottom: 1px solid var(--border);
     }
 
-    .section:hover {
-      box-shadow: var(--shadow-md);
-      border-color: var(--border-focus);
-      transform: translateY(-1px);
+    .section:last-child {
+      border-bottom: none;
     }
 
-    /* Modern Glassmorphism Chip System */
+    /* Simple chips */
     .chips {
       display: flex;
       flex-wrap: wrap;
@@ -444,48 +495,30 @@
     }
 
     .chip {
-      padding: var(--space-3) var(--space-4);
-      border: 1px solid var(--border-light);
-      border-radius: 9999px;
-      background: var(--glass-surface);
-      backdrop-filter: blur(8px);
-      -webkit-backdrop-filter: blur(8px);
+      padding: var(--space-2) var(--space-3);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      background: transparent;
       color: var(--text-secondary);
       cursor: pointer;
       font-size: var(--font-size-sm);
-      font-weight: var(--font-weight-medium);
-      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-      display: flex;
+      font-weight: var(--font-weight-normal);
+      display: inline-flex;
       align-items: center;
-      gap: var(--space-2);
+      gap: var(--space-1);
       white-space: nowrap;
-      min-height: 40px;
       user-select: none;
-      position: relative;
     }
 
     .chip:hover {
-      background: var(--glass-card);
-      border-color: var(--border-focus);
-      transform: translateY(-1px);
-      box-shadow: var(--shadow-md);
+      background: var(--card);
       color: var(--text);
-    }
-
-    .chip:active {
-      transform: translateY(0);
     }
 
     .chip.active {
       background: var(--accent);
       border-color: var(--accent);
       color: white;
-      box-shadow: var(--shadow-lg), var(--shadow-glow);
-    }
-
-    .chip.active:hover {
-      background: var(--accent-hover);
-      transform: translateY(-1px);
     }
 
     /* Modern 2025 Form System */
@@ -498,15 +531,13 @@
       letter-spacing: 0.01em;
     }
 
-    /* Modern Range Slider */
+    /* Simple range slider */
     input[type="range"] {
       width: 100%;
-      height: var(--space-2);
-      border-radius: 9999px;
-      background: var(--glass-surface);
-      backdrop-filter: blur(4px);
-      -webkit-backdrop-filter: blur(4px);
-      border: 1px solid var(--border-light);
+      height: 4px;
+      border-radius: 2px;
+      background: var(--card);
+      border: none;
       outline: none;
       -webkit-appearance: none;
       cursor: pointer;
@@ -514,51 +545,32 @@
 
     input[type="range"]::-webkit-slider-thumb {
       -webkit-appearance: none;
-      width: var(--space-5);
-      height: var(--space-5);
+      width: 16px;
+      height: 16px;
       border-radius: 50%;
       background: var(--accent);
       cursor: pointer;
-      box-shadow: var(--shadow-md), var(--shadow-glow);
-      border: 2px solid white;
-      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+      border: none;
     }
 
-    input[type="range"]::-webkit-slider-thumb:hover {
-      background: var(--accent-hover);
-      transform: scale(1.1);
-    }
-
-    /* Modern Input Fields */
+    /* Simple inputs */
     select,
     input[type="text"] {
       width: 100%;
-      padding: var(--space-3) var(--space-4);
-      background: var(--glass-surface);
-      backdrop-filter: blur(8px);
-      -webkit-backdrop-filter: blur(8px);
+      padding: var(--space-2) var(--space-3);
+      background: var(--card);
       color: var(--text);
-      border: 1px solid var(--border-light);
-      border-radius: var(--space-3);
+      border: 1px solid var(--border);
+      border-radius: 4px;
       outline: none;
-      font-size: var(--font-size-base);
+      font-size: var(--font-size-sm);
       font-family: var(--font-family);
-      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-      min-height: 44px; /* Touch target */
     }
 
     select:focus,
     input[type="text"]:focus {
-      border-color: var(--border-focus);
-      box-shadow: 0 0 0 3px var(--accent-light);
-      background: var(--glass-card);
-      transform: translateY(-1px);
-    }
-
-    select:hover,
-    input[type="text"]:hover {
-      border-color: var(--border-focus);
-      background: var(--glass-card);
+      border-color: var(--accent);
+      background: var(--bg-secondary);
     }
 
     /* Modern Stats and Legends - 2025 */
@@ -644,60 +656,25 @@
       font-weight: var(--font-weight-semibold);
     }
 
-    /* Modern Glassmorphism Incident Cards */
+    /* Simple incident cards */
     .incident {
-      border: 1px solid var(--border-light);
-      border-radius: var(--space-4);
-      padding: var(--space-5);
-      margin-bottom: var(--space-4);
-      background: var(--glass-card);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      padding: var(--space-3) 0;
+      margin-bottom: 0;
       cursor: pointer;
-      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
       position: relative;
-      overflow: hidden;
-      box-shadow: var(--shadow-sm);
-    }
-
-    .incident::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 4px;
-      height: 100%;
-      background: linear-gradient(to bottom, var(--accent), var(--purple));
-      opacity: 0;
-      transition: opacity 0.2s ease;
-    }
-
-    .incident::after {
-      content: '';
-      position: absolute;
-      top: -50%;
-      left: -50%;
-      width: 200%;
-      height: 200%;
-      background: radial-gradient(circle, transparent 40%, var(--accent-light) 100%);
-      opacity: 0;
-      transition: opacity 0.3s ease;
-      pointer-events: none;
     }
 
     .incident:hover {
-      border-color: var(--border-focus);
-      background: var(--glass-surface);
-      transform: translateY(-3px);
-      box-shadow: var(--shadow-xl), var(--shadow-glow);
+      background: var(--card);
+      padding-left: var(--space-2);
+      margin-left: calc(-1 * var(--space-2));
+      margin-right: calc(-1 * var(--space-2));
+      padding-right: var(--space-2);
     }
 
-    .incident:hover::before {
-      opacity: 1;
-    }
-
-    .incident:hover::after {
-      opacity: 0.1;
+    .incident:last-child {
+      border-bottom: none;
     }
 
     .muted {
@@ -996,61 +973,47 @@
       opacity: 0.8;
     }
 
-    /* Enhanced responsive breakpoints */
+    /* Desktop layout - floating panels */
     @media (min-width: 768px) {
-      #app {
-        display: grid;
-        grid-template-columns: 320px 1fr 360px;
-        grid-template-rows: 60px auto 1fr;
-      }
-
-      header {
-        grid-column: 1 / 4;
-        grid-row: 1;
-        overflow-x: visible;
-      }
-
-      .stats-dashboard {
-        grid-column: 1 / 4;
-        grid-row: 2;
-      }
-
-      .main-container {
-        grid-column: 1 / 4;
-        grid-row: 3;
-        display: grid;
-        grid-template-columns: 320px 1fr 360px;
-      }
-
-      .panels-container {
-        display: flex;
-        flex-direction: column;
-        width: auto;
-      }
-
       .mobile-toggle {
         display: none;
       }
 
-      #map-container {
-        grid-column: 2;
+      .mobile-nav {
+        display: none !important;
       }
 
-      .panel {
-        padding: 16px;
-        max-height: none;
-        overflow-y: auto;
+      .stats-dashboard {
+        position: relative;
+        top: 0;
+        z-index: 99;
+      }
+
+      #left {
+        top: 100px;
+      }
+
+      .sidebar-toggle {
+        top: 100px;
+      }
+
+      #right {
+        top: 100px;
       }
     }
 
     @media (min-width: 1200px) {
-      #app {
-        grid-template-columns: 380px 1fr 400px;
-        grid-template-rows: 60px auto 1fr;
+      #left {
+        width: 320px;
       }
 
-      .main-container {
-        grid-template-columns: 380px 1fr 400px;
+      #right {
+        width: 360px;
+        right: 20px;
+      }
+
+      .sidebar-toggle {
+        left: 20px;
       }
     }
 
@@ -1060,15 +1023,7 @@
       header {
         padding: 10px 12px 8px 12px;
         gap: 4px;
-        background: #0f1419;
-        border-bottom: 1px solid rgba(255,255,255,0.1);
-        position: fixed;
-        top: 0;
-        left: 0;
-        right: 0;
-        z-index: 1000;
-        height: auto;
-        max-height: 60px;
+        height: 48px;
       }
 
       .header-top {
@@ -1183,16 +1138,10 @@
         position: relative;
       }
 
-      /* Override everything for mobile */
+      /* Mobile main container adjustment */
       .main-container {
-        position: fixed !important;
-        top: 60px !important; /* After minimal header */
-        left: 0 !important;
-        right: 0 !important;
+        top: 48px !important;
         bottom: 56px !important; /* Before bottom nav */
-        display: block !important;
-        width: 100% !important;
-        height: calc(100vh - 116px) !important; /* Full height minus header and nav */
       }
 
       #map-container {
@@ -1249,8 +1198,13 @@
         display: none !important;
       }
 
-      /* Hide BOTH side panels on mobile - access via bottom sheet instead */
-      #left, #right {
+      /* Mobile panels */
+      #left {
+        width: 85%;
+        max-width: 320px;
+      }
+
+      #right {
         display: none !important;
       }
 
@@ -1304,21 +1258,6 @@
       }
     }
 
-    /* Animations */
-    @keyframes pulse-glow {
-      0%, 100% { box-shadow: 0 0 5px rgba(16, 185, 129, 0.5); }
-      50% { box-shadow: 0 0 20px rgba(16, 185, 129, 0.8); }
-    }
-
-    @keyframes slideUp {
-      from { transform: translateY(100%); opacity: 0; }
-      to { transform: translateY(0); opacity: 1; }
-    }
-
-    @keyframes slideInRight {
-      from { transform: translateX(100%); opacity: 0; }
-      to { transform: translateX(0); opacity: 1; }
-    }
     .legend { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; font-size: 12px; }
     .dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; border: 1px solid rgba(0,0,0,.4); }
     .sev { display: inline-block; width: 10px; height: 10px; border-radius: 2px; margin-right: 4px; }
@@ -1600,13 +1539,11 @@
       to { transform: translateX(100%); opacity: 0; }
     }
 
-    /* Statistics Dashboard Styles */
+    /* Minimal stats bar */
     .stats-dashboard {
-      background: var(--glass-panel);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      border-bottom: 1px solid var(--border-light);
-      padding: var(--space-3) var(--space-4);
+      background: var(--bg-secondary);
+      border-bottom: 1px solid var(--border);
+      padding: var(--space-2) var(--space-4);
       position: relative;
       z-index: 100;
       overflow-x: auto;
@@ -1623,40 +1560,16 @@
 
     .stat-card {
       flex: 1;
-      min-width: 140px;
-      background: var(--glass-card);
-      backdrop-filter: blur(8px);
-      border: 1px solid var(--border-light);
-      border-radius: 12px;
-      padding: var(--space-3) var(--space-4);
+      min-width: 100px;
+      padding: 0 var(--space-3);
       display: flex;
-      flex-direction: column;
-      gap: var(--space-1);
-      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-      position: relative;
-      overflow: hidden;
+      align-items: center;
+      gap: var(--space-2);
+      border-right: 1px solid var(--border);
     }
 
-    .stat-card:hover {
-      transform: translateY(-2px);
-      box-shadow: var(--shadow-lg);
-      border-color: var(--border-focus);
-    }
-
-    .stat-card::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 3px;
-      background: linear-gradient(90deg, transparent, var(--accent), transparent);
-      opacity: 0;
-      transition: opacity 0.3s ease;
-    }
-
-    .stat-card:hover::before {
-      opacity: 1;
+    .stat-card:last-child {
+      border-right: none;
     }
 
     .stat-value {
@@ -2138,6 +2051,9 @@
   <div id="app" role="application" aria-label="Drone Sightings interactive map">
     <header>
       <div class="header-top">
+        <button class="sidebar-toggle header-sidebar-toggle" id="header-sidebar-toggle" aria-label="Toggle menu">
+          ☰
+        </button>
         <h1><span class="header-icon">🛡️</span> <span class="header-title-text">DroneWatch</span> <span class="header-title-europe">Europe</span></h1>
         <button class="share-btn" id="btn-share">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -2190,9 +2106,16 @@
     </div>
 
     <div id="main-container" class="main-container">
-      <!-- Left Panel - Filters & Controls -->
-      <div class="panels-container" id="panels">
-        <div class="panel" id="left-panel">
+      <!-- Map Container -->
+      <div id="map-container">
+        <main id="map" role="region" aria-label="Incident map">
+          <div id="mapOverlay" style="display: none; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 1000; background: var(--surface); border: 3px solid var(--border); border-radius: 16px; padding: 40px 60px; text-align: center; box-shadow: 0 8px 32px rgba(0,0,0,0.8);">
+            <div style="font-size: 48px; font-weight: 900; color: var(--text); margin-bottom: 16px; letter-spacing: 3px;">NO DATA</div>
+            <div style="color: var(--muted); font-size: 16px; line-height: 1.4;">Europe-wide incident monitoring system<br/>No current incidents detected</div>
+          </div>
+        </main>
+      </div>
+    </div> <!-- End of main-container -->
 
     <!-- Live Activity Indicator -->
     <div id="activity-indicator" class="activity-indicator">
@@ -2334,28 +2257,26 @@
         </div> <!-- Close left-panel -->
       </div> <!-- Close panels-container -->
 
-      <!-- Map Container - NOW PROPERLY INSIDE main-container -->
-      <div id="map-container">
-        <main id="map" role="region" aria-label="Incident map">
-          <div id="mapOverlay" style="display: none; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 1000; background: var(--surface); border: 3px solid var(--severity-4); border-radius: 16px; padding: 40px 60px; text-align: center; box-shadow: 0 8px 32px rgba(0,0,0,0.8);">
-            <div style="font-size: 48px; font-weight: 900; color: var(--severity-4); margin-bottom: 16px; letter-spacing: 3px;">NO DATA</div>
-            <div style="color: var(--muted); font-size: 16px; line-height: 1.4;">Europe-wide incident monitoring system<br/>No current incidents detected</div>
-          </div>
-        </main>
-      </div>
-
+      <!-- Right Panel - Incidents -->
       <aside id="right" aria-label="Incident details">
-      <div id="details">
-        <h2>Incident feed</h2>
+        <div class="panel-header" id="right-panel-header">
+          <h2 style="margin: 0; font-size: var(--font-size-base);">Incident Feed</h2>
+          <button style="background: none; border: none; color: var(--text-secondary); cursor: pointer; font-size: 18px;" id="minimize-right">_</button>
+        </div>
+        <div class="panel-content" id="details">
         <p class="muted" id="detailsIntro">Pins refresh every few minutes. Click a marker or list item for full provenance.</p>
         <div id="noDataMessage" style="display: none; text-align: center; padding: 60px 20px; background: var(--surface); border: 2px solid var(--border); border-radius: 12px; margin: 20px 0;">
           <div style="font-size: 32px; font-weight: 900; color: var(--text); margin-bottom: 16px; letter-spacing: 2px;">NO DATA</div>
           <div class="muted" style="line-height: 1.5; font-size: 14px;">No incidents match the current filters.<br />Try expanding the time window or enabling more status options.</div>
         </div>
         <div id="incidentList"></div>
-      </div>
+        </div>
       </aside>
-    </div> <!-- End of main-container - CRITICAL FIX -->
+
+    <!-- Sidebar Toggle Button -->
+    <button class="sidebar-toggle" id="sidebar-toggle" aria-label="Toggle filters sidebar">
+      ☰
+    </button>
 
     <!-- Provenance Modal - Enhanced for Mobile -->
     <div id="provenanceModal" class="provenance-modal" style="display: none;">
@@ -2378,6 +2299,46 @@
     // Global state and functions for mobile access
     window.droneState = null;
     window.droneFocusIncident = null;
+
+    // Minimalistic UI interactions
+    document.addEventListener('DOMContentLoaded', function() {
+      // Sidebar toggle
+      const sidebarToggle = document.getElementById('sidebar-toggle');
+      const headerSidebarToggle = document.getElementById('header-sidebar-toggle');
+      const leftPanel = document.getElementById('left');
+
+      // Function to toggle sidebar
+      function toggleSidebar() {
+        if (leftPanel) {
+          leftPanel.classList.toggle('open');
+          const isOpen = leftPanel.classList.contains('open');
+          if (sidebarToggle) sidebarToggle.textContent = isOpen ? '✕' : '☰';
+          if (headerSidebarToggle) headerSidebarToggle.textContent = isOpen ? '✕' : '☰';
+        }
+      }
+
+      // Add event listener to both toggle buttons
+      if (sidebarToggle) {
+        sidebarToggle.addEventListener('click', toggleSidebar);
+      }
+      if (headerSidebarToggle) {
+        headerSidebarToggle.addEventListener('click', toggleSidebar);
+      }
+
+      // Right panel minimize
+      const rightPanel = document.getElementById('right');
+      const minimizeBtn = document.getElementById('minimize-right');
+      const rightPanelHeader = document.getElementById('right-panel-header');
+
+      if (rightPanel && minimizeBtn && rightPanelHeader) {
+        rightPanelHeader.addEventListener('click', function(e) {
+          if (e.target === minimizeBtn || rightPanel.classList.contains('minimized')) {
+            rightPanel.classList.toggle('minimized');
+            minimizeBtn.textContent = rightPanel.classList.contains('minimized') ? '□' : '_';
+          }
+        });
+      }
+    });
 
     // Wait for DOM to be ready before initializing map
     function initializeMap() {
@@ -2663,8 +2624,65 @@
 
     function mapAssetType(assetType) {
       // Map asset types to filter categories
-      if (assetType === 'nuclear') return 'energy';
-      return assetType;
+      const typeMapping = {
+        // Energy infrastructure
+        'nuclear': 'energy',
+        'nuclear_plant': 'energy',
+        'nuclear_facility': 'energy',
+        'power_plant': 'energy',
+        'power_station': 'energy',
+        'gas_facility': 'energy',
+        'gas_terminal': 'energy',
+        'lng_terminal': 'energy',
+        'oil_facility': 'energy',
+        'oil_refinery': 'energy',
+        'oil_terminal': 'energy',
+        'pipeline': 'energy',
+        'substation': 'energy',
+        'grid_infrastructure': 'energy',
+
+        // Maritime infrastructure
+        'port': 'harbour',
+        'harbor': 'harbour',
+        'harbour': 'harbour',
+        'seaport': 'harbour',
+        'naval_base': 'harbour',
+        'naval_facility': 'harbour',
+        'maritime': 'harbour',
+        'shipyard': 'harbour',
+        'dock': 'harbour',
+
+        // Military installations
+        'military': 'military',
+        'military_base': 'military',
+        'military_facility': 'military',
+        'army_base': 'military',
+        'air_base': 'military',
+        'airbase': 'military',
+        'defense_facility': 'military',
+        'defense_installation': 'military',
+        'barracks': 'military',
+        'ammunition_depot': 'military',
+
+        // Rail infrastructure
+        'railway': 'rail',
+        'railroad': 'rail',
+        'train_station': 'rail',
+        'rail_yard': 'rail',
+        'rail_terminal': 'rail',
+        'metro': 'rail',
+        'subway': 'rail',
+
+        // Border infrastructure
+        'border': 'border',
+        'border_crossing': 'border',
+        'checkpoint': 'border',
+        'customs': 'border',
+        'border_post': 'border'
+      };
+
+      // Return mapped type or original if no mapping exists
+      return typeMapping[assetType.toLowerCase()] || assetType.toLowerCase();
     }
 
     function searchTerm() {
