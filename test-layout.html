@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: Arial; }
+
+#app {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  background: #ddd;
+}
+
+header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 48px;
+  background: #000;
+  color: white;
+  display: flex;
+  align-items: center;
+  padding: 0 20px;
+  z-index: 3000;
+}
+
+.main-container {
+  position: fixed;
+  top: 48px;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: lightblue;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+}
+
+.sidebar-toggle {
+  position: fixed;
+  top: 56px;
+  left: 12px;
+  width: 40px;
+  height: 40px;
+  background: #3b82f6;
+  border: none;
+  border-radius: 8px;
+  color: white;
+  font-size: 20px;
+  z-index: 2001;
+  cursor: pointer;
+}
+
+#left {
+  position: fixed;
+  top: 56px;
+  left: 0;
+  bottom: 0;
+  width: 280px;
+  background: #333;
+  color: white;
+  padding: 20px;
+  transform: translateX(-100%);
+  transition: transform 0.3s;
+  z-index: 2000;
+}
+
+#left.open {
+  transform: translateX(0);
+}
+
+#right {
+  position: fixed;
+  top: 56px;
+  right: 12px;
+  width: 320px;
+  background: #333;
+  color: white;
+  border-radius: 8px;
+  z-index: 2000;
+  padding: 20px;
+}
+</style>
+</head>
+<body>
+<div id="app">
+  <header>Header (z-index: 3000)</header>
+  <div class="main-container">MAP AREA</div>
+  <button class="sidebar-toggle" onclick="document.getElementById('left').classList.toggle('open')">☰</button>
+  <aside id="left">Left Sidebar (z-index: 2000)</aside>
+  <aside id="right">Right Panel (z-index: 2000)</aside>
+</div>
+</body>
+</html>
